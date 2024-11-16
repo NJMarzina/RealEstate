@@ -65,3 +65,4 @@ C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeEstate\obj\Debug\net8.0\refint\
 C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeEstate\obj\Debug\net8.0\HomeEstate.pdb
 C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeEstate\obj\Debug\net8.0\HomeEstate.genruntimeconfig.cache
 C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeEstate\obj\Debug\net8.0\ref\HomeEstate.dll
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeEstate\obj\Debug\net8.0\HomeEstate.sourcelink.json
