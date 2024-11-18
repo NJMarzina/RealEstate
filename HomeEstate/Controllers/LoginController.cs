@@ -10,7 +10,7 @@ namespace HomeEstate.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost]  //i thhought this would be httpget but httppost works and get throws an error
         public IActionResult Login(LoginModel model)
         {
             bool accountExists = LoginModel.CheckLogin(model.Username, model.Password);
