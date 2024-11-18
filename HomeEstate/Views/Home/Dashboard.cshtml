@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Dashboard</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Address Number</th>
+                <th>Address Name</th>
+                <th>Address City</th>
+                <th>Address State</th>
+                <th>Address Zip</th>
+                <th>Property Type</th>
+                <th>Heating</th>
+                <th>Cooling</th>
+                <th>Year Built</th>
+                <th>Garage</th>
+                <th>Utilities</th>
+                <th>Description</th>
+                <th>Asking Price</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.HomeList != null)
+            {
+                foreach (var home in ViewBag.HomeList)
+                {
+                    <tr>
+                        <td>@home.Address_Number</td>
+                        <td>@home.Address_Name</td>
+                        <td>@home.AddressCity</td>
+                        <td>@home.AddressState</td>
+                        <td>@home.AddressZip</td>
+                        <td>@home.Property_Type</td>
+                        <td>@home.Heating</td>
+                        <td>@home.Cooling</td>
+                        <td>@home.Year_Build</td>
+                        <td>@home.Garage</td>
+                        <td>@home.Utilities</td>
+                        <td>@home.Description</td>
+                        <td>@home.AskingPrice?.ToString("C")</td>
+                        <td>@home.Status</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
