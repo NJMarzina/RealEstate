@@ -23,5 +23,14 @@ namespace HomeEstate.Models
 
         [Range(1, int.MaxValue, ErrorMessage = "Address number must be greater than 0.")]
         public int AddressNumber { get; set; }
+
+        [Required(ErrorMessage = "Answer to the first security question is required.")]
+        public string SecurityAnswer1 { get; set; }
+
+        [Required(ErrorMessage = "Answer to the second security question is required.")]
+        public string SecurityAnswer2 { get; set; }
+
+        [Required(ErrorMessage = "Answer to the third security question is required.")]
+        public string SecurityAnswer3 { get; set; }
     }
 }
