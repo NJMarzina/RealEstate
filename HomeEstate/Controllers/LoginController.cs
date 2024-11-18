@@ -13,8 +13,12 @@ namespace HomeEstate.Controllers
         [HttpPost]
         public IActionResult Login(LoginModel model)
         {
+            bool accountExists = LoginModel.CheckLogin(model.Username, model.Password);    //sending values entered for Username and Password into CheckLogin
+
             if (ModelState.IsValid)
             {
+                
+
                 if (model.Username == "admin" && model.Password == "password")  //change to where admin and password are in database table, and instead of model.Username, model.Password u are taking from the broker sign in object
                 {
                     return RedirectToAction("Index", "Home");
