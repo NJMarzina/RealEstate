@@ -24,6 +24,7 @@ namespace HomeEstate.Models
 
            DBConnect objDB = new DBConnect();
            SqlCommand objCommand = new SqlCommand();
+
             /*
            command.CommandType = CommandType.StoredProcedure;
            command.CommandText = "CheckLoginByUsernameAndPassword";
