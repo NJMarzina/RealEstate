@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 
 
-namespace HomeEstate.Models
+namespace HomeEstate.Utilities
 {
     public class DBConnect
     {
         // Main Connection String - used for the published web application and project submissions.
-        String SqlConnectString = "server=cis-mssql1.temple.edu;Database=fa24_3342_tun52511;User id=tun52511;Password=bo7quoiJai";
+        //  String SqlConnectString = "server=cis-mssql1.temple.edu;Database=fa24_3342_tun52511;User id=tun52511;Password=bo7quoiJai";
 
         // Home Connection String - used for working from home using SSH Tunneling.
-        //  String SqlConnectString = "server=127.0.0.1,5555;Database=fa24_3342_tun52511;User id=tun52511;Password=bo7quoiJai";
+        String SqlConnectString = "server=127.0.0.1,5555;Database=fa24_3342_tun52511;User id=tun52511;Password=bo7quoiJai;TrustServerCertificate=True;";
 
 
         SqlConnection myConnectionSql;
@@ -30,7 +30,7 @@ namespace HomeEstate.Models
             myConnectionSql = new SqlConnection(SqlConnectString);
         }
 
-        public DataSet GetDataSet(String SqlSelect)
+        public DataSet GetDataSet(string SqlSelect)
         {
             // Input parameter is a SELECT SQL statement. Return is the Dataset 
             // Note: The Dataset is also stored as a class variable for use 
@@ -42,7 +42,7 @@ namespace HomeEstate.Models
             return myDataSet;
         }
 
-        public DataSet GetDataSet(String SqlSelect, out int theRecordCount)
+        public DataSet GetDataSet(string SqlSelect, out int theRecordCount)
         {
             // Input parameter is a SELECT SQL statement. 
             // Output parameter is the number of rows in the returned dataset.
@@ -55,7 +55,7 @@ namespace HomeEstate.Models
             return myDataSet;
         }
 
-        public DataSet GetDataSet(String SqlSelect, out int theRecordCount, out String theErrorMessage)
+        public DataSet GetDataSet(string SqlSelect, out int theRecordCount, out string theErrorMessage)
         {
             // Input parameter is a SELECT SQL statement. 
             // Output parameter (1) is the number of rows in the returned dataset.
@@ -101,7 +101,7 @@ namespace HomeEstate.Models
         //}
 
 
-        public int DoUpdate(String SqlManipulate)
+        public int DoUpdate(string SqlManipulate)
         {
             // Input parameter is a SQL manipulate statement (INSERT, UPDATE, DELETE). 
             // Returns the number of rows affected by the update.
@@ -182,7 +182,7 @@ namespace HomeEstate.Models
             return objRow;
         }
 
-        public Array GetRows(String theCondition)
+        public Array GetRows(string theCondition)
         {
             // Input parameters are (1) a DataSet and (2) the zero based row of the 
             // table in the DataSet to be returned.  Returns a row.
@@ -192,7 +192,7 @@ namespace HomeEstate.Models
             return objRow;
         }
 
-        public Object GetField(String theFieldName, int theRow)
+        public object GetField(string theFieldName, int theRow)
         {
             // Input parameterss are (1) a Field (Column) name as a string and
             // (2) the zero based row of the table in the DataSet 
@@ -214,7 +214,7 @@ namespace HomeEstate.Models
             myDataAdapter.Update(theDataSet);
         }
 
-        public Object ExecuteScalarFunction(SqlCommand theCommand)
+        public object ExecuteScalarFunction(SqlCommand theCommand)
         {
             // Input parameter is a Command object containing a Select statement 
             // that returns a single scalar value. Returns the single scalar value.  

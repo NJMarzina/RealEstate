@@ -66,3 +66,4 @@ C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeEstate\obj\Debug\net8.0\HomeEst
 C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeEstate\obj\Debug\net8.0\HomeEstate.genruntimeconfig.cache
 C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeEstate\obj\Debug\net8.0\ref\HomeEstate.dll
 C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeEstate\obj\Debug\net8.0\HomeEstate.sourcelink.json
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeEstate\bin\Debug\net8.0\System.ClientModel.dll
