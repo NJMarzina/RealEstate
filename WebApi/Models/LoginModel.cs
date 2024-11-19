@@ -2,17 +2,17 @@
 
 namespace WebApi.Models
 {
-    public class Broker
+    public class LoginModel
     {
         public String Username { get; set; }
         public String Password { get; set; }
 
-        public Broker()
+        public LoginModel()
         {
 
         }
 
-        public Broker(String username, String password)
+        public LoginModel(String username, String password)
         {
             this.Username = username;
             this.Password = password;

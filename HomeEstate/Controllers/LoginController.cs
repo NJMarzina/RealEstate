@@ -2,6 +2,8 @@
 using HomeEstate.Models;
 using System.Net;
 using System.Text.Json;
+using System.Text;
+
 
 namespace HomeEstate.Controllers
 {
@@ -11,89 +13,53 @@ namespace HomeEstate.Controllers
         Uri webApiUrl = new Uri("http://localhost:7229/api");
 
 
-
         [HttpPost]
-        public IActionResult CheckLogin(LoginModel User)
+        public async Task<IActionResult> CheckLogin(LoginModel user)
         {
-            LoginModel NewUser = new LoginModel();
-            User.Username = Request.Form["Username"];
-            User.Password = Request.Form["Password"];
-
             if (ModelState.IsValid)
             {
-                
-                //bool rememberMe = Request.Form["chkRememberme"] == "on";
+                var jsonLogin = JsonSerializer.Serialize(user);
+                var content = new StringContent(jsonLogin, Encoding.UTF8, "application/json");
 
-                var jsonLogin = JsonSerializer.Serialize(NewUser);
-
-                try
+                using (var client = new HttpClient())
                 {
-                    WebRequest request = WebRequest.Create(webApiUrl + "CheckLogin/");
-                    request.Method = "POST";
-                    request.ContentLength = jsonLogin.Length;
-                    request.ContentType = "application/json";
-
-                    StreamWriter writer = new StreamWriter(request.GetRequestStream());
-                    writer.Write(jsonLogin);
-                    writer.Flush();
-                    writer.Close();
-
-                    WebResponse response = request.GetResponse();
-                    Stream theDataStream = response.GetResponseStream();
-                    StreamReader reader = new StreamReader(theDataStream);
-                    String data = reader.ReadToEnd();
-                    reader.Close();
-                    response.Close();
-
-                    /*
-                    if (rememberMe)
+                    try
                     {
-                        var cookieOptions = new CookieOptions
+                        // Use the correct API URL
+                        var response = await client.PostAsync(webApiUrl + "/Login/Login", content);
+
+                        if (response.IsSuccessStatusCode)
                         {
+                            // Parse the response as a boolean (true or false)
+                            var data = await response.Content.ReadAsStringAsync();
+                            bool isCorrect = bool.Parse(data);
 
-                            Expires = DateTime.Now.AddDays(30),
-                        };
-
-
-                        Response.Cookies.Append("Username", login.Username, cookieOptions);
-                        Response.Cookies.Append("Password", login.Password, cookieOptions);
-                    }
-                    
-
-                    if (data == "true")
-                    {
-                        var cookieOptions = new CookieOptions
+                            if (isCorrect)
+                            {
+                                return RedirectToAction("Index", "Home");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Invalid credentials");
+                                return View("Login", "Login");
+                            }
+                        }
+                        else
                         {
-
-                            Expires = DateTime.Now.AddDays(30),
-                        };
-
-
-                        Response.Cookies.Append("UsernameSession", login.Username, cookieOptions);
-                        return RedirectToAction("GetAllProfiles", "Dashboard");
+                            ModelState.AddModelError("", "Error occurred while checking credentials.");
+                            return View("Login", "Login");
+                        }
                     }
-                    else
+                    catch (HttpRequestException ex)
                     {
-                        return RedirectToAction("LogIn", "Home");
+                        // Log or handle the exception
+                        ModelState.AddModelError("", $"Request error: {ex.Message}");
+                        return View("Login", "Login");
                     }
-                }
-                catch (Exception ex)
-                {
-                    return View("Error");
                 }
             }
-            */
-                    //else
-                    //{
-                return View(NewUser);
-                    //}
-                }
-                catch (Exception ex)
-                {
-                    return View("Error");
-                }
-            }
-            return View(NewUser);
+
+            return View("Login", "Login");
         }
 
         public IActionResult Login()
@@ -101,22 +67,22 @@ namespace HomeEstate.Controllers
             return View();
         }
 
-        [HttpPost]  //i thhought this would be httpget but httppost works and get throws an error
-        public IActionResult Login(LoginModel model)
-        {
-            bool accountExists = LoginModel.CheckLogin(model.Username, model.Password);
+        //[HttpPost]  //i thhought this would be httpget but httppost works and get throws an error
+        //public IActionResult Login(LoginModel model)
+        //{
+        //    bool accountExists = CheckLogin(model.Username, model.Password);
 
-            if (ModelState.IsValid)
-            {
-                if (accountExists)  //change to where admin and password are in database table, and instead of model.Username, model.Password u are taking from the broker sign in object
-                {
-                    return RedirectToAction("Index", "Home");
-                }
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (accountExists)  //change to where admin and password are in database table, and instead of model.Username, model.Password u are taking from the broker sign in object
+        //        {
+        //            return RedirectToAction("Index", "Home");
+        //        }
 
-                ModelState.AddModelError("", "Invalid username or password.");
-            }
-            return View(model);
-        }
+        //        ModelState.AddModelError("", "Invalid username or password.");
+        //    }
+        //    return View(model);
+        //}
 
 
 

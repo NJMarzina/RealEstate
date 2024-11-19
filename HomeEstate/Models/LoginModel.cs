@@ -19,7 +19,7 @@ namespace HomeEstate.Models
 
         //route?
 
-
+        /*
         public static bool CheckLogin(string username, string password)
         {
             bool isCorrect = false;
@@ -43,7 +43,7 @@ namespace HomeEstate.Models
 
            return isCorrect;
             */
-
+                /*
             objCommand.CommandType = CommandType.StoredProcedure;
             objCommand.CommandText = "BrokerLogin";
 
@@ -79,7 +79,8 @@ namespace HomeEstate.Models
                 isCorrect = true;
             }
 
-            return isCorrect;
-        }
+            return isCorrect;  */
+
+        }           
     }
-}
+
