@@ -1,48 +1,28 @@
-﻿using Azure;
-using HomeEstate.Utilities;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Data.Common;
+using WebApi.Utilities;
+using WebApi.Utilities.HomeEstate.Utilities;
 
-namespace HomeEstate.Models
+
+namespace WebApi.Controllers
 {
-    public class LoginModel
+    public class LoginController : Controller
     {
-        [Required(ErrorMessage = "Username is required.")]
-        public string Username { get; set; }
+        [Produces("application/json")]
+        [Route("api/Login")]
+        public IActionResult Index()
+        {
+            return View();
+        }
 
-        [Required(ErrorMessage = "Password is required.")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        //route?
-
-
+        [HttpGet("CheckLogin")]
         public static bool CheckLogin(string username, string password)
         {
             bool isCorrect = false;
 
-           DBConnect objDB = new DBConnect();
-           SqlCommand objCommand = new SqlCommand();
-
-            /*
-           command.CommandType = CommandType.StoredProcedure;
-           command.CommandText = "CheckLoginByUsernameAndPassword";
-
-           command.Parameters.AddWithValue("@Username", username);
-           command.Parameters.AddWithValue("@Password", password);
-
-           var result = objDB.DoUpdateUsingCmdObj(command);
-
-           if (result == 1)
-           {
-               isCorrect = true;
-           }
-
-           return isCorrect;
-            */
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
 
             objCommand.CommandType = CommandType.StoredProcedure;
             objCommand.CommandText = "BrokerLogin";
@@ -55,7 +35,6 @@ namespace HomeEstate.Models
             userIdParameter.SqlDbType = SqlDbType.Int;
             userIdParameter.Direction = ParameterDirection.Output;
             objCommand.Parameters.Add(userIdParameter);
-
 
             SqlParameter nameParameter = new SqlParameter();
             nameParameter.ParameterName = "@FullName";
