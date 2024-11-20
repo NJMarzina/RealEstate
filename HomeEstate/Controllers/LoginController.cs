@@ -41,7 +41,7 @@ namespace HomeEstate.Controllers
                             else
                             {
                                 ModelState.AddModelError("", "Invalid credentials");
-                                return View("Login", "Login");
+                                return View("Login", user);
                             }
                         }
                         else
@@ -59,7 +59,7 @@ namespace HomeEstate.Controllers
                 }
             }
 
-            return View("Login", "Login");
+            return View("Login", user);
         }
 
         public IActionResult Login()

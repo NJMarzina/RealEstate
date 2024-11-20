@@ -23,8 +23,8 @@ namespace WebApi.Controllers
             objCommand.CommandType = CommandType.StoredProcedure;
             objCommand.CommandText = "BrokerLogin";
 
-            objCommand.Parameters.AddWithValue("@UserName", broker.Username);
-            objCommand.Parameters.AddWithValue("@UserPassword", broker.Password);
+            objCommand.Parameters.AddWithValue("@UserName", broker.Username.ToString());
+            objCommand.Parameters.AddWithValue("@UserPassword", broker.Password.ToString());
 
             SqlParameter userIdParameter = new SqlParameter();
             userIdParameter.ParameterName = "@BrokerId";
@@ -47,7 +47,7 @@ namespace WebApi.Controllers
             id = objCommand.Parameters["@BrokerId"].Value?.ToString();
             name = objCommand.Parameters["@FullName"].Value?.ToString();
 
-            name = "Jason";
+            //name = "Jason";
 
 
             if (string.IsNullOrEmpty(name))
