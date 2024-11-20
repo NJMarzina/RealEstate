@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using WebApi.Models;
 using WebApi.Utilities;
 using WebApi.Utilities.HomeEstate.Utilities;
 
@@ -12,26 +13,41 @@ namespace WebApi.Controllers
     [ApiController]
     public class HomeController : Controller
     {
-   
+
         [HttpGet("GetHomeData")]
-        public IActionResult GetHomeData()
+        public List<HomeModel> GetHomeData()
         {
-            
-                DBConnect objDB = new DBConnect();
-                SqlCommand objCommand = new SqlCommand();
-                
-                   
-                   String SQL= "SELECT Address_Number, Address_Name, AddressCity, AddressState, AddressZip, Property_Type, Heating, Cooling, Year_Build, Garage, Utilities, Description, AskingPrice, Status FROM Home";
-               
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
 
-                // Execute the query and fetch the data
-                DataSet ds = objDB.GetDataSet(SQL);
+            string SQL = "SELECT Address_Number, Address_Name, AddressCity, AddressState, AddressZip, Property_Type, Heating, Cooling, Year_Build, Garage, Utilities, Description, AskingPrice, Status FROM Home";
+            DataSet ds = objDB.GetDataSet(SQL);
 
-                var jsonResult = Newtonsoft.Json.JsonConvert.SerializeObject(ds.Tables[0]);
+            List<HomeModel> homes = new List<HomeModel>();
 
-                return Ok(jsonResult);
-            
-           
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                homes.Add(new HomeModel
+                {
+                    AddressNumber = row["Address_Number"].ToString(),
+                    AddressName = row["Address_Name"].ToString(),
+                    AddressCity = row["AddressCity"].ToString(),
+                    AddressState = row["AddressState"].ToString(),
+                    AddressZip = row["AddressZip"].ToString(),
+                    PropertyType = row["Property_Type"].ToString(),
+                    Heating = row["Heating"].ToString(),
+                    Cooling = row["Cooling"].ToString(),
+                    YearBuild = Convert.ToInt32(row["Year_Build"]),
+                    Garage = row["Garage"].ToString(),
+                    Utilities = row["Utilities"].ToString(),
+                    Description = row["Description"].ToString(),
+                    AskingPrice = Convert.ToDecimal(row["AskingPrice"]),
+                    Status = row["Status"].ToString(),
+                });
+            }
+
+            return homes;
         }
+
     }
 }
