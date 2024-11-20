@@ -36,7 +36,8 @@ namespace HomeEstate.Controllers
 
                             if (isCorrect)
                             {
-                                return RedirectToAction("Index", "Home");
+                                //return RedirectToAction("Index", "Home");
+                                return View("Dashboard");
                             }
                             else
                             {
