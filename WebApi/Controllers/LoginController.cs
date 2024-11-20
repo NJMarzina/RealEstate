@@ -5,6 +5,8 @@ using System.Data;
 using WebApi.Models;
 using WebApi.Utilities;
 using WebApi.Utilities.HomeEstate.Utilities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace WebApi.Controllers
 {
@@ -23,8 +25,8 @@ namespace WebApi.Controllers
             objCommand.CommandType = CommandType.StoredProcedure;
             objCommand.CommandText = "BrokerLogin";
 
-            objCommand.Parameters.AddWithValue("@UserName", broker.Username.ToString());
-            objCommand.Parameters.AddWithValue("@UserPassword", broker.Password.ToString());
+            objCommand.Parameters.AddWithValue("@UserName", "Jason");
+            objCommand.Parameters.AddWithValue("@UserPassword","123");
 
             SqlParameter userIdParameter = new SqlParameter();
             userIdParameter.ParameterName = "@BrokerId";

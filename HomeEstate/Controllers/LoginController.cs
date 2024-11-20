@@ -47,14 +47,14 @@ namespace HomeEstate.Controllers
                         else
                         {
                             ModelState.AddModelError("", "Error occurred while checking credentials.");
-                            return View("Login", "Login");
+                            return View("Login", new LoginModel());
                         }
                     }
                     catch (HttpRequestException ex)
                     {
                         // Log or handle the exception
                         ModelState.AddModelError("", $"Request error: {ex.Message}");
-                        return View("Login", "Login");
+                        return View("Login", new LoginModel());
                     }
                 }
             }
