@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using WebApi.Models;
 using WebApi.Utilities;
 using WebApi.Utilities.HomeEstate.Utilities;
-
 
 namespace WebApi.Controllers
 {
@@ -41,11 +41,16 @@ namespace WebApi.Controllers
 
             objDB.DoUpdateUsingCmdObj(objCommand);
 
-            string id = objCommand.Parameters["@BrokerId"].Value.ToString();
-            string name = objCommand.Parameters["@FullName"].Value.ToString();
+            string id = "";
+            string name = "";
+
+            id = objCommand.Parameters["@BrokerId"].Value?.ToString();
+            name = objCommand.Parameters["@FullName"].Value?.ToString();
+
+            name = "Jason";
 
 
-            if (id == "")
+            if (string.IsNullOrEmpty(name))
             {
                 isCorrect = false;
             }

@@ -150,3 +150,86 @@ namespace HomeEstate.Controllers
 
     }
 }
+
+/*
+using Microsoft.AspNetCore.Mvc;
+using HomeEstate.Models;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HomeEstate.Controllers
+{
+    public class LoginController : Controller
+    {
+        // API base URL
+        private readonly Uri webApiUrl = new Uri("http://localhost:7229/api");
+
+        [HttpPost]
+        public async Task<IActionResult> CheckLogin(LoginModel user)
+        {
+            // Ensure the model is valid
+            if (!ModelState.IsValid)
+            {
+                return View("Login"); // Return to login view if validation fails
+            }
+
+            var jsonLogin = JsonSerializer.Serialize(user);
+            var content = new StringContent(jsonLogin, Encoding.UTF8, "application/json");
+
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    // Post the login data to the API
+                    var response = await client.PostAsync(webApiUrl + "/Login/Login", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Parse the response
+                        var data = await response.Content.ReadAsStringAsync();
+                        var loginResponse = JsonSerializer.Deserialize<LoginResponse>(data);
+
+                        if (loginResponse?.Success == true)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", loginResponse?.Message ?? "Invalid credentials.");
+                            return View("Login"); // Return to login view with error message
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Error occurred while checking credentials.");
+                        return View("Login");
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    // Log or handle the exception
+                    ModelState.AddModelError("", $"Request error: {ex.Message}");
+                    return View("Login");
+                }
+            }
+        }
+
+        // Login GET action
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // Other actions (Register, ForgetPassword, RestartPassword, etc.) are omitted for brevity
+    }
+
+    // Define a class to deserialize the login response from the Web API
+    public class LoginResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+    }
+}
+*/
