@@ -10,7 +10,7 @@ namespace HomeEstate.Controllers
     public class LoginController : Controller
     {
         Uri address = new Uri("https://cis-iis2.temple.edu/Fall2024/cis3342_tun52511/TermProject/api");
-        Uri webApiUrl = new Uri("http://localhost:7229/api");
+        Uri webApiUrl = new Uri("https://localhost:7229/api");
 
 
         [HttpPost]
