@@ -89,7 +89,7 @@ namespace HomeEstate.Controllers
                 return View("~/Views/Home/Dashboard.cshtml");
                 //return View("Dashboard");
             }
-            return View();
+            return View("Login");
         }
 
         public IActionResult Login()
