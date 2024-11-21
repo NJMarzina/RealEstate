@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HomeEstate.Models
+namespace HomeLibrary
 {
-    public class RegisterModel
+    public class BrokerProfile
     {
+
         public int BrokerId { get; set; }
 
         [Required]
@@ -30,25 +31,14 @@ namespace HomeEstate.Models
         [StringLength(50)]
         public string AddressNumber { get; set; }
 
-
-
-        // Broker Profile Fields
-        [StringLength(50)]
+        // BrokerProfile fields
         public string WorkAddressName { get; set; }
-
-        [StringLength(50)]
         public string WorkAddressNumber { get; set; }
-
         [EmailAddress]
-        [StringLength(50)]
         public string WorkEmail { get; set; }
-
-        [StringLength(50)]
         public string RealEstateCompany { get; set; }
-
-        [Phone]
-        [StringLength(50)]
         public string CompanyPhone { get; set; }
+
 
 
     }

@@ -2,8 +2,8 @@
 {
     public class Home
     {
-        public int Home_ID { get; set; }
-        public int Profile_ID { get; set; }
+        public int HomeID { get; set; }
+        public int ProfileID { get; set; }
         public string? AddressNumber { get; set; }
         public string? AddressName { get; set; }
         public string? AddressCity { get; set; }

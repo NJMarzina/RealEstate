@@ -1,0 +1,12 @@
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\bin\Debug\net8.0\HomeLibrary.deps.json
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\bin\Debug\net8.0\HomeLibrary.dll
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\bin\Debug\net8.0\HomeLibrary.pdb
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\HomeLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\HomeLibrary.AssemblyInfoInputs.cache
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\HomeLibrary.AssemblyInfo.cs
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\HomeLibrary.csproj.CoreCompileInputs.cache
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\HomeLibrary.sourcelink.json
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\HomeLibrary.dll
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\refint\HomeLibrary.dll
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\HomeLibrary.pdb
+C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\ref\HomeLibrary.dll

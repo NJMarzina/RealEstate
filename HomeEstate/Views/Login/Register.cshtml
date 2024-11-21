@@ -2,7 +2,7 @@
 
 <h2>Register</h2>
 
-<form asp-action="Registers" method="post">
+<form asp-controller="Login"  asp-action="Registers" method="post">
     <div class="form-group">
         <label asp-for="UserName" class="control-label"></label>
         <input asp-for="UserName" class="form-control" type="text" />
@@ -39,7 +39,39 @@
         <span asp-validation-for="AddressNumber" class="text-danger"></span>
     </div>
 
-    
+    <div class="form-group">
+        <label asp-for="WorkAddressName" class="control-label"></label>
+        <input asp-for="WorkAddressName" class="form-control" type="text" />
+        <span asp-validation-for="WorkAddressName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="WorkAddressNumber" class="control-label"></label>
+        <input asp-for="WorkAddressNumber" class="form-control" type="text" />
+        <span asp-validation-for="WorkAddressNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="WorkEmail" class="control-label"></label>
+        <input asp-for="WorkEmail" class="form-control" type="email" />
+        <span asp-validation-for="WorkEmail" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RealEstateCompany" class="control-label"></label>
+        <input asp-for="RealEstateCompany" class="form-control" type="text" />
+        <span asp-validation-for="RealEstateCompany" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CompanyPhone" class="control-label"></label>
+        <input asp-for="CompanyPhone" class="form-control" type="text" />
+        <span asp-validation-for="CompanyPhone" class="text-danger"></span>
+    </div>
+
+
+
+
 
     <button type="submit" class="btn btn-primary">Register</button>
 </form>

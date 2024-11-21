@@ -14,7 +14,7 @@ using System.Net;
 using Newtonsoft.Json.Converters;
 using Nancy;
 using Nancy.Json;
-
+using HomeLibrary;
 
 namespace HomeEstate.Controllers
 {
@@ -32,6 +32,7 @@ namespace HomeEstate.Controllers
        // HomeEstate.Controllers.HomeController.Dashboard() in HomeController.cs
         public IActionResult Dashboard()
         {
+            
             String webApiUrl = "https://localhost:7285/api/Home/GetHomeData";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
             request.Method = "GET";

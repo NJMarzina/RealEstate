@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 
 using System.Runtime.Serialization.Json;
 using Newtonsoft.Json.Converters;
+using HomeLibrary;
 
 
 namespace HomeEstate.Controllers
@@ -51,25 +52,19 @@ namespace HomeEstate.Controllers
 
             JavaScriptSerializer js = new JavaScriptSerializer();
             var jsonUser = js.Serialize(user);
-
             //try
             //{
-
                 // Send the Customer object to the Web API that will be used to store a new customer record in the database.
-
                 // Setup an HTTP POST Web Request and get the HTTP Web Response from the server.
-
                 WebRequest request = (HttpWebRequest)WebRequest.Create("https://localhost:7285/api/Login/CheckLogin");    //was webApiUrl + "/CheckLogin"
                 request.Method = "POST";
                 request.ContentLength = jsonUser.Length;
                 request.ContentType = "application/json";
-
                 // Write the JSON data to the Web Request
                 StreamWriter writer = new StreamWriter(request.GetRequestStream());
                 writer.Write(jsonUser);
                 writer.Flush();
                 writer.Close();
-
                 // Read the data from the Web Response, which requires working with streams.
                 WebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream theDataStream = response.GetResponseStream();
@@ -78,12 +73,10 @@ namespace HomeEstate.Controllers
                 reader.Close();
                 response.Close();
             //}
-
             //catch (Exception ex)
             //{ 
             //    return View();
             //}
-
             if (data=="true")
             {
                 return View("~/Views/Home/Dashboard.cshtml");
@@ -135,6 +128,7 @@ namespace HomeEstate.Controllers
 
 
         // Register POST action
+        [HttpPost]
         public IActionResult Registers(RegisterModel model)
         {
             RegisterModel Broker = new RegisterModel();
@@ -144,18 +138,34 @@ namespace HomeEstate.Controllers
             Broker.HomeEmail = model.HomeEmail;
             Broker.AddressName = model.AddressName;
             Broker.AddressNumber = model.AddressNumber;
+            Broker.WorkAddressNumber = model.WorkAddressNumber;
+            Broker.WorkAddressName=model.WorkAddressName;
+            Broker.WorkEmail=model.WorkEmail;
+            Broker.RealEstateCompany = model.RealEstateCompany;
+            Broker.CompanyPhone=model.CompanyPhone;
             JavaScriptSerializer js = new JavaScriptSerializer();
             String ApiUrl = "https://localhost:7285/api/Home/AddBroker";
             String jsonCustomer = js.Serialize(Broker);
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ApiUrl);
             request.Method = "POST";
-            request.ContentLength = jsonCustomer.Length;
 
             request.ContentType = "application/json";
             StreamWriter writer = new StreamWriter(request.GetRequestStream());
             writer.Write(jsonCustomer);
             writer.Flush();
             writer.Close();
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            Stream theDataStream = response.GetResponseStream();
+
+            StreamReader reader = new StreamReader(theDataStream);
+
+            String data = reader.ReadToEnd();
+
+            reader.Close();
+
+            response.Close();
             if (ModelState.IsValid)
             {
                 TempData["Message"] = "Registration successful!";

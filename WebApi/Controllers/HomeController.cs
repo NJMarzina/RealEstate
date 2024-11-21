@@ -4,7 +4,7 @@ using System.Data;
 using WebApi.Models;
 using WebApi.Utilities;
 using WebApi.Utilities.HomeEstate.Utilities;
-
+using HomeLibrary;
 
 
 namespace WebApi.Controllers
@@ -20,7 +20,7 @@ namespace WebApi.Controllers
             SqlCommand objCommand = new SqlCommand();
             SqlCommand objCommandProfile = new SqlCommand();
 
-            string SQL = "SELECT Address_Number, Address_Name, AddressCity, AddressState, AddressZip, Property_Type ,Year_Build, AskingPrice, Status FROM Home";
+            string SQL = "SELECT Home_ID,Address_Number, Address_Name, AddressCity, AddressState, AddressZip, Property_Type ,Year_Build, AskingPrice, Status FROM Home";
             DataSet ds = objDB.GetDataSet(SQL);
 
             List<HomeModel> homes = new List<HomeModel>();
@@ -29,6 +29,7 @@ namespace WebApi.Controllers
             {
                 homes.Add(new HomeModel
                 {
+                    homeId = Convert.ToInt32(row["Home_ID"].ToString()),
                     AddressNumber = row["Address_Number"].ToString(),
                     AddressName = row["Address_Name"].ToString(),
                     AddressCity = row["AddressCity"].ToString(),
@@ -44,13 +45,17 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("AddBroker")]
-        public bool AddBroker([FromBody] BrokerModel broker)
+        public bool AddBroker([FromBody]  BrokerProfile Profile)
         {
             String Broker = "1";
-            if (broker != null)
+            if (Profile != null)
             {
-                DBConnect objDB = new DBConnect();
+                DBConnect objDB = new DBConnect();              
                 SqlCommand objCommandProfile = new SqlCommand();
+
+                DBConnect ProfileDB = new DBConnect();
+                SqlCommand objProfileUpdate = new SqlCommand();
+
 
                 SqlCommand objCommand = new SqlCommand();
                 objCommand.CommandType = CommandType.StoredProcedure;
@@ -60,31 +65,59 @@ namespace WebApi.Controllers
                 parameter.Direction = ParameterDirection.ReturnValue;
                 objCommand.Parameters.Add(parameter);
 
-                parameter = new SqlParameter("@Username", broker.UserName);
+                parameter = new SqlParameter("@Username", Profile.UserName);
                 objCommand.Parameters.Add(parameter);
 
-                parameter = new SqlParameter("@UserPassword", broker.UserPassword);
+                parameter = new SqlParameter("@UserPassword", Profile.UserPassword);
                 objCommand.Parameters.Add(parameter);
 
-                parameter = new SqlParameter("@FullName", broker.FullName);
+                parameter = new SqlParameter("@FullName", Profile.FullName);
                 objCommand.Parameters.Add(parameter);
 
-                parameter = new SqlParameter("@HomeEmail", broker.HomeEmail);
+                parameter = new SqlParameter("@HomeEmail", Profile.HomeEmail);
                 objCommand.Parameters.Add(parameter);
-                parameter = new SqlParameter("@AddressName", broker.AddressName);
+                parameter = new SqlParameter("@AddressName", Profile.AddressName);
                 objCommand.Parameters.Add(parameter);
-                parameter = new SqlParameter("@AddressNumber", broker.AddressNumber);
+                parameter = new SqlParameter("@AddressNumber", Profile.AddressNumber);
                 objCommand.Parameters.Add(parameter);
                 
                 
                 int retVal = objDB.DoUpdate(objCommand);
-               
-                broker.BrokerId = Convert.ToInt32(objCommand.Parameters["returnValue"].Value.ToString());
+
+                Profile.BrokerId = Convert.ToInt32(objCommand.Parameters["returnValue"].Value.ToString());
                 objCommandProfile.CommandType = CommandType.StoredProcedure;
                 objCommandProfile.CommandText = "AddBrokerID";
-                SqlParameter profileParameter = new SqlParameter("@BrokerId", broker.BrokerId);
+                SqlParameter profileParameter = new SqlParameter("@BrokerId", Profile.BrokerId);
                 objCommandProfile.Parameters.Add(profileParameter);
                 objDB.DoUpdate(objCommandProfile);
+
+
+                objProfileUpdate.CommandText = "UpdateBrokerProfile";
+                objProfileUpdate.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter updateparameter = new SqlParameter("@BrokerId", Profile.BrokerId);
+                objProfileUpdate.Parameters.Add(updateparameter);
+
+                updateparameter = new SqlParameter("@WorkAddressName", Profile.WorkAddressName);
+                objProfileUpdate.Parameters.Add(updateparameter);
+
+                updateparameter = new SqlParameter("@WorkAddressNumber", Profile.WorkAddressNumber);
+                objProfileUpdate.Parameters.Add(updateparameter);
+
+
+                updateparameter = new SqlParameter("@WorkEmail",Profile.WorkEmail);
+                objProfileUpdate.Parameters.Add(updateparameter);
+
+                updateparameter = new SqlParameter("@RealEstateCompany",Profile.RealEstateCompany);
+                objProfileUpdate.Parameters.Add(updateparameter);
+
+
+                updateparameter = new SqlParameter("@CompanyPhone", Profile.CompanyPhone);
+                objProfileUpdate.Parameters.Add(updateparameter);
+
+                ProfileDB.DoUpdate(objProfileUpdate);
+
+
                 if (retVal > 0)
                     return true;
                 else

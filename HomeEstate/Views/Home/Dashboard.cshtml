@@ -22,6 +22,8 @@
                                     <strong>Property Type:</strong> @home.PropertyType<br>
                                     <strong>Year Built:</strong> @home.YearBuild<br>
                                     <strong>Asking Price:</strong> @home.AskingPrice?.ToString("C")<br>
+                                    <strong>Home ID:</strong> @home.HomeID
+                                    <a href="@Url.Action("Details", "Home", new { id = home.HomeID })" class="btn btn-primary">View Details</a>
                                 </p>
                             </div>
                         </div>
