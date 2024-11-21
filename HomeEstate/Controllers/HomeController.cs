@@ -48,7 +48,6 @@ namespace HomeEstate.Controllers
             response.Close();
 
 
-            
 
 
 
