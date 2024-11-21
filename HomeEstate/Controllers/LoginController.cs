@@ -3,64 +3,96 @@ using HomeEstate.Models;
 using System.Net;
 using System.Text.Json;
 using System.Text;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.IO;
+using System.Data;
+
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using System.Web.Script.Serialization;  // needed for JSON serializers
+using System.IO;                        // needed for Stream and Stream Reader
+using System.Net;                       // needed for the Web Request
+using System.Data;                      // needed for DataSet class
+
+using Newtonsoft.Json;
+
+using System.Runtime.Serialization.Json;
+using Newtonsoft.Json.Converters;
 
 
 namespace HomeEstate.Controllers
 {
     public class LoginController : Controller
     {
-        Uri address = new Uri("https://cis-iis2.temple.edu/Fall2024/cis3342_tun52511/TermProject/api");
-        Uri webApiUrl = new Uri("https://localhost:7229/api");
+        Uri address = new Uri("https://cis-iis2.temple.edu/Fall2024/cis3342_tun52511/TermProject/api/Login/");
+        String webApiUrl = "http://localhost:7229/api/Login/";
 
 
         [HttpPost]
-        public async Task<IActionResult> CheckLogin(LoginModel user)
+        public IActionResult CheckLogin(LoginModel user)
         {
-            if (ModelState.IsValid)
+            /*
+            WebRequest request = WebRequest.Create(webApiUrl + "CheckLogin/");
+            WebResponse response = request.GetResponse();
+
+            Stream theDataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(theDataStream);
+            String data = reader.ReadToEnd();
+            reader.Close();
+            response.Close();
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            bool isTrue = js.Deserialize<bool>(data);
+            */
+
+            LoginModel user2 = new LoginModel();
+            user2.Username = "Jason";
+            user2.Password = "123";
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            var jsonUser = js.Serialize(user);
+
+            //try
+            //{
+
+                // Send the Customer object to the Web API that will be used to store a new customer record in the database.
+
+                // Setup an HTTP POST Web Request and get the HTTP Web Response from the server.
+
+                WebRequest request = WebRequest.Create(webApiUrl + "CheckLogin");
+                request.Method = "POST";
+                request.ContentLength = jsonUser.Length;
+                request.ContentType = "application/json";
+
+                // Write the JSON data to the Web Request
+                StreamWriter writer = new StreamWriter(request.GetRequestStream());
+                writer.Write(jsonUser);
+                writer.Flush();
+                writer.Close();
+
+                // Read the data from the Web Response, which requires working with streams.
+                WebResponse response = request.GetResponse();
+                Stream theDataStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(theDataStream);
+                String data = reader.ReadToEnd();
+                reader.Close();
+                response.Close();
+            //}
+
+            //catch (Exception ex)
+            //{ 
+            //    return View();
+            //}
+
+            if(data=="true")
             {
-                var jsonLogin = JsonSerializer.Serialize(user);
-                var content = new StringContent(jsonLogin, Encoding.UTF8, "application/json");
-
-                using (var client = new HttpClient())
-                {
-                    try
-                    {
-                        // Use the correct API URL
-                        var response = await client.PostAsync(webApiUrl + "/Login/Login", content);
-
-                        if (response.IsSuccessStatusCode)
-                        {
-                            // Parse the response as a boolean (true or false)
-                            var data = await response.Content.ReadAsStringAsync();
-                            bool isCorrect = bool.Parse(data);
-
-                            if (isCorrect)
-                            {
-                                //return RedirectToAction("Index", "Home");
-                                return View("Dashboard");
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "Invalid credentials");
-                                return View("Login", user);
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "Error occurred while checking credentials.");
-                            return View("Login", new LoginModel());
-                        }
-                    }
-                    catch (HttpRequestException ex)
-                    {
-                        // Log or handle the exception
-                        ModelState.AddModelError("", $"Request error: {ex.Message}");
-                        return View("Login", new LoginModel());
-                    }
-                }
+                return View("~/Views/Home/Dashboard.cshtml");
             }
-
-            return View("Login", user);
+            return View("~/Views/Home/Dashboard.cshtml");
         }
 
         public IActionResult Login()
