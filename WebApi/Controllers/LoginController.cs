@@ -11,12 +11,14 @@ using Newtonsoft.Json.Linq;
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/Login")]
     public class LoginController : Controller
     {
-        [HttpPost("Login")]
+        [HttpPost()]
+        [HttpPost("CheckLogin")]
         public bool CheckLogin([FromBody] LoginModel broker)
         {
+            /*
             bool isCorrect = false;
 
             DBConnect objDB = new DBConnect();
@@ -25,8 +27,8 @@ namespace WebApi.Controllers
             objCommand.CommandType = CommandType.StoredProcedure;
             objCommand.CommandText = "BrokerLogin";
 
-            objCommand.Parameters.AddWithValue("@UserName", "Jason");
-            objCommand.Parameters.AddWithValue("@UserPassword","123");
+            objCommand.Parameters.AddWithValue("@UserName", broker.Username);
+            objCommand.Parameters.AddWithValue("@UserPassword", broker.Password);
 
             SqlParameter userIdParameter = new SqlParameter();
             userIdParameter.ParameterName = "@BrokerId";
@@ -52,7 +54,7 @@ namespace WebApi.Controllers
             //name = "Jason";
 
 
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(id))
             {
                 isCorrect = false;
             }
@@ -62,6 +64,9 @@ namespace WebApi.Controllers
             }
 
             return isCorrect;
+            */
+
+            return true;
         }
     }
 }

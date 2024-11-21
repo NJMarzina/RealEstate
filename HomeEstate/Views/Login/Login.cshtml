@@ -6,7 +6,7 @@
 
 <h2>Login</h2>
 
-<form asp-action="CheckLogin" method="post">
+<form asp-controller="Login" asp-action="CheckLogin" method="post">
     <div class="form-group">
         <label asp-for="Username" class="form-label"></label>
         <input asp-for="Username" class="form-control" />
