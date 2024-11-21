@@ -20,7 +20,7 @@ namespace WebApi.Controllers
             DBConnect objDB = new DBConnect();
             SqlCommand objCommand = new SqlCommand();
 
-            string SQL = "SELECT Address_Number, Address_Name, AddressCity, AddressState, AddressZip, Property_Type, Heating, Cooling, Year_Build, Garage, Utilities, Description, AskingPrice, Status FROM Home";
+            string SQL = "SELECT Address_Number, Address_Name, AddressCity, AddressState, AddressZip, Property_Type ,Year_Build, AskingPrice, Status FROM Home";
             DataSet ds = objDB.GetDataSet(SQL);
 
             List<HomeModel> homes = new List<HomeModel>();
@@ -34,15 +34,10 @@ namespace WebApi.Controllers
                     AddressCity = row["AddressCity"].ToString(),
                     AddressState = row["AddressState"].ToString(),
                     AddressZip = row["AddressZip"].ToString(),
-                    PropertyType = row["Property_Type"].ToString(),
-                    Heating = row["Heating"].ToString(),
-                    Cooling = row["Cooling"].ToString(),
-                    YearBuild = Convert.ToInt32(row["Year_Build"]),
-                    Garage = row["Garage"].ToString(),
-                    Utilities = row["Utilities"].ToString(),
-                    Description = row["Description"].ToString(),
+                    PropertyType = row["Property_Type"].ToString(),             
+                    YearBuild = Convert.ToInt32(row["Year_Build"]),                
                     AskingPrice = Convert.ToDecimal(row["AskingPrice"]),
-                    Status = row["Status"].ToString(),
+                   
                 });
             }
 

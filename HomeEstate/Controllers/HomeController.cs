@@ -5,12 +5,23 @@ using Microsoft.Data.SqlClient;
 using RealEstate.Models;
 using System.Data;
 using System.Diagnostics;
+using System.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Text.Json;
+using System.Net;
+using Newtonsoft.Json.Converters;
+
 
 
 namespace HomeEstate.Controllers
 {
     public class HomeController : Controller
     {
+
+        Uri address = new Uri("https://cis-iis2.temple.edu/Fall2024/cis3342_tun52511/TermProject/api");
+        Uri webApiUrl = new Uri("https://localhost:7229/api");
         /* private readonly ILogger<HomeController> _logger;
 
          public HomeController(ILogger<HomeController> logger)
@@ -19,38 +30,31 @@ namespace HomeEstate.Controllers
          }*/
         public IActionResult Dashboard()
         {
-            DBConnect objDB = new DBConnect();
-            DataSet ds = objDB.GetDataSet(@"SELECT Address_Number, Address_Name, AddressCity, AddressState, AddressZip, 
-                                           Property_Type, Heating, Cooling, Year_Build, Garage, 
-                                           Utilities, Description, AskingPrice, Status 
-                                    FROM Home");
-
             List<Home> homes = new List<Home>();
+          
+            
+            Uri webApiUrl = new Uri("https://localhost:7229/api/Home/GetHomeData"); 
+            WebRequest request = WebRequest.Create(webApiUrl);
+            WebResponse response = request.GetResponse();
 
-            foreach (DataRow record in ds.Tables[0].Rows)
-            {
-                var home = new Home
-                {
-                    Address_Number = record["Address_Number"].ToString(),
-                    Address_Name = record["Address_Name"].ToString(),
-                    AddressCity = record["AddressCity"].ToString(),
-                    AddressState = record["AddressState"].ToString(),
-                    AddressZip = record["AddressZip"].ToString(),
-                    Property_Type = record["Property_Type"].ToString(),
-                     Heating = record["Heating"].ToString(),
-                    Cooling = record["Cooling"].ToString(),
-                    Year_Build = Convert.ToInt32(record["Year_Build"].ToString()),
-                    Garage = record["Garage"].ToString(),
-                    Utilities = record["Utilities"].ToString(),
-                    Description = record["Description"].ToString(),
-                    AskingPrice = Convert.ToInt32(record["AskingPrice"].ToString()),
-                    Status = record["Status"].ToString()
-                };
+            Stream theDataStream = response.GetResponseStream();
 
-                homes.Add(home);
-            }
+            StreamReader reader = new StreamReader(theDataStream);
 
-            ViewBag.HomeList = homes;  // Using ViewBag to pass data to the view
+            String data = reader.ReadToEnd();
+
+            reader.Close();
+
+            response.Close();
+
+
+            
+
+
+
+
+
+
 
             return View("Dashboard");
         }
