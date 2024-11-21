@@ -135,19 +135,36 @@ namespace HomeEstate.Controllers
 
 
         // Register POST action
-        [HttpPost]
-        public IActionResult Register(RegisterModel model)
+        public IActionResult Registers(RegisterModel model)
         {
+            RegisterModel Broker = new RegisterModel();
+            Broker.UserName = model.UserName;
+            Broker.UserPassword = model.UserPassword;
+            Broker.FullName = model.FullName;
+            Broker.HomeEmail = model.HomeEmail;
+            Broker.AddressName = model.AddressName;
+            Broker.AddressNumber = model.AddressNumber;
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            String ApiUrl = "https://localhost:7285/api/Home/AddBroker";
+            String jsonCustomer = js.Serialize(Broker);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
+            request.Method = "POST";
+            request.ContentLength = jsonCustomer.Length;
+
+            request.ContentType = "application/json";
+            StreamWriter writer = new StreamWriter(request.GetRequestStream());
+            writer.Write(jsonCustomer);
+            writer.Flush();
+            writer.Close();
             if (ModelState.IsValid)
             {
                 TempData["Message"] = "Registration successful!";
                 return RedirectToAction("Login");
             }
-
             return View(model);
         }
 
-            
+
         [HttpPost]
         public IActionResult ForgetPassword(ResetPasswordModel model)
         {

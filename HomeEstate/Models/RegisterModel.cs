@@ -4,33 +4,30 @@ namespace HomeEstate.Models
 {
     public class RegisterModel
     {
-        [Required(ErrorMessage = "Username is required.")]
-        public string Username { get; set; }
+        public int BrokerId { get; set; }
 
-        [Required(ErrorMessage = "Password is required.")]
+        [Required]
+        [StringLength(50)]
+        public string UserName { get; set; }
+
+        [Required]
+        [StringLength(50)]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string UserPassword { get; set; }
 
-        [Required(ErrorMessage = "Full name is required.")]
+        [Required]
+        [StringLength(50)]
         public string FullName { get; set; }
 
-        [Required(ErrorMessage = "Email is required.")]
-        [EmailAddress(ErrorMessage = "Invalid email format.")]
+        [Required]
+        [EmailAddress]
+        [StringLength(50)]
         public string HomeEmail { get; set; }
 
-        [Required(ErrorMessage = "Address name is required.")]
+        [StringLength(50)]
         public string AddressName { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Address number must be greater than 0.")]
-        public int AddressNumber { get; set; }
-
-        [Required(ErrorMessage = "Answer to the first security question is required.")]
-        public string SecurityAnswer1 { get; set; }
-
-        [Required(ErrorMessage = "Answer to the second security question is required.")]
-        public string SecurityAnswer2 { get; set; }
-
-        [Required(ErrorMessage = "Answer to the third security question is required.")]
-        public string SecurityAnswer3 { get; set; }
+        [StringLength(50)]
+        public string AddressNumber { get; set; }
     }
 }

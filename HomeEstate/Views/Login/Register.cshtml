@@ -2,17 +2,17 @@
 
 <h2>Register</h2>
 
-<form asp-action="Register" method="post">
+<form asp-action="Registers" method="post">
     <div class="form-group">
-        <label asp-for="Username" class="control-label"></label>
-        <input asp-for="Username" class="form-control" type="text" />
-        <span asp-validation-for="Username" class="text-danger"></span>
+        <label asp-for="UserName" class="control-label"></label>
+        <input asp-for="UserName" class="form-control" type="text" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Password" class="control-label"></label>
-        <input asp-for="Password" class="form-control" type="password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
+        <label asp-for="UserPassword" class="control-label"></label>
+        <input asp-for="UserPassword" class="form-control" type="password" />
+        <span asp-validation-for="UserPassword" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -39,26 +39,7 @@
         <span asp-validation-for="AddressNumber" class="text-danger"></span>
     </div>
 
-    <!-- Security Question 1 -->
-    <div class="form-group">
-        <label>What is your mother's maiden name?</label>
-        <input asp-for="SecurityAnswer1" class="form-control" type="text" />
-        <span asp-validation-for="SecurityAnswer1" class="text-danger"></span>
-    </div>
-
-    <!-- Security Question 2 -->
-    <div class="form-group">
-        <label>What is your favorite color?</label>
-        <input asp-for="SecurityAnswer2" class="form-control" type="text" />
-        <span asp-validation-for="SecurityAnswer2" class="text-danger"></span>
-    </div>
-
-    <!-- Security Question 3 -->
-    <div class="form-group">
-        <label>What country were you born in?</label>
-        <input asp-for="SecurityAnswer3" class="form-control" type="text" />
-        <span asp-validation-for="SecurityAnswer3" class="text-danger"></span>
-    </div>
+    
 
     <button type="submit" class="btn btn-primary">Register</button>
 </form>
