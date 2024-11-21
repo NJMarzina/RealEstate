@@ -12,7 +12,8 @@ using System.IO;
 using System.Text.Json;
 using System.Net;
 using Newtonsoft.Json.Converters;
-
+using Nancy;
+using Nancy.Json;
 
 
 namespace HomeEstate.Controllers
@@ -22,44 +23,31 @@ namespace HomeEstate.Controllers
 
         Uri address = new Uri("https://cis-iis2.temple.edu/Fall2024/cis3342_tun52511/TermProject/api");
         Uri webApiUrl = new Uri("https://localhost:7229/api");
-        /* private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> _logger;
 
          public HomeController(ILogger<HomeController> logger)
          {
              _logger = logger;
-         }*/
+         }
+       // HomeEstate.Controllers.HomeController.Dashboard() in HomeController.cs
         public IActionResult Dashboard()
         {
-            List<Home> homes = new List<Home>();
-          
-            
-            Uri webApiUrl = new Uri("https://localhost:7229/api/Home/GetHomeData"); 
-            WebRequest request = WebRequest.Create(webApiUrl);
-            WebResponse response = request.GetResponse();
-
+            String webApiUrl = "https://localhost:7285/api/Home/GetHomeData";
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        
             Stream theDataStream = response.GetResponseStream();
-
             StreamReader reader = new StreamReader(theDataStream);
-
             String data = reader.ReadToEnd();
-
             reader.Close();
-
             response.Close();
-
-
-
-
-
-
-
-
-
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            List<Home> homes = js.Deserialize<List<Home>>(data);
+            ViewBag.HomeList = homes;
             return View("Dashboard");
         }
-
-
-
         public IActionResult Privacy()
         {
             return View();

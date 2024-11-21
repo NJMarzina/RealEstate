@@ -10,10 +10,7 @@ using System.Web;
 using System.IO;
 using System.Data;
 
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using System.Web.Script.Serialization;  // needed for JSON serializers
+using Nancy.Json;
 using System.IO;                        // needed for Stream and Stream Reader
 using System.Net;                       // needed for the Web Request
 using System.Data;                      // needed for DataSet class

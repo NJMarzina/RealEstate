@@ -5,48 +5,35 @@
 <div class="text-center">
     <h1 class="display-4">Dashboard</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Address Number</th>
-                <th>Address Name</th>
-                <th>Address City</th>
-                <th>Address State</th>
-                <th>Address Zip</th>
-                <th>Property Type</th>
-                <th>Heating</th>
-                <th>Cooling</th>
-                <th>Year Built</th>
-                <th>Garage</th>
-                <th>Utilities</th>
-                <th>Description</th>
-                <th>Asking Price</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="container">
+        <div class="row">
             @if (ViewBag.HomeList != null)
             {
                 foreach (var home in ViewBag.HomeList)
                 {
-                    <tr>
-                        <td>@home.Address_Number</td>
-                        <td>@home.Address_Name</td>
-                        <td>@home.AddressCity</td>
-                        <td>@home.AddressState</td>
-                        <td>@home.AddressZip</td>
-                        <td>@home.Property_Type</td>
-                        <td>@home.Heating</td>
-                        <td>@home.Cooling</td>
-                        <td>@home.Year_Build</td>
-                        <td>@home.Garage</td>
-                        <td>@home.Utilities</td>
-                        <td>@home.Description</td>
-                        <td>@home.AskingPrice?.ToString("C")</td>
-                        <td>@home.Status</td>
-                    </tr>
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Address: @home.AddressNumber @home.AddressName</h5>
+                                <p class="card-text">
+                                    <strong>City:</strong> @home.AddressCity<br>
+                                    <strong>State:</strong> @home.AddressState<br>
+                                    <strong>Zip:</strong> @home.AddressZip<br>
+                                    <strong>Property Type:</strong> @home.PropertyType<br>
+                                    <strong>Year Built:</strong> @home.YearBuild<br>
+                                    <strong>Asking Price:</strong> @home.AskingPrice?.ToString("C")<br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 }
             }
-        </tbody>
-    </table>
+            else
+            {
+                <div class="col-12">
+                    <p>No homes available</p>
+                </div>
+            }
+        </div>
+    </div>
 </div>

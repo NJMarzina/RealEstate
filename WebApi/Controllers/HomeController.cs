@@ -13,7 +13,6 @@ namespace WebApi.Controllers
     [ApiController]
     public class HomeController : Controller
     {
-
         [HttpGet("GetHomeData")]
         public List<HomeModel> GetHomeData()
         {
@@ -36,13 +35,29 @@ namespace WebApi.Controllers
                     AddressZip = row["AddressZip"].ToString(),
                     PropertyType = row["Property_Type"].ToString(),             
                     YearBuild = Convert.ToInt32(row["Year_Build"]),                
-                    AskingPrice = Convert.ToDecimal(row["AskingPrice"]),
-                   
+                    AskingPrice = Convert.ToDecimal(row["AskingPrice"]), 
                 });
             }
 
             return homes;
         }
 
+        [HttpPost("Post")]
+        public bool AddBroker([FromBody] BrokerModel broker)
+        {
+            if (broker != null)
+
+            {
+                DBConnect objDB = new DBConnect();
+
+                SqlCommand objCommand = new SqlCommand();
+                objCommand.CommandType = CommandType.StoredProcedure;
+                objCommand.CommandText = "RegisterBroker";
+
+            }
+            //    return input;
+        }
+    
+    
     }
 }
