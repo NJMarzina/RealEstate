@@ -8,6 +8,13 @@ using WebApi.Utilities.HomeEstate.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.Data.SqlClient;
+
 namespace WebApi.Controllers
 {
     [Produces("application/json")]
@@ -18,7 +25,6 @@ namespace WebApi.Controllers
         [HttpPost("CheckLogin")]
         public bool CheckLogin([FromBody] LoginModel broker)
         {
-            /*
             bool isCorrect = false;
 
             DBConnect objDB = new DBConnect();
@@ -64,9 +70,6 @@ namespace WebApi.Controllers
             }
 
             return isCorrect;
-            */
-
-            return true;
         }
     }
 }

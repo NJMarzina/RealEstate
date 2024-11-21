@@ -26,12 +26,12 @@ namespace HomeEstate.Controllers
     public class LoginController : Controller
     {
         Uri address = new Uri("https://cis-iis2.temple.edu/Fall2024/cis3342_tun52511/TermProject/api/Login/");
-        String webApiUrl = "http://localhost:7229/api/Login/";
-
+        String webApiUrl = "http://localhost:7285/api/Login/";
 
         [HttpPost]
         public IActionResult CheckLogin(LoginModel user)
         {
+            String webApiUrl = "https://localhost:7229/api/Login/CheckLogin";
             /*
             WebRequest request = WebRequest.Create(webApiUrl + "CheckLogin/");
             WebResponse response = request.GetResponse();
@@ -46,9 +46,8 @@ namespace HomeEstate.Controllers
             bool isTrue = js.Deserialize<bool>(data);
             */
 
-            LoginModel user2 = new LoginModel();
-            user2.Username = "Jason";
-            user2.Password = "123";
+            string username = user.Username;
+            string password = user.Password;
 
             JavaScriptSerializer js = new JavaScriptSerializer();
             var jsonUser = js.Serialize(user);
@@ -60,7 +59,7 @@ namespace HomeEstate.Controllers
 
                 // Setup an HTTP POST Web Request and get the HTTP Web Response from the server.
 
-                WebRequest request = WebRequest.Create(webApiUrl + "CheckLogin");
+                WebRequest request = (HttpWebRequest)WebRequest.Create("https://localhost:7285/api/Login/CheckLogin");    //was webApiUrl + "/CheckLogin"
                 request.Method = "POST";
                 request.ContentLength = jsonUser.Length;
                 request.ContentType = "application/json";
@@ -72,7 +71,7 @@ namespace HomeEstate.Controllers
                 writer.Close();
 
                 // Read the data from the Web Response, which requires working with streams.
-                WebResponse response = request.GetResponse();
+                WebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream theDataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(theDataStream);
                 String data = reader.ReadToEnd();
@@ -85,11 +84,12 @@ namespace HomeEstate.Controllers
             //    return View();
             //}
 
-            if(data=="true")
+            if (data=="true")
             {
                 return View("~/Views/Home/Dashboard.cshtml");
+                //return View("Dashboard");
             }
-            return View("~/Views/Home/Dashboard.cshtml");
+            return View();
         }
 
         public IActionResult Login()
