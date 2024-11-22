@@ -71,5 +71,39 @@ namespace WebApi.Controllers
 
             return isCorrect;
         }
+
+        [HttpGet("GetBrokerIDByUsername/{username}")]  // GET api/CustomerService/GetCustomerByName/
+        public int GetBrokerIDByUsername(String username)
+        {
+            int brokerID = 0;
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
+
+            objCommand.CommandType = CommandType.StoredProcedure;
+            objCommand.CommandText = "GetBrokerIDByUsername";   //create this stored procedure that gets the broker id for the username thats logging in (or find it)
+            objCommand.Parameters.AddWithValue("@username", username);
+            DataSet myDS = objDB.GetDataSetUsingCmdObj(objCommand);
+
+            /*
+            if (myDS.Tables[0].Rows.Count > 0)
+            {
+                cust = new Customer();
+                cust.Name = objDB.GetField("CustomerName", 0).ToString();
+                cust.Address = objDB.GetField("Address", 0).ToString();
+                cust.City = objDB.GetField("City", 0).ToString();
+                cust.State = objDB.GetField("State", 0).ToString();
+                cust.Zip = objDB.GetField("Zip", 0).ToString();
+                cust.Email = objDB.GetField("Email", 0).ToString();
+            }
+            */
+
+            if (myDS.Tables[0].Rows.Count > 0)
+            {
+                brokerID = int.Parse(objDB.GetField("BrokerID", 0).ToString());
+            }
+
+            return brokerID;
+
+        }
     }
 }

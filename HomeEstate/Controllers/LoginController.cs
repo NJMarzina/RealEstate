@@ -20,6 +20,8 @@ using Newtonsoft.Json;
 using System.Runtime.Serialization.Json;
 using Newtonsoft.Json.Converters;
 using HomeLibrary;
+using RealEstate.Models;
+using System.Xml.Linq;
 
 
 namespace HomeEstate.Controllers
@@ -79,6 +81,31 @@ namespace HomeEstate.Controllers
             //}
             if (data=="true")
             {
+                var cookieOptions = new CookieOptions
+                {
+                    Expires = DateTime.Now.AddDays(30),
+                };
+
+                Response.Cookies.Append("Username", user.Username, cookieOptions);
+                Response.Cookies.Append("Password", user.Password, cookieOptions);
+
+                webApiUrl = "https://localhost:7285/api/Login/GetBrokerIDByUsername/";
+                //WebRequest request = WebRequest.Create(webApiUrl + "GetCustomerByName/" + txtName.Text);
+                HttpWebRequest requestBrokerID = (HttpWebRequest)WebRequest.Create(webApiUrl + user.Username);
+                requestBrokerID.Method = "GET";
+                requestBrokerID.ContentType = "application/json";
+                HttpWebResponse responseBrokerID = (HttpWebResponse)requestBrokerID.GetResponse();
+
+                Stream theBrokerIDDataStream = responseBrokerID.GetResponseStream();
+                StreamReader readerBrokerID = new StreamReader(theBrokerIDDataStream);
+                String brokerIDData = readerBrokerID.ReadToEnd();
+                readerBrokerID.Close();
+                responseBrokerID.Close();
+                JavaScriptSerializer jsBrokerID = new JavaScriptSerializer();
+                int brokerID = jsBrokerID.Deserialize<int>(brokerIDData);
+
+                Response.Cookies.Append("BrokerID", brokerID.ToString(), cookieOptions);
+
                 return View("~/Views/Home/Dashboard.cshtml");
                 //return View("Dashboard");
             }
