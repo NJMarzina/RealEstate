@@ -25,20 +25,20 @@ namespace HomeEstate.Controllers
         Uri webApiUrl = new Uri("https://localhost:7229/api");
         private readonly ILogger<HomeController> _logger;
 
-         public HomeController(ILogger<HomeController> logger)
-         {
-             _logger = logger;
-         }
-       // HomeEstate.Controllers.HomeController.Dashboard() in HomeController.cs
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+        // HomeEstate.Controllers.HomeController.Dashboard() in HomeController.cs
         public IActionResult Dashboard()
         {
-            
+
             String webApiUrl = "https://localhost:7285/api/Home/GetHomeData";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
             request.Method = "GET";
             request.ContentType = "application/json";
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        
+
             Stream theDataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(theDataStream);
             String data = reader.ReadToEnd();
@@ -59,5 +59,37 @@ namespace HomeEstate.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    }
+
+
+        [HttpGet]
+        public IActionResult HomeDetails(int id)
+        {
+           
+                String webApiUrl = "https://localhost:7285/api/Home/GetHomeDetails/" + id;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
+                request.Method = "GET";
+                request.ContentType = "application/json";
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream theDataStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(theDataStream);
+                String data = reader.ReadToEnd();
+                reader.Close();
+                response.Close();
+
+                JavaScriptSerializer js = new JavaScriptSerializer();
+                HomeDetails home = js.Deserialize<HomeDetails>(data);
+
+                if (home == null)
+                {
+                    return NotFound("Home details not found.");
+                }
+
+                return View("HomeDetails", home);
+            }
+            
+        }
+
+
+    
 }
