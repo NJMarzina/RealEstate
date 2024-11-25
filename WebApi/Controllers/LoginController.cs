@@ -99,7 +99,7 @@ namespace WebApi.Controllers
 
             if (myDS.Tables[0].Rows.Count > 0)
             {
-                brokerID = int.Parse(objDB.GetField("BrokerID", 0).ToString());
+                brokerID = int.Parse(objDB.GetField("BrokerId", 0).ToString());
             }
 
             return brokerID;

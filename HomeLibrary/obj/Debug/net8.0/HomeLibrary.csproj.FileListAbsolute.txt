@@ -10,3 +10,15 @@ C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\HomeLi
 C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\refint\HomeLibrary.dll
 C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\HomeLibrary.pdb
 C:\Users\Jenny\Desktop\Cis3342-Fall\Project4\HomeLibrary\obj\Debug\net8.0\ref\HomeLibrary.dll
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\bin\Debug\net8.0\HomeLibrary.deps.json
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\bin\Debug\net8.0\HomeLibrary.dll
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\bin\Debug\net8.0\HomeLibrary.pdb
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\obj\Debug\net8.0\HomeLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\obj\Debug\net8.0\HomeLibrary.AssemblyInfoInputs.cache
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\obj\Debug\net8.0\HomeLibrary.AssemblyInfo.cs
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\obj\Debug\net8.0\HomeLibrary.csproj.CoreCompileInputs.cache
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\obj\Debug\net8.0\HomeLibrary.sourcelink.json
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\obj\Debug\net8.0\HomeLibrary.dll
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\obj\Debug\net8.0\refint\HomeLibrary.dll
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\obj\Debug\net8.0\HomeLibrary.pdb
+C:\Users\njmar\Source\Repos\RealEstate\HomeLibrary\obj\Debug\net8.0\ref\HomeLibrary.dll

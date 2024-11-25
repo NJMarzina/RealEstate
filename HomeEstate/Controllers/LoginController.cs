@@ -105,6 +105,7 @@ namespace HomeEstate.Controllers
                 int brokerID = jsBrokerID.Deserialize<int>(brokerIDData);
 
                 Response.Cookies.Append("BrokerID", brokerID.ToString(), cookieOptions);
+                Response.Cookies.Append("Username", user.Username, cookieOptions);
 
                 return View("~/Views/Home/Dashboard.cshtml");
                 //return View("Dashboard");
