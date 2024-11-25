@@ -5,6 +5,9 @@ using WebApi.Models;
 using WebApi.Utilities;
 using WebApi.Utilities.HomeEstate.Utilities;
 using HomeLibrary;
+using System.Data.Common;
+using System.Data.SqlTypes;
+using System.Diagnostics;
 
 
 namespace WebApi.Controllers
@@ -205,6 +208,54 @@ namespace WebApi.Controllers
             }
                 return home;
         }
+       
+        [HttpPost("AddHomeShowing")]
+        public HomeShowingModel AddHomeShowing([FromBody] HomeShowingModel showing)
+        {
+            SqlCommand ShowingCommand = new SqlCommand();
+            DBConnect dbConnection = new DBConnect();
+            ShowingCommand.CommandText = "AddHomeShowing";
+            ShowingCommand.CommandType = CommandType.StoredProcedure;
+            if (showing == null)
+            {
+                HomeShowingModel showing1 = new HomeShowingModel();
+                showing = showing1;
+            }  
+                ShowingCommand.Parameters.AddWithValue("@HomeId", showing.HomeId);
+                ShowingCommand.Parameters.AddWithValue("@ShowingDate", showing.ShowingDate);
+                ShowingCommand.Parameters.AddWithValue("@BuyerName", showing.BuyerName);
+                ShowingCommand.Parameters.AddWithValue("@BuyerEmail", showing.BuyerEmail);
+                ShowingCommand.Parameters.AddWithValue("@BuyerPhone", showing.BuyerPhone);
+                dbConnection.DoUpdate(ShowingCommand);
+            return showing;
+        }
+
+        [HttpPost("AddHomeOffer")]
+        public HomeOfferModel AddHomeOffer([FromBody] HomeOfferModel offer)
+        {
+            SqlCommand OfferCommand = new SqlCommand();
+            DBConnect dbConnection = new DBConnect();
+            OfferCommand.CommandText = "AddHomeOffer";
+            OfferCommand.CommandType = CommandType.StoredProcedure;
+            if (offer == null)
+            {
+                HomeOfferModel offer1 = new HomeOfferModel();
+                offer = offer1;
+            }
+            OfferCommand.Parameters.AddWithValue("@OfferName", offer.OfferName);
+            OfferCommand.Parameters.AddWithValue("@OfferEmail", offer.OfferEmail);
+            OfferCommand.Parameters.AddWithValue("@OfferPhone", offer.OfferPhone);
+            OfferCommand.Parameters.AddWithValue("@OfferAmount", offer.OfferAmount);
+            OfferCommand.Parameters.AddWithValue("@HomeId", offer.HomeId);
+            OfferCommand.Parameters.AddWithValue("@SaleType", offer.SaleType);
+            OfferCommand.Parameters.AddWithValue("@Contingencies", offer.Contingencies);
+            OfferCommand.Parameters.AddWithValue("@NeedsToSellHome", offer.NeedsToSellHome);
+            OfferCommand.Parameters.AddWithValue("@PreferredMoveInDate", offer.PreferredMoveInDate);
+            dbConnection.DoUpdate(OfferCommand);
+            return offer;
+        }
+
+
 
         [HttpPost("AddBroker")]
         public bool AddBroker([FromBody]  BrokerProfile Profile)
@@ -217,8 +268,6 @@ namespace WebApi.Controllers
 
                 DBConnect ProfileDB = new DBConnect();
                 SqlCommand objProfileUpdate = new SqlCommand();
-
-
                 SqlCommand objCommand = new SqlCommand();
                 objCommand.CommandType = CommandType.StoredProcedure;
                 objCommand.CommandText = "RegisterBroker";

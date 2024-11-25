@@ -15,6 +15,8 @@ using Newtonsoft.Json.Converters;
 using Nancy;
 using Nancy.Json;
 using HomeLibrary;
+using static System.Net.WebRequestMethods;
+using System.Reflection;
 
 namespace HomeEstate.Controllers
 {
@@ -60,6 +62,107 @@ namespace HomeEstate.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+
+        [HttpGet]
+        public IActionResult Requests(int HomeId)
+        {
+            HomeShowingModel showing = new HomeShowingModel
+            {
+                homeid = HomeId,
+                ShowingDate = DateTime.Today.ToString(),
+                BuyerName = string.Empty,
+                BuyerPhone = string.Empty,
+                BuyerEmail = string.Empty,
+            };
+            ViewBag.HomeId2 = HomeId;
+            Debug.WriteLine(HomeId);
+            return View("~/Views/Home/HomeShowing.cshtml", showing);
+        }
+
+        [HttpGet]
+        public IActionResult Offer(int HomeId)
+        {
+            HomeOfferModel Offer = new HomeOfferModel
+            {
+                HomeId = HomeId,
+                OfferName = string.Empty,
+                OfferAmount = 0,
+                OfferEmail = string.Empty,
+                OfferPhone = string.Empty,
+                Contingencies=string.Empty,
+                NeedsToSellHome=string.Empty,
+                PreferredMoveInDate=string.Empty,
+                SaleType=string.Empty,
+                
+            };
+            ViewBag.HomeId2 = HomeId;
+            Debug.WriteLine(HomeId);
+            return View("~/Views/Home/HomeOffer.cshtml",Offer);
+        }
+
+        [HttpPost]
+        public IActionResult HomeOffer(HomeOfferModel homeOffer)
+        {
+            HomeOfferModel offer = new HomeOfferModel
+            {
+                
+                OfferName = homeOffer.OfferName,
+                OfferEmail = homeOffer.OfferEmail,
+                OfferPhone = homeOffer.OfferPhone,
+                OfferAmount = homeOffer.OfferAmount,
+                HomeId = homeOffer.HomeId,
+                SaleType = homeOffer.SaleType,
+                Contingencies = homeOffer.Contingencies,
+                NeedsToSellHome = homeOffer.NeedsToSellHome,
+                PreferredMoveInDate = homeOffer.PreferredMoveInDate
+            };
+            string url = "https://localhost:7285/api/Home/AddHomeOffer/";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            String jsonCustomer = js.Serialize(offer);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            StreamWriter writer = new StreamWriter(request.GetRequestStream());
+            writer.Write(jsonCustomer);
+            writer.Flush();
+            writer.Close();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream theDataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(theDataStream);
+            String data = reader.ReadToEnd();
+            reader.Close();
+            response.Close();
+            return RedirectToAction("Dashboard", "Home");
+        }
+
+
+        [HttpPost]
+        public IActionResult HomeShowing(HomeShowingModel Homeshowing)
+        {
+            HomeShowingModel hs = new HomeShowingModel();
+            hs.BuyerName = Homeshowing.BuyerName;
+            hs.BuyerPhone= Homeshowing.BuyerPhone;
+            hs.ShowingDate = Homeshowing.ShowingDate;
+            hs.BuyerEmail= Homeshowing.BuyerEmail;
+            hs.homeid = Homeshowing.homeid;
+            string url = "https://localhost:7285/api/Home/AddHomeShowing/";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            String jsonCustomer = js.Serialize(hs);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            StreamWriter writer = new StreamWriter(request.GetRequestStream());
+            writer.Write(jsonCustomer);
+            writer.Flush();
+            writer.Close();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream theDataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(theDataStream);
+            String data = reader.ReadToEnd();
+            reader.Close();
+            response.Close();
+            return View(Homeshowing);
+        }
 
         [HttpGet]
         public IActionResult HomeDetails(int id)

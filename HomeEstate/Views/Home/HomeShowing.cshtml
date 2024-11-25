@@ -1,0 +1,32 @@
+﻿@model HomeEstate.Models.HomeShowingModel
+
+<form asp-controller="Home" asp-action="HomeShowing" method="post" class="form-group">
+    <input type="hidden" asp-for="homeid"/> 
+    <div class="mb-3">
+        <label asp-for="BuyerName" class="form-label">Buyer Name</label>
+        <input asp-for="BuyerName" class="form-control" type="text" required />
+        <span asp-validation-for="BuyerName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="BuyerEmail" class="form-label">Buyer Email</label>
+        <input asp-for="BuyerEmail" class="form-control" type="email" required />
+        <span asp-validation-for="BuyerEmail" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="BuyerPhone" class="form-label">Buyer Phone</label>
+        <input asp-for="BuyerPhone" class="form-control" type="number" required />
+        <span asp-validation-for="BuyerPhone" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ShowingDate" class="form-label">Showing Date</label>
+        <input asp-for="ShowingDate" class="form-control" type="date" required />
+        <span asp-validation-for="ShowingDate" class="text-danger"></span>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+

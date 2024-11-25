@@ -1,0 +1,59 @@
+﻿@model HomeEstate.Models.HomeOfferModel
+<form asp-controller="Home" asp-action="HomeOffer" method="post" class="form-group">
+    <input type="hidden" asp-for="HomeId" />
+    <div class="mb-3">
+        <label asp-for="OfferName" class="form-label">Offer Name</label>
+        <input asp-for="OfferName" class="form-control" type="text" required />
+        <span asp-validation-for="OfferName" class="text-danger"></span>
+    </div>
+   
+        <div class="mb-3">
+            <label asp-for="OfferEmail" class="form-label">Offer Email</label>
+            <input asp-for="OfferEmail" class="form-control" type="email" required />
+            <span asp-validation-for="OfferEmail" class="text-danger"></span>
+        </div>
+
+    <div class="mb-3">
+        <label asp-for="OfferPhone" class="form-label">Offer Phone</label>
+        <input asp-for="OfferPhone" class="form-control" type="number" required />
+        <span asp-validation-for="OfferPhone" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="OfferAmount" class="form-label">Offer Amount</label>
+        <input asp-for="OfferAmount" class="form-control" type="number" required />
+        <span asp-validation-for="OfferAmount" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SaleType" class="form-label">Type of Sale</label>
+        <select asp-for="SaleType" class="form-select">
+            <option value="Conventional Mortgage">Conventional Mortgage</option>
+            <option value="Cash">Cash</option>
+            <option value="As-Is with No Contingencies">As-Is with No Contingencies</option>
+        </select>
+        <span asp-validation-for="SaleType" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Contingencies" class="form-label">Contingencies</label>
+        <input asp-for="Contingencies" class="form-control" type="text" required />
+        <span asp-validation-for="Contingencies" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="NeedsToSellHome" class="form-label">Needs to Sell Home?</label>
+        <select asp-for="NeedsToSellHome" class="form-select">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+        <span asp-validation-for="NeedsToSellHome" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PreferredMoveInDate" class="form-label">Prefer Move in Date</label>
+        <input asp-for="PreferredMoveInDate" class="form-control" type="date" required />
+        <span asp-validation-for="PreferredMoveInDate" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>
