@@ -34,23 +34,16 @@ namespace HomeEstate.Controllers
         [HttpPost]
         public IActionResult CheckLogin(LoginModel user)
         {
-            String webApiUrl = "https://localhost:7229/api/Login/CheckLogin";
-            /*
-            WebRequest request = WebRequest.Create(webApiUrl + "CheckLogin/");
-            WebResponse response = request.GetResponse();
-
-            Stream theDataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(theDataStream);
-            String data = reader.ReadToEnd();
-            reader.Close();
-            response.Close();
-
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            bool isTrue = js.Deserialize<bool>(data);
-            */
+            //String webApiUrl = "https://localhost:7229/api/Login/CheckLogin";
 
             string username = user.Username;
-            string password = user.Password;
+            string encryptedPassword = user.Password;
+
+            //get encrypted password
+            //decrypt said password
+            //check login with 
+
+            //fuck decrypting it, maybe just encrypt what they send in..
 
             JavaScriptSerializer js = new JavaScriptSerializer();
             var jsonUser = js.Serialize(user);

@@ -9,6 +9,11 @@ using System.Data.Common;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 
+using System.Security.Cryptography;     // needed for the encryption classes
+using System.IO;                        // needed for the MemoryStream
+using System.Text;                      // needed for the UTF8 encoding
+using System.Net;                       // needed for the cookie
+
 
 namespace WebApi.Controllers
 {
@@ -16,6 +21,9 @@ namespace WebApi.Controllers
     [ApiController]
     public class HomeController : Controller
     {
+        private Byte[] key = { 250, 101, 18, 76, 45, 135, 207, 118, 4, 171, 3, 168, 202, 241, 37, 199 };
+        private Byte[] vector = { 146, 64, 191, 111, 23, 3, 113, 119, 231, 121, 252, 112, 79, 32, 114, 156 };
+
         [HttpGet("GetHomeData")]
         public List<HomeModel> GetHomeData()
         {
@@ -260,7 +268,10 @@ namespace WebApi.Controllers
         [HttpPost("AddBroker")]
         public bool AddBroker([FromBody]  BrokerProfile Profile)
         {
-            String Broker = "1";
+            //String Broker = "1";
+
+
+
             if (Profile != null)
             {
                 DBConnect objDB = new DBConnect();              
@@ -279,7 +290,33 @@ namespace WebApi.Controllers
                 parameter = new SqlParameter("@Username", Profile.UserName);
                 objCommand.Parameters.Add(parameter);
 
-                parameter = new SqlParameter("@UserPassword", Profile.UserPassword);
+                //password encryption process
+                String plainTextPassword = Profile.UserPassword;
+                String encryptedPassword;
+
+                UTF8Encoding encoder = new UTF8Encoding();      // used to convert bytes to characters, and back
+                Byte[] textBytes;                               // stores the plain text data as bytes
+
+                textBytes = encoder.GetBytes(plainTextPassword);
+
+                RijndaelManaged rmEncryption = new RijndaelManaged();
+                MemoryStream myMemoryStream = new MemoryStream();
+                CryptoStream myEncryptionStream = new CryptoStream(myMemoryStream, rmEncryption.CreateEncryptor(key, vector), CryptoStreamMode.Write);
+
+                myEncryptionStream.Write(textBytes, 0, textBytes.Length);
+                myEncryptionStream.FlushFinalBlock();
+
+                myMemoryStream.Position = 0;
+                Byte[] encryptedBytes = new Byte[myMemoryStream.Length];
+                myMemoryStream.Read(encryptedBytes, 0, encryptedBytes.Length);
+
+                myEncryptionStream.Close();
+                myMemoryStream.Close();
+
+                encryptedPassword = Convert.ToBase64String(encryptedBytes);
+
+                //parameter = new SqlParameter("@UserPassword", Profile.UserPassword);
+                parameter = new SqlParameter("@UserPassword", encryptedPassword);
                 objCommand.Parameters.Add(parameter);
 
                 parameter = new SqlParameter("@FullName", Profile.FullName);
