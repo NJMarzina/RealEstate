@@ -22,14 +22,21 @@ using Newtonsoft.Json.Converters;
 using HomeLibrary;
 using RealEstate.Models;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Numerics;
+using System.Security.Cryptography;
 
 
 namespace HomeEstate.Controllers
 {
     public class LoginController : Controller
     {
+        private Byte[] key = { 250, 101, 18, 76, 45, 135, 207, 118, 4, 171, 3, 168, 202, 241, 37, 199 };
+        private Byte[] vector = { 146, 64, 191, 111, 23, 3, 113, 119, 231, 121, 252, 112, 79, 32, 114, 156 };
+
         Uri address = new Uri("https://cis-iis2.temple.edu/Fall2024/cis3342_tun52511/TermProject/api/Login/");
-        String webApiUrl = "http://localhost:7285/api/Login/";
+        string webApiUrl = "http://localhost:7285/api/Login/";
 
         [HttpPost]
         public IActionResult CheckLogin(LoginModel user)
@@ -37,13 +44,35 @@ namespace HomeEstate.Controllers
             //String webApiUrl = "https://localhost:7229/api/Login/CheckLogin";
 
             string username = user.Username;
-            string encryptedPassword = user.Password;
+            //string encryptedPassword = user.Password;
 
-            //get encrypted password
-            //decrypt said password
-            //check login with 
+            //password encryption process
+            string plainTextPassword = user.Password;
+            string encryptedPassword;
 
-            //fuck decrypting it, maybe just encrypt what they send in..
+            UTF8Encoding encoder = new UTF8Encoding();      // used to convert bytes to characters, and back
+            Byte[] textBytes;                               // stores the plain text data as bytes
+
+            textBytes = encoder.GetBytes(plainTextPassword);
+
+            RijndaelManaged rmEncryption = new RijndaelManaged();
+            MemoryStream myMemoryStream = new MemoryStream();
+            CryptoStream myEncryptionStream = new CryptoStream(myMemoryStream, rmEncryption.CreateEncryptor(key, vector), CryptoStreamMode.Write);
+
+            myEncryptionStream.Write(textBytes, 0, textBytes.Length);
+            myEncryptionStream.FlushFinalBlock();
+
+            myMemoryStream.Position = 0;
+            Byte[] encryptedBytes = new Byte[myMemoryStream.Length];
+            myMemoryStream.Read(encryptedBytes, 0, encryptedBytes.Length);
+
+            myEncryptionStream.Close();
+            myMemoryStream.Close();
+
+            encryptedPassword = Convert.ToBase64String(encryptedBytes);
+
+            user.Password = encryptedPassword;
+            //end of encryption
 
             JavaScriptSerializer js = new JavaScriptSerializer();
             var jsonUser = js.Serialize(user);
@@ -64,7 +93,7 @@ namespace HomeEstate.Controllers
                 WebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream theDataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(theDataStream);
-                String data = reader.ReadToEnd();
+                string data = reader.ReadToEnd();
                 reader.Close();
                 response.Close();
             //}
@@ -91,7 +120,7 @@ namespace HomeEstate.Controllers
 
                 Stream theBrokerIDDataStream = responseBrokerID.GetResponseStream();
                 StreamReader readerBrokerID = new StreamReader(theBrokerIDDataStream);
-                String brokerIDData = readerBrokerID.ReadToEnd();
+                string brokerIDData = readerBrokerID.ReadToEnd();
                 readerBrokerID.Close();
                 responseBrokerID.Close();
                 JavaScriptSerializer jsBrokerID = new JavaScriptSerializer();
@@ -165,8 +194,8 @@ namespace HomeEstate.Controllers
             Broker.RealEstateCompany = model.RealEstateCompany;
             Broker.CompanyPhone=model.CompanyPhone;
             JavaScriptSerializer js = new JavaScriptSerializer();
-            String ApiUrl = "https://localhost:7285/api/Home/AddBroker";
-            String jsonCustomer = js.Serialize(Broker);
+            string ApiUrl = "https://localhost:7285/api/Home/AddBroker";
+            string jsonCustomer = js.Serialize(Broker);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ApiUrl);
             request.Method = "POST";
 
@@ -182,7 +211,7 @@ namespace HomeEstate.Controllers
 
             StreamReader reader = new StreamReader(theDataStream);
 
-            String data = reader.ReadToEnd();
+            string data = reader.ReadToEnd();
 
             reader.Close();
 

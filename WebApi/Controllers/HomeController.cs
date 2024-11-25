@@ -314,6 +314,7 @@ namespace WebApi.Controllers
                 myMemoryStream.Close();
 
                 encryptedPassword = Convert.ToBase64String(encryptedBytes);
+                //end of encryption
 
                 //parameter = new SqlParameter("@UserPassword", Profile.UserPassword);
                 parameter = new SqlParameter("@UserPassword", encryptedPassword);
