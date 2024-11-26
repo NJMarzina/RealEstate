@@ -13,5 +13,15 @@ namespace HomeEstate.Controllers
 
             return View("BrokerDashboard");
         }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("Username");
+            Response.Cookies.Delete("Password");
+            Response.Cookies.Delete("BrokerID");
+
+            return RedirectToAction("Dashboard", "Home");
+        }
     }
 }
