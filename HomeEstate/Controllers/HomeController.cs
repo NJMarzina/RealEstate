@@ -192,7 +192,7 @@ namespace HomeEstate.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateNewHome()
+        public IActionResult CreateNewHome(Home home)
         {
             var brokerID = Request.Cookies["BrokerID"];
 
