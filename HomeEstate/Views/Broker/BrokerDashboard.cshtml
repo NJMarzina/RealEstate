@@ -6,4 +6,23 @@
     <h1>Broker Dashboard</h1>
     <p>Welcome @ViewData["Username"]</p>
     
+    <form id="createHomeForm" action="/home/CreateNewHome" method="post">
+        <button type="submit" class="btn btn-secondary">Create New Listing</button>
+    </form>
+
+    <form id="viewMyListings" action="/home/ViewMyListings" method="get">
+        <button type="submit" class="btn btn-secondary">View My Listings</button>
+    </form>
+
+    <form id="viewMyScheduledShowings" action="/broker/ViewShowings" method="get">
+        <button type="submit" class="btn btn-secondary">View My Scheduled Showings</button>
+    </form>
+
+    <form id="viewPendingOffers" action="/broker/ViewPendingOffers" method="get">
+        <button type="submit" class="btn btn-secondary">View My Pending Offers</button>
+    </form>
+
+    <form id="brokerLogout" action="/broker/Logout" method="delete">
+        <button type="submit" class="btn btn-secondary">Logout</button>
+    </form>
 </div>

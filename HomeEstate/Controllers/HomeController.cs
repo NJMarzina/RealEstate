@@ -189,10 +189,18 @@ namespace HomeEstate.Controllers
                 }
 
                 return View("HomeDetails", home);
-            }
-            
         }
 
+        [HttpPost]
+        public IActionResult CreateNewHome()
+        {
+            var brokerID = Request.Cookies["BrokerID"];
 
-    
+            //create new home code goes here
+            //serialize bs, calling api (thats not done yet)
+            //insert using this brokerID
+
+            return View();
+        }
+    }
 }

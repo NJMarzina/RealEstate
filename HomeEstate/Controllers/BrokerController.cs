@@ -7,6 +7,7 @@ namespace HomeEstate.Controllers
         public IActionResult BrokerDashboard()
         {
             var username = Request.Cookies["Username"];
+            var brokerid = Request.Cookies["BrokerID"];
 
             ViewData["Username"] = username;
 
