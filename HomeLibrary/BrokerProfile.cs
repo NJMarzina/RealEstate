@@ -41,27 +41,27 @@ namespace HomeLibrary
 
         [Required]
         [Display(Name = "Security Question 1")]
-        public required string SecurityQuestion1 { get; set; }
+        public string SecurityQuestion1 { get; set; }
 
         [Required]
         [Display(Name = "Security Answer 1")]
-        public required string SecurityAnswer1 { get; set; }
+        public string SecurityAnswer1 { get; set; }
 
         [Required]
         [Display(Name = "Security Question 2")]
-        public required string SecurityQuestion2 { get; set; }
+        public string SecurityQuestion2 { get; set; }
 
         [Required]
         [Display(Name = "Security Answer 2")]
-        public required string SecurityAnswer2 { get; set; }
+        public string SecurityAnswer2 { get; set; }
 
         [Required]
         [Display(Name = "Security Question 3")]
-        public required string SecurityQuestion3 { get; set; }
+        public string SecurityQuestion3 { get; set; }
 
         [Required]
         [Display(Name = "Security Answer 3")]
-        public required string SecurityAnswer3 { get; set; }
+        public string SecurityAnswer3 { get; set; }
     }
 
 }
