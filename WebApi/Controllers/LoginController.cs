@@ -86,6 +86,43 @@ namespace WebApi.Controllers
             return isCorrect;
         }
 
+        [HttpGet("GetQuestion/{Userid}")]
+        public SecurityQuestions GetQuestions(int Userid)
+        {
+            SecurityQuestions securityQuestions = new SecurityQuestions();
+
+            try
+            {
+                // Initialize database connection
+                DBConnect objDB = new DBConnect();
+                SqlCommand objCommand = new SqlCommand
+                {
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "GetSecurityQuestion"
+                };
+
+                // Add UserID as a parameter
+                objCommand.Parameters.AddWithValue("@id", Userid);
+
+                // Execute the command and get the dataset
+                DataSet ds = objDB.GetDataSet(objCommand);
+
+                // Check if the dataset contains rows
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    // Assign the first question and answer from the dataset to the model
+                    securityQuestions.Question = ds.Tables[0].Rows[0]["Question"].ToString();
+                    securityQuestions.Answer = ds.Tables[0].Rows[0]["Answer"].ToString(); 
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return securityQuestions;
+        }
+
+
         [HttpGet("GetBrokerIDByUsername/{username}")]  // GET api/CustomerService/GetCustomerByName/
         public int GetBrokerIDByUsername(String username)
         {

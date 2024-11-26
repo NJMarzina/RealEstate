@@ -193,6 +193,14 @@ namespace HomeEstate.Controllers
             Broker.WorkEmail=model.WorkEmail;
             Broker.RealEstateCompany = model.RealEstateCompany;
             Broker.CompanyPhone=model.CompanyPhone;
+           
+            Broker.SecurityQuestion1=model.SecurityQuestion1;
+            Broker.SecurityAnswer1 = model.SecurityAnswer1;
+            Broker.SecurityQuestion2 = model.SecurityQuestion2;
+            Broker.SecurityAnswer2 = model.SecurityAnswer2;
+            Broker.SecurityQuestion3 = model.SecurityQuestion3;
+            Broker.SecurityAnswer3= model.SecurityAnswer3;
+
             JavaScriptSerializer js = new JavaScriptSerializer();
             string ApiUrl = "https://localhost:7285/api/Home/AddBroker";
             string jsonCustomer = js.Serialize(Broker);

@@ -270,8 +270,6 @@ namespace WebApi.Controllers
         {
             //String Broker = "1";
 
-
-
             if (Profile != null)
             {
                 DBConnect objDB = new DBConnect();              
@@ -367,6 +365,19 @@ namespace WebApi.Controllers
                 ProfileDB.DoUpdate(objProfileUpdate);
 
 
+                DBConnect SecurityDB = new DBConnect();
+                SqlCommand SecurityCommand = new SqlCommand();
+                SecurityCommand.CommandType = CommandType.StoredProcedure;
+                SecurityCommand.CommandText = "AddSecurityQuestions";
+
+                SecurityCommand.Parameters.AddWithValue("@BrokerId", Profile.BrokerId);
+                SecurityCommand.Parameters.AddWithValue("@Question1", Profile.SecurityQuestion1);
+                SecurityCommand.Parameters.AddWithValue("@Answer1", Profile.SecurityAnswer1);
+                SecurityCommand.Parameters.AddWithValue("@Question2", Profile.SecurityQuestion2);
+                SecurityCommand.Parameters.AddWithValue("@Answer2", Profile.SecurityAnswer2);
+                SecurityCommand.Parameters.AddWithValue("@Question3", Profile.SecurityQuestion3);
+                SecurityCommand.Parameters.AddWithValue("@Answer3", Profile.SecurityAnswer3);
+                SecurityDB.DoUpdate(SecurityCommand);
                 if (retVal > 0)
                     return true;
                 else
