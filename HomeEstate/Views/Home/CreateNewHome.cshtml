@@ -1,0 +1,113 @@
+﻿@model HomeEstate.Models.Home
+
+@{
+    ViewData["Title"] = "Create New Home Listing";
+}
+
+<form asp-controller="Home" asp-action="CreateNewHome" method="post" class="form-group">
+    <input type="hidden" asp-for="HomeID" />
+    <div class="mb-3">
+        <label asp-for="AddressNumber" class="form-label">Street Number</label>
+        <input asp-for="AddressNumber" class="form-control" type="number" required />
+        <span asp-validation-for="AddressNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AddressName" class="form-label">Street Name</label>
+        <input asp-for="AddressName" class="form-control" type="text" required />
+        <span asp-validation-for="AddressName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AddressCity" class="form-label">City</label>
+        <input asp-for="AddressCity" class="form-control" type="text" required />
+        <span asp-validation-for="AddressCity" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AddressState" class="form-label">State</label>
+        <input asp-for="AddressState" class="form-control" type="text" required />
+        <span asp-validation-for="AddressState" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AddressZip" class="form-label">Zip code</label>
+        <input asp-for="AddressZip" class="form-control" type="number" required />
+        <span asp-validation-for="AddressZip" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PropertyType" class="form-label">Property Type</label>
+        <select asp-for="PropertyType" class="form-select">
+            <option value="Condo">Condo</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Mansion">Mansion</option> <!--add more later-->
+        </select>
+        <span asp-validation-for="PropertyType" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Size" class="form-label">Square Footage</label>     <!--update later that enter room dimensions and calculate sqr footage-->
+        <input asp-for="Size" class="form-control" type="number" required />
+        <span asp-validation-for="Size" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Heating" class="form-label">Heating</label>
+        <select asp-for="Heating" class="form-select">
+            <option value="Fireplace">Fireplace</option>
+            <option value="Full Heating">Full Heating</option>
+            <option value="Gas">Gas</option> <!--add more later-->
+        </select>
+        <span asp-validation-for="Heating" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Cooling" class="form-label">Cooling</label>
+        <select asp-for="Cooling" class="form-select">
+            <option value="Full AC">Full AC</option>
+            <option value="Ceiling Fan">Ceiling Fan</option>
+            <option value="In-Unit ACs">In-Unit ACs</option> <!--add more later-->
+        </select>
+        <span asp-validation-for="Cooling" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="YearBuild" class="form-label">Year Built</label>
+        <input asp-for="YearBuild" class="form-control" type="number" required />
+        <span asp-validation-for="YearBuild" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Garage" class="form-label">Garage</label>
+        <input asp-for="Garage" class="form-control" type="text" required />
+        <span asp-validation-for="Garage" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Utilities" class="form-label">Utilities</label>
+        <input asp-for="Utilities" class="form-control" type="text" required />
+        <span asp-validation-for="Utilities" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <input asp-for="Description" class="form-control" type="text" required />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AskingPrice" class="form-label">Asking Price</label>
+        <input asp-for="AskingPrice" class="form-control" type="number" required />
+        <span asp-validation-for="AskingPrice" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Status" class="form-label">Status</label>
+        <input asp-for="Status" class="form-control" type="text" required />
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>

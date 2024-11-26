@@ -2,7 +2,7 @@ using HomeEstate.Models;
 using HomeEstate.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using RealEstate.Models;
+//using RealEstate.Models;
 using System.Data;
 using System.Diagnostics;
 using System.Net;
