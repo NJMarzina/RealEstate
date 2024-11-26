@@ -129,7 +129,8 @@ namespace HomeEstate.Controllers
                 Response.Cookies.Append("BrokerID", brokerID.ToString(), cookieOptions);
                 Response.Cookies.Append("Username", user.Username, cookieOptions);
 
-                return View("~/Views/Broker/BrokerDashboard.cshtml");
+                return RedirectToAction("BrokerDashboard", "Broker");
+                //return View("~/Views/Broker/BrokerDashboard.cshtml");
                 //return View("Dashboard");
             }
             return View("Login");
