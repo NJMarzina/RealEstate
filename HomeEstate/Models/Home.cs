@@ -26,7 +26,7 @@ namespace HomeEstate.Models
         public string? PropertyType { get; set; }
 
         [Required(ErrorMessage = "Required.")]
-        public double? Size { get; set; }
+        public float? Size { get; set; }
 
         [Required(ErrorMessage = "Required.")]
         public string? Heating { get; set; }

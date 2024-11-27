@@ -9,6 +9,7 @@
         public string AddressState { get; set; }
         public string AddressZip { get; set; }
         public string PropertyType { get; set; }
+        public float Size { get; set; }
         public string Heating { get; set; }
         public string Cooling { get; set; }
         public int YearBuild { get; set; }

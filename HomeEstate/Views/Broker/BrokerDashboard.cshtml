@@ -4,15 +4,13 @@
 
 <div class="text-center">
     <h1>Broker Dashboard</h1>
-    <p>Welcome @ViewData["Username"]</p>
+    <p>Welcome @ViewData["BrokerID"]</p>
     
-    <form id="createHomeForm" action="/home/CreateNewHome" method="post">
+    <form id="createHomeForm" action="/Home/CreateNewHome" method="post">
         <button type="submit" class="btn btn-secondary">Create New Listing</button>
     </form>
 
-    <form id="viewMyListings" action="/home/ViewMyListings" method="get">
-        <button type="submit" class="btn btn-secondary">View My Listings</button>
-    </form>
+    <a href="@Url.Action("BrokerListing", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary">View My Listings</a>
 
     <form id="viewMyScheduledShowings" action="/broker/ViewShowings" method="get">
         <button type="submit" class="btn btn-secondary">View My Scheduled Showings</button>

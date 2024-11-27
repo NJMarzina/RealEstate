@@ -55,9 +55,13 @@
     <div class="mb-3">
         <label asp-for="Heating" class="form-label">Heating</label>
         <select asp-for="Heating" class="form-select">
-            <option value="Fireplace">Fireplace</option>
-            <option value="Full Heating">Full Heating</option>
-            <option value="Gas">Gas</option> <!--add more later-->
+            <option value="None">None</option>
+            <option value="Central Heating">Central Heating</option>
+            <option value="Forced Air">Forced Air</option>
+            <option value="Radiant">Radiant</option>
+            <option value="Geothermal">Geothermal</option>
+            <option value="Electric Heating">Electric Heating</option>
+            <option value="Oil Heating">Oil Heating</option>
         </select>
         <span asp-validation-for="Heating" class="text-danger"></span>
     </div>
@@ -65,12 +69,16 @@
     <div class="mb-3">
         <label asp-for="Cooling" class="form-label">Cooling</label>
         <select asp-for="Cooling" class="form-select">
-            <option value="Full AC">Full AC</option>
-            <option value="Ceiling Fan">Ceiling Fan</option>
-            <option value="In-Unit ACs">In-Unit ACs</option> <!--add more later-->
+            <option value="None">None</option>
+            <option value="Central Air">Central Air</option>
+            <option value="Window Units">Window Units</option>
+            <option value="Evaporative Cooling">Evaporative Cooling</option>
+            <option value="Geothermal">Geothermal</option>
+            <option value="Ductless Mini-Split">Ductless Mini-Split</option>
         </select>
         <span asp-validation-for="Cooling" class="text-danger"></span>
     </div>
+
 
     <div class="mb-3">
         <label asp-for="YearBuild" class="form-label">Year Built</label>
@@ -80,13 +88,25 @@
 
     <div class="mb-3">
         <label asp-for="Garage" class="form-label">Garage</label>
-        <input asp-for="Garage" class="form-control" type="text" required />
+        <select asp-for="Garage" class="form-select">
+            <option value="None">None</option>
+            <option value="1 Car">1 Car</option>
+            <option value="2 Car">2 Car</option>
+            <option value="3 Car">3 Car</option>
+            <option value="4 and More">4 and More</option>
+        </select>
         <span asp-validation-for="Garage" class="text-danger"></span>
     </div>
 
+
     <div class="mb-3">
         <label asp-for="Utilities" class="form-label">Utilities</label>
-        <input asp-for="Utilities" class="form-control" type="text" required />
+        <select asp-for="Utilities" class="form-select">
+            <option value="Well Water">Well Water</option>
+            <option value="Public Sewer">Public Sewer</option>
+            <option value="Septic">Septic</option>
+            <option value="Public Supply">Public Supply</option>
+        </select>
         <span asp-validation-for="Utilities" class="text-danger"></span>
     </div>
 
@@ -104,9 +124,15 @@
 
     <div class="mb-3">
         <label asp-for="Status" class="form-label">Status</label>
-        <input asp-for="Status" class="form-control" type="text" required />
+        <select asp-for="Status" class="form-select">
+            <option value="Sale">Sale</option>
+            <option value="Sold">Sold</option>
+            <option value="ContingentOffer">Contingent Offer/Pending Sale</option>
+            <option value="OffTheMarket">Off the Market</option>
+        </select>
         <span asp-validation-for="Status" class="text-danger"></span>
     </div>
+
 
     <button type="submit" class="btn btn-primary">Submit</button>
 

@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Broker Listing";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Home Listing</h1>
+    <div class="container">
+        <div class="row">
+            <p>dsadasd</p>
+            @if (ViewBag.HomeList != null)
+            {
+
+                foreach (var home in ViewBag.HomeList)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Address: @home.addressNumber @home.addressName</h5>
+                                <p class="card-text">
+                                    <strong>City:</strong> @home.addressCity<br>
+                                    <strong>State:</strong> @home.addressState<br>
+                                    <strong>Zip:</strong> @home.addressZip<br>
+                                    <strong>Property Type:</strong> @home.propertyType<br>
+                                    <strong>Year Built:</strong> @home.yearBuild<br>
+                                    <strong>Asking Price:</strong> @home.askingPrice?.ToString("C")<br>
+                                    <strong>Home ID:</strong> @home.homeId
+                                </p>
+                            </div>
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+                }
+
+            }
+            else
+            {
+                <div class="col-12">
+                    <p>No homes available</p>
+                </div>
+            }
+
+
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+</div>
