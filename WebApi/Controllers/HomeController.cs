@@ -392,7 +392,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("CreateNewHome")]
-        public void CreateNewHome([FromBody] Home home)
+        public void CreateNewHome([FromBody] HomeModel home)
         {
             SqlCommand sqlCommand = new SqlCommand();
             DBConnect dbConnection = new DBConnect();
