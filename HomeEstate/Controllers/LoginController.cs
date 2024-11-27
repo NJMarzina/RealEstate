@@ -159,25 +159,6 @@ namespace HomeEstate.Controllers
             return View();
         }
 
-        //[HttpPost]  //i thhought this would be httpget but httppost works and get throws an error
-        //public IActionResult Login(LoginModel model)
-        //{
-        //    bool accountExists = CheckLogin(model.Username, model.Password);
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (accountExists)  //change to where admin and password are in database table, and instead of model.Username, model.Password u are taking from the broker sign in object
-        //        {
-        //            return RedirectToAction("Index", "Home");
-        //        }
-
-        //        ModelState.AddModelError("", "Invalid username or password.");
-        //    }
-        //    return View(model);
-        //}
-
-
-
         // Register GET action
         public IActionResult Register()
         {
@@ -193,8 +174,6 @@ namespace HomeEstate.Controllers
         {
             return View();
         }
-
-
 
         // Register POST action
         [HttpPost]

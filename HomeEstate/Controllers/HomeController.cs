@@ -17,6 +17,7 @@ using Nancy.Json;
 using HomeLibrary;
 using static System.Net.WebRequestMethods;
 using System.Reflection;
+using System;
 
 namespace HomeEstate.Controllers
 {
@@ -167,7 +168,6 @@ namespace HomeEstate.Controllers
         [HttpGet]
         public IActionResult HomeDetails(int id)
         {
-           
                 String webApiUrl = "https://localhost:7285/api/Home/GetHomeDetails/" + id;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
                 request.Method = "GET";
@@ -195,6 +195,26 @@ namespace HomeEstate.Controllers
         public IActionResult CreateNewHome(Home home)
         {
             var brokerID = Request.Cookies["BrokerID"];
+            var profileID = Request.Cookies["ProfileID"];
+
+            string webApiUrl = "https://localhost:7285/api/Home/CreateNewHome/";
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            String jsonHome = js.Serialize(home);
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            StreamWriter writer = new StreamWriter(request.GetRequestStream());
+            writer.Write(jsonHome);
+            writer.Flush();
+            writer.Close();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream theDataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(theDataStream);
+            String data = reader.ReadToEnd();
+            reader.Close();
+            response.Close();
 
             //create new home code goes here
             //serialize bs, calling api (thats not done yet)

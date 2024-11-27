@@ -391,6 +391,23 @@ namespace WebApi.Controllers
 
         }
 
+        [HttpPost("CreateNewHome")]
+        public bool CreateNewHome([FromBody] HomeModel home)
+        {
+            SqlCommand sqlCommand = new SqlCommand();
+            DBConnect dbConnection = new DBConnect();
+            sqlCommand.CommandText = "CreateNewHome";
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+
+            sqlCommand.Parameters.AddWithValue("@Profile_Id", int.Parse(Request.Cookies["ProfileID"]));
+            sqlCommand.Parameters.AddWithValue("@AddressNumber", home.AddressNumber);
+            //add everything
+            //create stored procedure
+
+            dbConnection.DoUpdate(sqlCommand);
+
+            return true;
+        }
 
     }
 }
