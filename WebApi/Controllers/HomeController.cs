@@ -400,7 +400,21 @@ namespace WebApi.Controllers
             sqlCommand.CommandType = CommandType.StoredProcedure;
 
             sqlCommand.Parameters.AddWithValue("@Profile_Id", int.Parse(Request.Cookies["ProfileID"]));
-            sqlCommand.Parameters.AddWithValue("@AddressNumber", home.AddressNumber);
+            sqlCommand.Parameters.AddWithValue("@Address_Number", home.AddressNumber);
+            //Address_Name
+            //AddressCity
+            //AddressState
+            //AddressZip
+            //Property_Type
+            //size (null for now!!!)
+            //Heating
+            //Cooling
+            //Year_Built
+            //Garage
+            //Utilities
+            //Description
+            //AskingPrice
+            //Status
             //add everything
             //create stored procedure
 
