@@ -18,6 +18,7 @@ using HomeLibrary;
 using static System.Net.WebRequestMethods;
 using System.Reflection;
 using System;
+//using WebApi.Models;
 
 namespace HomeEstate.Controllers
 {
@@ -63,7 +64,7 @@ namespace HomeEstate.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-
+        
         [HttpGet]
         public IActionResult Requests(int HomeId)
         {
@@ -190,12 +191,30 @@ namespace HomeEstate.Controllers
 
                 return View("HomeDetails", home);
         }
-
+        
         [HttpPost]
         public IActionResult CreateNewHome(Home home)
         {
             var brokerID = Request.Cookies["BrokerID"];
             var profileID = Request.Cookies["ProfileID"];
+
+            /*
+            WebApi.Models.HomeModel newHome = new WebApi.Models.HomeModel();
+            newHome.AddressNumber = home.AddressNumber;
+            newHome.AddressName = home.AddressName;
+            newHome.AddressCity = home.AddressCity;
+            newHome.AddressState = home.AddressState;
+            newHome.AddressZip = home.AddressZip;
+            newHome.PropertyType = home.PropertyType;
+            newHome.Heating = home.Heating;
+            newHome.Cooling = home.Cooling;
+            newHome.YearBuild = home.YearBuild;
+            newHome.Garage = home.Garage;
+            newHome.Utilities = home.Utilities;
+            newHome.Description = home.Description;
+            newHome.AskingPrice = home.AskingPrice;
+            newHome.Status = home.Status;
+            */
 
             string webApiUrl = "https://localhost:7285/api/Home/CreateNewHome/";
 
@@ -209,16 +228,14 @@ namespace HomeEstate.Controllers
             writer.Write(jsonHome);
             writer.Flush();
             writer.Close();
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();  //400 error here
+            //i think the error is due to a "home" mismatch of sending different versions of home and homemodel somewhere
             Stream theDataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(theDataStream);
             String data = reader.ReadToEnd();
             reader.Close();
             response.Close();
 
-            //create new home code goes here
-            //serialize bs, calling api (thats not done yet)
-            //insert using this brokerID
 
             return View();
         }

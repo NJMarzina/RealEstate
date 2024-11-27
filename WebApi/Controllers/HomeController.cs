@@ -392,35 +392,35 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("CreateNewHome")]
-        public bool CreateNewHome([FromBody] HomeModel home)
+        public void CreateNewHome([FromBody] Home home)
         {
             SqlCommand sqlCommand = new SqlCommand();
             DBConnect dbConnection = new DBConnect();
             sqlCommand.CommandText = "CreateNewHome";
             sqlCommand.CommandType = CommandType.StoredProcedure;
 
-            sqlCommand.Parameters.AddWithValue("@Profile_Id", int.Parse(Request.Cookies["ProfileID"]));
+            sqlCommand.Parameters.AddWithValue("@Profile_ID", int.Parse(Request.Cookies["ProfileID"]));
             sqlCommand.Parameters.AddWithValue("@Address_Number", home.AddressNumber);
-            //Address_Name
-            //AddressCity
-            //AddressState
-            //AddressZip
-            //Property_Type
+            sqlCommand.Parameters.AddWithValue("@Address_Name", home.AddressName);
+            sqlCommand.Parameters.AddWithValue("@Address_City", home.AddressCity);
+            sqlCommand.Parameters.AddWithValue("@Address_State", home.AddressState);
+            sqlCommand.Parameters.AddWithValue("@Address_Zip", home.AddressZip);
+            sqlCommand.Parameters.AddWithValue("@Property_Type", home.PropertyType);
             //size (null for now!!!)
-            //Heating
-            //Cooling
-            //Year_Built
-            //Garage
-            //Utilities
-            //Description
-            //AskingPrice
-            //Status
-            //add everything
-            //create stored procedure
+            sqlCommand.Parameters.AddWithValue("@Heating", home.Heating);
+            sqlCommand.Parameters.AddWithValue("@Cooling", home.Cooling);
+            sqlCommand.Parameters.AddWithValue("@Year_Build", home.YearBuild);
+            sqlCommand.Parameters.AddWithValue("@Garage", home.Garage);
+            sqlCommand.Parameters.AddWithValue("@Utilities", home.Utilities);
+            sqlCommand.Parameters.AddWithValue("@Description", home.Description);
+            sqlCommand.Parameters.AddWithValue("@Asking_Price", home.AskingPrice);
+            sqlCommand.Parameters.AddWithValue("@Status", home.Status);
 
-            dbConnection.DoUpdate(sqlCommand);
+            //Ammentities checkboxes and new ammentities table
 
-            return true;
+            dbConnection.DoUpdateUsingCmdObj(sqlCommand);
+
+            //return true;
         }
 
     }

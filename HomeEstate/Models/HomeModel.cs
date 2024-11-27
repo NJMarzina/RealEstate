@@ -1,4 +1,4 @@
-﻿namespace WebApi.Models
+﻿namespace HomeEstate.Models
 {
     public class HomeModel
     {
