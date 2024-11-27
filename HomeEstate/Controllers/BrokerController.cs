@@ -15,8 +15,11 @@ namespace HomeEstate.Controllers
         {
             var username = Request.Cookies["Username"];
             var brokerid = Request.Cookies["BrokerID"];
+            var profileid = Request.Cookies["ProfileID"];
 
+            ViewData["Username"] = username;
             ViewData["BrokerID"] = brokerid;
+            ViewData["ProfileID"] = profileid;
 
             return View("BrokerDashboard");
         }
@@ -27,6 +30,7 @@ namespace HomeEstate.Controllers
             Response.Cookies.Delete("Username");
             Response.Cookies.Delete("Password");
             Response.Cookies.Delete("BrokerID");
+            Response.Cookies.Delete("ProfileID");
 
             return RedirectToAction("Dashboard", "Home");
         }

@@ -131,7 +131,7 @@ namespace WebApi.Controllers
             SqlCommand objCommand = new SqlCommand();
 
             objCommand.CommandType = CommandType.StoredProcedure;
-            objCommand.CommandText = "GetBrokerIDByUsername";   //create this stored procedure that gets the broker id for the username thats logging in (or find it)
+            objCommand.CommandText = "GetBrokerIDByUsername";
             objCommand.Parameters.AddWithValue("@username", username);
             DataSet myDS = objDB.GetDataSetUsingCmdObj(objCommand);
 
@@ -142,6 +142,26 @@ namespace WebApi.Controllers
 
             return brokerID;
 
+        }
+
+        [HttpGet("GetProfileIDByBrokerID/{brokerID}")]
+        public int GetProfileIDByBrokerID(int brokerID)
+        {
+            int profileID = 0;
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
+
+            objCommand.CommandType = CommandType.StoredProcedure;
+            objCommand.CommandText = "GetProfileIDByBrokerID";  //make
+            objCommand.Parameters.AddWithValue("@brokerID", brokerID);
+            DataSet myDS = objDB.GetDataSetUsingCmdObj(objCommand);
+
+            if (myDS.Tables[0].Rows.Count > 0)
+            {
+                profileID = int.Parse(objDB.GetField("ProfileId", 0).ToString());
+            }
+
+            return profileID;
         }
     }
 }

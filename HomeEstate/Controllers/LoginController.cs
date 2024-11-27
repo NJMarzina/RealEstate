@@ -108,7 +108,7 @@ namespace HomeEstate.Controllers
                     Expires = DateTime.Now.AddDays(30),
                 };
 
-                Response.Cookies.Append("Username", user.Username, cookieOptions);
+                //Response.Cookies.Append("Username", user.Username, cookieOptions);
                 Response.Cookies.Append("Password", user.Password, cookieOptions);
 
                 webApiUrl = "https://localhost:7285/api/Login/GetBrokerIDByUsername/";
@@ -128,6 +128,24 @@ namespace HomeEstate.Controllers
 
                 Response.Cookies.Append("BrokerID", brokerID.ToString(), cookieOptions);
                 Response.Cookies.Append("Username", user.Username, cookieOptions);
+
+                //getting profileID
+                webApiUrl = "https://localhost:7285/api/Login/GetProfileIDByBrokerID/";
+
+                HttpWebRequest requestProfileID = (HttpWebRequest)WebRequest.Create(webApiUrl + brokerID.ToString());
+                requestProfileID.Method = "GET";
+                requestProfileID.ContentType = "application/json";
+                HttpWebResponse responseProfileID = (HttpWebResponse)requestProfileID.GetResponse();
+
+                Stream theProfileIDDataStream = responseProfileID.GetResponseStream();
+                StreamReader readerProfileID = new StreamReader(theProfileIDDataStream);
+                string profileIDData = readerProfileID.ReadToEnd();
+                readerProfileID.Close();
+                responseProfileID.Close();
+                JavaScriptSerializer jsProfileID = new JavaScriptSerializer();
+                int profileID = jsProfileID.Deserialize<int>(profileIDData);
+
+                Response.Cookies.Append("ProfileID", profileID.ToString(), cookieOptions);
 
                 return RedirectToAction("BrokerDashboard", "Broker");
                 //return View("~/Views/Broker/BrokerDashboard.cshtml");

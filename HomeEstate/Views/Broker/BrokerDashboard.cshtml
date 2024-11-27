@@ -4,7 +4,9 @@
 
 <div class="text-center">
     <h1>Broker Dashboard</h1>
-    <p>Welcome @ViewData["BrokerID"]</p>
+    <p>Welcome @ViewData["Username"]</p>
+    <p>Your BrokerID is @ViewData["BrokerID"]</p>
+    <p>Your ProfileID is @ViewData["ProfileID"]</p>
     
     <form id="createHomeForm" action="/Home/CreateNewHome" method="post">
         <button type="submit" class="btn btn-secondary">Create New Listing</button>
