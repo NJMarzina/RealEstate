@@ -2,6 +2,7 @@
 {
     public class HomeModel
     {
+        public int ProfileId {  get; set; }
         public int homeId { get; set; }
         public string AddressNumber { get; set; }
         public string AddressName { get; set; }

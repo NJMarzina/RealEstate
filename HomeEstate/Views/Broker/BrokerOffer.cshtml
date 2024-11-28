@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Broker Offers";
+}
+
+<div class="text-center">
+    <h1 class="display-4">My Offers</h1>
+    <div class="container">
+        <div class="row">
+            @if (ViewBag.HomeList != null && ((List<HomeLibrary.GetHomeOfferModel>)ViewBag.HomeList).Count > 0)
+            {
+                foreach (var offer in (List<HomeLibrary.GetHomeOfferModel>)ViewBag.HomeList)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Offer for Home ID: @offer.HomeId</h5>
+                                <p class="card-text">
+                                    <strong>Address:</strong> @offer.Address<br>
+                                    <strong>Asking Price:</strong> @offer.AskingPrice<br>
+                                    <strong>Offer Amount:</strong> @offer.OfferAmount<br>
+                                    <strong>Offer Name:</strong> @offer.OfferName<br>
+                                    <strong>Email:</strong> @offer.OfferEmail<br>
+                                    <strong>Phone:</strong> @offer.OfferPhone<br>
+                                    <strong>Sale Type:</strong> @offer.SaleType<br>
+                                    <strong>Contingencies:</strong> @offer.Contingencies<br>
+                                    <strong>Needs to Sell Home:</strong> @offer.NeedsToSellHome<br>
+                                    <strong>Preferred Move-In Date:</strong> @offer.PreferredMoveInDate<br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <p>No offers available at this time.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -17,13 +17,9 @@
 
     <a href="@Url.Action("BrokerListing", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary">View My Listings</a>
 
-    <form id="viewMyScheduledShowings" action="/broker/ViewShowings" method="get">
-        <button type="submit" class="btn btn-secondary">View My Scheduled Showings</button>
-    </form>
+    <a href="@Url.Action("BrokerShowing", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary">View my Showing</a>
+    <a href="@Url.Action("BrokerOffer", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary">View my Offer</a>
 
-    <form id="viewPendingOffers" action="/broker/ViewPendingOffers" method="get">
-        <button type="submit" class="btn btn-secondary">View My Pending Offers</button>
-    </form>
 
     <form id="brokerLogout" action="/broker/Logout" method="post">
         <button type="submit" class="btn btn-secondary">Logout</button>

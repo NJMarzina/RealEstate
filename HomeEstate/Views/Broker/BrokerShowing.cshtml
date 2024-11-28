@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Broker Showing";
+}
+
+<div class="text-center">
+    <h1 class="display-4">My Showings</h1>
+    <div class="container">
+        <div class="row">
+            @if (ViewBag.HomeList != null && ViewBag.HomeList.Count > 0)
+            {
+                foreach (var showing in ViewBag.HomeList)
+                {
+                    <div class="col-md-6 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Buyer Name: @showing.BuyerName</h5>
+                                <p class="card-text">
+                                    <strong>Email:</strong> @showing.BuyerEmail<br>
+                                    <strong>Phone:</strong> @showing.BuyerPhone<br>
+                                    <strong>Showing Date:</strong> @showing.ShowingDate<br>
+                                    <strong>Home Address:</strong> @showing.Address<br>
+                                    <strong>Property Type:</strong> @showing.PropertyType<br>
+                                    <strong>Asking Price:</strong> @showing.AskingPrice?.ToString("C")<br>
+                                    <strong>Showing ID:</strong> @showing.ShowingId
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <p class="text-muted">No showings found for your listings.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
