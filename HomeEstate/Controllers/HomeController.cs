@@ -214,7 +214,7 @@ namespace HomeEstate.Controllers
             newHome.Description = home.Description;
             newHome.AskingPrice = home.AskingPrice;
             newHome.Status = home.Status;
-            */
+            
 
             string webApiUrl = "https://localhost:7285/api/Home/CreateNewHome/";
 
@@ -236,7 +236,7 @@ namespace HomeEstate.Controllers
             reader.Close();
             response.Close();
 
-
+            */
             return View();
         }
 

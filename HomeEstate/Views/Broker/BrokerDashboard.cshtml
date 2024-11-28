@@ -13,8 +13,9 @@
         <button type="submit" class="btn btn-secondary">Create New Listing</button>
     </form>
     -->
-    <a href="@Url.Action("CreateNewHome", "Home")" class="btn btn-secondary">Create New Listing</a> <!--great.. this link isnt working!!-->
-
+    <form method="post" asp-controller="Home" asp-action="CreateNewHome">
+        <button type="submit" class="btn btn-secondary">Create New Listing</button>
+    </form>
     <a href="@Url.Action("BrokerListing", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary">View My Listings</a>
 
     <a href="@Url.Action("BrokerShowing", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary">View my Showing</a>
