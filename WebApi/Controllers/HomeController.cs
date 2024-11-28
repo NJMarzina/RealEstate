@@ -404,7 +404,9 @@ namespace WebApi.Controllers
             returnParameter.Direction = ParameterDirection.ReturnValue;
             sqlCommand.Parameters.Add(returnParameter);
 
-            sqlCommand.Parameters.AddWithValue("@Profile_ID", home.ProfileId);
+            int profileid = int.Parse(Request.Cookies["ProfileID"]);
+
+            sqlCommand.Parameters.AddWithValue("@Profile_ID", profileid);
             sqlCommand.Parameters.AddWithValue("@Address_Number", home.AddressNumber);
             sqlCommand.Parameters.AddWithValue("@Address_Name", home.AddressName);
             sqlCommand.Parameters.AddWithValue("@AddressCity", home.AddressCity);
