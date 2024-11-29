@@ -17,9 +17,8 @@
                 <p><strong>Year Built:</strong> @Model.YearBuild</p>
                 <p><strong>Heating:</strong> @Model.Heating</p>
                 <p><strong>Cooling:</strong> @Model.Cooling</p>
-                <p><strong>Price:</strong> @Model.AskingPrice</p>
+                <p><strong>Price:</strong> @Model.AskingPrice.ToString("C")</p>
                 <p><strong>Utilities:</strong> @Model.Utilities</p>
-                <p><strong>Description:</strong> @Model.Description</p>
                 <p><strong>Garage:</strong> @Model.Garage</p>
                 <p><strong>Bedrooms:</strong> @Model.BedroomCount</p>
                 <p><strong>Bathrooms:</strong> @Model.BathroomCount</p>
@@ -33,6 +32,59 @@
                 <p><strong>Real Estate Company:</strong> @Model.RealEstateCompany</p>
                 <p><strong>Company Phone:</strong> @Model.CompanyPhone</p>
             </div>
+            <div class="mt-4">
+                <h4 class="text-center">Description</h4>
+                <p class="text-justify">@Model.Description</p>
+            </div>
         </div>
+    </div>
+
+    <!-- Room Details Section -->
+    <div class="mt-5">
+        <h3 class="text-center">Room Details</h3>
+        @if (Model.Rooms != null && Model.Rooms.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Room Type</th>
+                        <th>Width (ft)</th>
+                        <th>Length (ft)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var room in Model.Rooms)
+                    {
+                        <tr>
+                            <td>@room.RoomType</td>
+                            <td>@room.Width</td>
+                            <td>@room.Length</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-center text-muted">No room details available.</p>
+        }
+    </div>
+
+    <!-- Amenities Section -->
+    <div class="mt-5">
+        <h3 class="text-center">Amenities</h3>
+        @if (Model.Amenities != null && Model.Amenities.Any())
+        {
+            <ul class="list-group">
+                @foreach (var amenity in Model.Amenities)
+                {
+                    <li class="list-group-item">@amenity</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="text-center text-muted">No amenities available.</p>
+        }
     </div>
 </div>

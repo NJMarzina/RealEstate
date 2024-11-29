@@ -130,7 +130,17 @@ namespace WebApi.Controllers
 
             return showings;
         }
-
-
+        [HttpDelete("DeleteHome")]
+        public bool DeleteHome(int id)
+        {
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
+            objCommand.CommandType = CommandType.StoredProcedure;
+            objCommand.CommandText = "DeleteHouse";
+            SqlParameter Deletehouse = new SqlParameter("@HomeID", id);
+            objCommand.Parameters.Add(Deletehouse);
+            objDB.DoUpdate(objCommand);
+            return true;
+        }
     }
 }

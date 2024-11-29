@@ -214,7 +214,55 @@ namespace WebApi.Controllers
                 home.BedroomCount = Convert.ToInt32(objCommand.Parameters["@BedroomCount"].Value);
                 home.BathroomCount = Convert.ToInt32(objCommand.Parameters["@BathroomCount"].Value);
             }
-                return home;
+
+            SqlCommand descriptionCommand = new SqlCommand
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "GetHomeDescription"
+            };
+            descriptionCommand.Parameters.AddWithValue("@HomeID", id);
+
+            DataSet descriptionDataSet = objDB.GetDataSet(descriptionCommand);
+            if (descriptionDataSet.Tables[0].Rows.Count > 0)
+            {
+                home.Description = descriptionDataSet.Tables[0].Rows[0]["Description"].ToString();
+            }
+
+
+
+            SqlCommand roomCommand = new SqlCommand
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "GetRoomsByHomeId"
+            };
+            roomCommand.Parameters.AddWithValue("@HomeID", id);
+
+            DataSet roomDataSet = objDB.GetDataSet(roomCommand);
+            foreach (DataRow row in roomDataSet.Tables[0].Rows)
+            {
+                home.Rooms.Add(new RoomDetails
+                {
+                    RoomType = row["RoomType"].ToString(),
+                    Width = row["Width"] != DBNull.Value ? Convert.ToInt32(row["Width"]) : 0,
+                    Length = row["Length"] != DBNull.Value ? Convert.ToInt32(row["Length"]) : 0
+                });
+            }
+
+
+            SqlCommand amenitiesCommand = new SqlCommand
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "GetAmenitiesByHomeId"
+            };
+            amenitiesCommand.Parameters.AddWithValue("@HomeID", id);
+
+            DataSet amenitiesDataSet = objDB.GetDataSet(amenitiesCommand);
+            foreach (DataRow row in amenitiesDataSet.Tables[0].Rows)
+            {
+                home.Amenities.Add(row["AmenitiesName"].ToString());
+            }
+
+            return home;
         }
        
         [HttpPost("AddHomeShowing")]

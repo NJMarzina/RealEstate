@@ -26,6 +26,12 @@
                                     <strong>Asking Price:</strong> @home.askingPrice?.ToString("C")<br>
                                     <strong>Home ID:</strong> @home.homeId
                                 </p>
+                              
+                                <form asp-controller="Broker" asp-action="DeleteHome" method="post">
+                                    <input type="hidden" name="id" value="@home.homeId" />
+                                    <button type="submit" class="btn btn-danger">Delete Home</button>
+                                </form>
+                            
                             </div>
 
 

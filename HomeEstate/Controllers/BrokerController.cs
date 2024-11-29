@@ -113,8 +113,32 @@ namespace HomeEstate.Controllers
             }
             return View("BrokerShowing");
         }
-    
-    }
+
+        [HttpPost]
+        public IActionResult DeleteHome(int id)
+        {
+            String webApiUrl = "https://localhost:7285/api/Broker/DeleteHome/";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
+            request.Method = "DELETE";
+            request.ContentType = "application/json";
+
+            
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+             
+                response.Close();
+            
+            
+
+            // Redirect back to the Broker Listing view
+            var brokerId = Request.Cookies["BrokerID"];
+            return RedirectToAction("BrokerListing", new { id = brokerId });
+        }
+
+
+
 
     }
+
+}
 

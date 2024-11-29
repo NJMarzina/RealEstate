@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace HomeLibrary
 {
@@ -26,5 +26,18 @@ namespace HomeLibrary
         public string CompanyPhone { get; set; }
         public int BedroomCount { get; set; }
         public int BathroomCount { get; set; }
+
+        // List of rooms
+        public List<RoomDetails> Rooms { get; set; } = new List<RoomDetails>();
+
+        // List of amenities
+        public List<string> Amenities { get; set; } = new List<string>();
+    }
+
+    public class RoomDetails
+    {
+        public string RoomType { get; set; }
+        public int Width { get; set; }
+        public int Length { get; set; }
     }
 }
