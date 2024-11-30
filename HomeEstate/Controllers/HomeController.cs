@@ -147,6 +147,8 @@ namespace HomeEstate.Controllers
             hs.ShowingDate = Homeshowing.ShowingDate;
             hs.BuyerEmail= Homeshowing.BuyerEmail;
             hs.homeid = Homeshowing.homeid;
+         
+            
             string url = "https://localhost:7285/api/Home/AddHomeShowing/";
             JavaScriptSerializer js = new JavaScriptSerializer();
             String jsonCustomer = js.Serialize(hs);

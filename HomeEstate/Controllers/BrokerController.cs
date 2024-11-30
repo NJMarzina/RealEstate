@@ -117,7 +117,7 @@ namespace HomeEstate.Controllers
         [HttpPost]
         public IActionResult DeleteHome(int id)
         {
-            String webApiUrl = "https://localhost:7285/api/Broker/DeleteHome/";
+            String webApiUrl = "https://localhost:7285/api/Broker/DeleteHome/"+id;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
             request.Method = "DELETE";
