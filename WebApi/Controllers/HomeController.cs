@@ -193,6 +193,7 @@ namespace WebApi.Controllers
             if (ds.Tables[0].Rows.Count > 0)
             {
                 home = new HomeDetails();
+                home.HomeId = id;
                 home.AddressNumber = objCommand.Parameters["@AddressNumber"].Value.ToString();
                 home.AddressName = objCommand.Parameters["@AddressName"].Value.ToString();
                 home.AddressCity = objCommand.Parameters["@AddressCity"].Value.ToString();

@@ -147,5 +147,41 @@ namespace WebApi.Controllers
             return true;
         }
 
+        [HttpPost("EditHome")]
+        public bool EditHome([FromBody] EditHomeModel home)
+        {
+            SqlCommand sqlCommand = new SqlCommand();
+            DBConnect dbConnection = new DBConnect();
+            sqlCommand.CommandText = "HouseChange";
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+
+            if (home == null)
+            {
+                return false; // Return false if the provided home object is null
+            }
+
+            sqlCommand.Parameters.AddWithValue("@Home_ID", home.HomeId);
+            sqlCommand.Parameters.AddWithValue("@AddressNumber", home.AddressNumber);
+            sqlCommand.Parameters.AddWithValue("@AddressName", home.AddressName);
+            sqlCommand.Parameters.AddWithValue("@AddressCity", home.AddressCity);
+            sqlCommand.Parameters.AddWithValue("@AddressState", home.AddressState);
+            sqlCommand.Parameters.AddWithValue("@AddressZip", home.AddressZip);
+            sqlCommand.Parameters.AddWithValue("@PropertyType", home.PropertyType);
+            sqlCommand.Parameters.AddWithValue("@Heating", home.Heating);
+            sqlCommand.Parameters.AddWithValue("@Cooling", home.Cooling);
+            sqlCommand.Parameters.AddWithValue("@YearBuild", home.YearBuild);
+            sqlCommand.Parameters.AddWithValue("@Garage", home.Garage);
+            sqlCommand.Parameters.AddWithValue("@Utilities", home.Utilities);
+            sqlCommand.Parameters.AddWithValue("@Description", home.Description);
+            sqlCommand.Parameters.AddWithValue("@AskingPrice", home.AskingPrice);
+
+            int rowsAffected = dbConnection.DoUpdate(sqlCommand);
+            if( rowsAffected >0){
+                return true;
+            }
+            else return false;
+           
+        }
+
     }
 }

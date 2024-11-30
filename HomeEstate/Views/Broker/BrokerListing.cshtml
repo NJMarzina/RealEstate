@@ -31,7 +31,16 @@
                                     <input type="hidden" name="id" value="@home.homeId" />
                                     <button type="submit" class="btn btn-danger">Delete Home</button>
                                 </form>
-                            
+
+                              
+                                
+                                <form action="@Url.Action("EditHomes", "Broker", new { id = home.homeId })" method="post">
+                                    <input type="hidden" name="homeId" value="@home.homeId" />
+                                    <button type="submit" class="btn btn-secondary">Edit Home</button>
+                                </form>
+
+
+
                             </div>
 
 

@@ -5,6 +5,7 @@ using Nancy.Json;
 using System.Net;
 using static Azure.Core.HttpHeader;
 using HomeLibrary;
+using System;
 //using WebApi.Models;
 
 namespace HomeEstate.Controllers
@@ -114,6 +115,80 @@ namespace HomeEstate.Controllers
             return View("BrokerShowing");
         }
 
+
+
+        public IActionResult EditHomes(int id)
+        {
+
+            String webApiUrl = "https://localhost:7285/api/Home/GetHomeDetails/" + id;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream theDataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(theDataStream);
+            String data = reader.ReadToEnd();
+            reader.Close();
+            response.Close();
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            EditHomeModel home = js.Deserialize<EditHomeModel>(data);
+
+            if (home == null)
+            {
+                return NotFound("Home details not found.");
+            }
+
+            return View("EditHomes", home);
+        }
+
+
+
+
+        [HttpPost]
+        public IActionResult UpdateHome(EditHomeModel home)
+        {
+            EditHomeModel updatedHome = new EditHomeModel();
+
+            updatedHome.HomeId = home.HomeId;
+            updatedHome.AddressNumber = home.AddressNumber;
+            updatedHome.AddressName = home.AddressName;
+            updatedHome.AddressCity = home.AddressCity;
+            updatedHome.AddressState = home.AddressState;
+            updatedHome.AddressZip = home.AddressZip;
+            updatedHome.PropertyType = home.PropertyType;
+            updatedHome.Heating = home.Heating;
+            updatedHome.Cooling = home.Cooling;
+            updatedHome.YearBuild = home.YearBuild;
+            updatedHome.Garage = home.Garage;
+            updatedHome.Utilities = home.Utilities;
+            updatedHome.Description = home.Description;
+            updatedHome.AskingPrice = home.AskingPrice;
+            updatedHome.Status = home.Status;
+            
+          
+            string url = "https://localhost:7285/api/BrokerUser/EditHome/";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            String jsonCustomer = js.Serialize(updatedHome);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            StreamWriter writer = new StreamWriter(request.GetRequestStream());
+            writer.Write(jsonCustomer);
+            writer.Flush();
+            writer.Close();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream theDataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(theDataStream);
+            String data = reader.ReadToEnd();
+            reader.Close();
+            response.Close();
+            return RedirectToAction("BrokerDashboard", "Broker");
+        }
+
+
+
         [HttpPost]
         public IActionResult DeleteHome(int id)
         {
@@ -134,8 +209,6 @@ namespace HomeEstate.Controllers
             var brokerId = Request.Cookies["BrokerID"];
             return RedirectToAction("BrokerListing", new { id = brokerId });
         }
-
-
 
 
     }
