@@ -31,7 +31,26 @@ namespace WebApi.Controllers
             SqlCommand objCommand = new SqlCommand();
             SqlCommand objCommandProfile = new SqlCommand();
 
-            string SQL = "SELECT Home_ID,Address_Number, Address_Name, AddressCity, AddressState, AddressZip, Property_Type ,Year_Build, AskingPrice, Status FROM Home";
+
+            string SQL = @"
+    SELECT 
+        h.Home_ID,
+        h.Address_Number, 
+        h.Address_Name, 
+        h.AddressCity, 
+        h.AddressState, 
+        h.AddressZip, 
+        h.Property_Type,
+        h.Year_Build, 
+        h.AskingPrice, 
+        h.Status,
+        (SELECT TOP 1 hi.Imagie 
+         FROM HomeImage hi 
+         WHERE hi.Home_Id = h.Home_ID) AS Imagie
+    FROM 
+        Home h";
+
+
             DataSet ds = objDB.GetDataSet(SQL);
 
             List<HomeModel> homes = new List<HomeModel>();
@@ -49,6 +68,8 @@ namespace WebApi.Controllers
                     PropertyType = row["Property_Type"].ToString(),
                     YearBuild = Convert.ToInt32(row["Year_Build"]),
                     AskingPrice = Convert.ToInt32(row["AskingPrice"]),
+                    ImageUrl = row["Imagie"] == DBNull.Value ? null : row["Imagie"].ToString() 
+
                 });
             }
 
@@ -261,6 +282,22 @@ namespace WebApi.Controllers
             foreach (DataRow row in amenitiesDataSet.Tables[0].Rows)
             {
                 home.Amenities.Add(row["AmenitiesName"].ToString());
+            }
+
+
+            SqlCommand imagesCommand = new SqlCommand
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "GetImagesByHomeId"
+            };
+            imagesCommand.Parameters.AddWithValue("@HomeID", id);
+            DataSet imagesDataSet = objDB.GetDataSet(imagesCommand);
+            foreach (DataRow row in imagesDataSet.Tables[0].Rows)
+            {
+                home.Images.Add(new HomeImageDetails
+                {
+                    ImageUrl = row["Imagie"].ToString()
+                });
             }
 
             return home;

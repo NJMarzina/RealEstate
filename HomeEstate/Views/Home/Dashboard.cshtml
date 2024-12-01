@@ -13,6 +13,19 @@
                 {
                     <div class="col-md-4 mb-4">
                         <div class="card shadow-sm">
+
+
+                            @if (!string.IsNullOrEmpty(home.ImageUrl))
+                            {
+                                <img src="@home.ImageUrl" class="card-img-top" alt="Home Image" />
+                            }
+                            else
+                            {
+                                <div class="card-img-top text-center p-4">
+                                    <p class="text-muted">No image available</p>
+                                </div>
+                            }
+
                             <div class="card-body">
                                 <h5 class="card-title">Address: @home.AddressNumber @home.AddressName</h5>
                                 <p class="card-text">
@@ -22,7 +35,6 @@
                                     <strong>Property Type:</strong> @home.PropertyType<br>
                                     <strong>Year Built:</strong> @home.YearBuild<br>
                                     <strong>Asking Price:</strong> @home.AskingPrice?.ToString("C")<br>
-                                    <strong>Home ID:</strong> @home.HomeID
                                     <a href="@Url.Action("HomeDetails", "Home", new { id = home.HomeID })" class="btn btn-primary">View Details</a>
 
                                     <form id="requestsForm" form asp-controller="Home" asp-action="Requests" method="get">

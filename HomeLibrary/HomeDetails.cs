@@ -32,6 +32,8 @@ namespace HomeLibrary
 
         // List of amenities
         public List<string> Amenities { get; set; } = new List<string>();
+
+        public List<HomeImageDetails> Images { get; set; } = new List<HomeImageDetails>();
     }
 
     public class RoomDetails
@@ -40,4 +42,13 @@ namespace HomeLibrary
         public int Width { get; set; }
         public int Length { get; set; }
     }
+
+
+
+    public class HomeImageDetails
+    {
+        public string ImageUrl { get; set; } // URL or path to the image
+        public string Description { get; set; } // Optional description of the image
+    }
+
 }

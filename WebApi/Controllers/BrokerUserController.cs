@@ -183,5 +183,31 @@ namespace WebApi.Controllers
            
         }
 
+
+        [HttpPost("AddRoom")]
+        public bool AddRoom([FromBody]RoomModel room)
+        {
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
+
+            objCommand.CommandType = CommandType.StoredProcedure;
+            objCommand.CommandText = "AddRoom";
+
+            objCommand.Parameters.AddWithValue("@Home_ID",room.RoomId);
+            objCommand.Parameters.AddWithValue("@RoomType",room.RoomType);
+            objCommand.Parameters.AddWithValue("@Width", room.Width);
+            objCommand.Parameters.AddWithValue("@Length", room.Length);
+            objDB.DoUpdate(objCommand);
+
+            return true;
+        }
+  
+        
+
+
+
+
+
+
     }
 }

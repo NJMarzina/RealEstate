@@ -1,0 +1,40 @@
+﻿@model HomeEstate.Models.RoomModel
+
+@{
+    ViewData["Title"] = "Add Room";
+}
+
+<div class="container mt-5">
+    <div class="card mx-auto shadow-lg" style="max-width: 600px;">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Add Room</h2>
+
+            <form asp-controller="Broker" asp-action="AddRoom" method="post">
+                <input type="hidden" asp-for="RoomId" />
+
+                <div class="mb-3">
+                    <label asp-for="RoomType" class="form-label">Room Type</label>
+                    <select asp-for="RoomType" class="form-select" required>
+                        <option value="Bathroom">Bathroom</option>
+                        <option value="Bedroom">Bedroom</option>
+                    </select>
+                    <span asp-validation-for="RoomType" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Width" class="form-label">Width (ft)</label>
+                    <input asp-for="Width" class="form-control" type="number" min="0" required />
+                    <span asp-validation-for="Width" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Length" class="form-label">Length (ft)</label>
+                    <input asp-for="Length" class="form-control" type="number" min="0" required />
+                    <span asp-validation-for="Length" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Save Room</button>
+            </form>
+        </div>
+    </div>
+</div>

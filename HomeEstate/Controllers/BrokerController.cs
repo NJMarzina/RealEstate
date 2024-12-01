@@ -6,6 +6,7 @@ using System.Net;
 using static Azure.Core.HttpHeader;
 using HomeLibrary;
 using System;
+using System.Diagnostics;
 //using WebApi.Models;
 
 namespace HomeEstate.Controllers
@@ -209,6 +210,51 @@ namespace HomeEstate.Controllers
             var brokerId = Request.Cookies["BrokerID"];
             return RedirectToAction("BrokerListing", new { id = brokerId });
         }
+
+        [HttpGet]
+        public IActionResult RequestID(int HomeId)
+        {
+            RoomModel room = new RoomModel
+            {
+                RoomId = HomeId,
+                Width=null,
+                Length=null,
+                RoomType=string.Empty
+
+            };          
+            ViewBag.HomeId2 = HomeId;
+            Debug.WriteLine(HomeId);
+            return View("~/Views/Broker/AddRoom.cshtml", room);
+        }
+
+
+        [HttpPost]
+        public IActionResult AddRoom(RoomModel Room) {
+            RoomModel UpdateRoom = new RoomModel();
+            UpdateRoom.RoomId = Room.RoomId;
+            UpdateRoom.RoomType=Room.RoomType;
+            UpdateRoom.Width = Room.Width;
+            UpdateRoom.Length = Room.Length;
+            string url = "https://localhost:7285/api/BrokerUser/AddRoom/";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            String jsonCustomer = js.Serialize(UpdateRoom);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            StreamWriter writer = new StreamWriter(request.GetRequestStream());
+            writer.Write(jsonCustomer);
+            writer.Flush();
+            writer.Close();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream theDataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(theDataStream);
+            String data = reader.ReadToEnd();
+            reader.Close();
+            response.Close();
+            return RedirectToAction("BrokerDashboard", "Broker");
+        }
+
+
 
 
     }

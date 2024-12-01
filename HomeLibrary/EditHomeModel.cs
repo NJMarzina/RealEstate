@@ -23,5 +23,9 @@ namespace HomeLibrary
         public string Description { get; set; }
         public decimal AskingPrice { get; set; }
         public string Status { get; set; }
+
     }
+
+
+
 }

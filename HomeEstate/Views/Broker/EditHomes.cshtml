@@ -1,5 +1,4 @@
 ﻿@model HomeLibrary.EditHomeModel
-
 @{
     ViewData["Title"] = "Edit Page";
 }
@@ -187,6 +186,17 @@
 
                 <button type="submit" class="btn btn-primary">Save Changes</button>
             </form>
+
+            <h2 class="card-title text-center mb-4">Add Room</h2>
+
+
+            <form asp-controller="Broker" asp-action="RequestID" method="get">
+                <!-- Send HomeId as a hidden input -->
+                <input type="hidden" asp-for="HomeId" />
+                <button type="submit" class="btn btn-success">Add Room</button>
+            </form>
+         
+        
         </div>
     </div>
 </div>
