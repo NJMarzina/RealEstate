@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace HomeEstate.Models
+namespace HomeLibrary
 {
-    public class Home
+    public class AddHomeModel
     {
-        public int HomeID { get; set; }
         public int ProfileID { get; set; }
 
         public string AddressNumber { get; set; }
@@ -36,7 +39,7 @@ namespace HomeEstate.Models
         public int AskingPrice { get; set; }
 
         public string Status { get; set; }
-        public string ImageUrl { get; set; }
+
 
     }
 }

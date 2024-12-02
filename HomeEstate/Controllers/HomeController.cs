@@ -194,54 +194,54 @@ namespace HomeEstate.Controllers
                 return View("HomeDetails", home);
         }
         
+
+        public IActionResult CreateNewHome()
+        {
+            return View();
+        }
         [HttpPost]
-        public IActionResult CreateNewHome(Home home)
+        public IActionResult CreateNewHome(AddHomeModel home)
         {
             var brokerID = Request.Cookies["BrokerID"];
             var profileID = Request.Cookies["ProfileID"];
+            AddHomeModel homeModel = new AddHomeModel();
 
-            /**/
-            
-            Home newHome = new Home();
-            newHome.AddressNumber = home.AddressNumber;
-            newHome.AddressName = home.AddressName;
-            newHome.AddressCity = home.AddressCity;
-            newHome.AddressState = home.AddressState;
-            newHome.AddressZip = home.AddressZip;
-            newHome.PropertyType = home.PropertyType;
-            newHome.Heating = home.Heating;
-            newHome.Cooling = home.Cooling;
-            newHome.YearBuild = home.YearBuild;
-            newHome.Garage = home.Garage;
-            newHome.Utilities = home.Utilities;
-            newHome.Description = home.Description;
-            newHome.AskingPrice = home.AskingPrice;
-            newHome.Status = home.Status;
-            
-
-            string webApiUrl = "https://localhost:7285/api/Home/CreateNewHome/";
+            homeModel.ProfileID =Convert.ToInt32( Request.Cookies["ProfileID"]);
+            homeModel.AddressNumber = home.AddressNumber;
+            homeModel.AddressName = home.AddressName;
+            homeModel.AddressCity = home.AddressCity;
+            homeModel.AddressState = home.AddressState;
+            homeModel.AddressZip = home.AddressZip;
+            homeModel.PropertyType = home.PropertyType;
+            homeModel.Size = home.Size;
+            homeModel.Heating = home.Heating;
+            homeModel.Cooling = home.Cooling;
+            homeModel.YearBuild = home.YearBuild;
+            homeModel.Garage = home.Garage;
+            homeModel.Utilities = home.Utilities;
+            homeModel.Description = home.Description;
+            homeModel.AskingPrice = home.AskingPrice;
+            homeModel.Status = home.Status;
+           
+            string url = "https://localhost:7285/api/Home/CreateNewHome/";
 
             JavaScriptSerializer js = new JavaScriptSerializer();
-            String jsonHome = js.Serialize(home);   //send profile id aswell
+            String jsonCustomer = js.Serialize(homeModel);
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             request.ContentType = "application/json";
             StreamWriter writer = new StreamWriter(request.GetRequestStream());
-            writer.Write(jsonHome);
+            writer.Write(jsonCustomer);
             writer.Flush();
             writer.Close();
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();  //400 error here
-            //i think the error is due to a "home" mismatch of sending different versions of home and homemodel somewhere
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream theDataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(theDataStream);
             String data = reader.ReadToEnd();
             reader.Close();
             response.Close();
-
-            
-            /**/
-            return View();
+            return RedirectToAction("BrokerDashboard", "Broker");
         }
 
     }

@@ -478,7 +478,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("CreateNewHome")]
-        public bool CreateNewHome([FromBody] HomeModel home)
+        public bool CreateNewHome([FromBody] AddHomeModel home)
         {
             SqlCommand sqlCommand = new SqlCommand();
             DBConnect dbConnection = new DBConnect();
@@ -491,9 +491,8 @@ namespace WebApi.Controllers
             sqlCommand.Parameters.Add(returnParameter);
 
             //int profileid = int.Parse(Request.Cookies["ProfileID"]);
-            int profileid = 39;
 
-            sqlCommand.Parameters.AddWithValue("@Profile_ID", profileid);
+            sqlCommand.Parameters.AddWithValue("@Profile_ID", home.ProfileID);
             sqlCommand.Parameters.AddWithValue("@Address_Number", home.AddressNumber);
             sqlCommand.Parameters.AddWithValue("@Address_Name", home.AddressName);
             sqlCommand.Parameters.AddWithValue("@AddressCity", home.AddressCity);
