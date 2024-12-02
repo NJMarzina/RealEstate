@@ -15,8 +15,7 @@
     -->
 
     <p>
-       
-        <a asp-controller="Home" asp-action="CreateNewHome">Create Home</a>.
+        <a href="@Url.Action("CreateNewHome", "Home")" class="btn btn-secondary">Create Home</a>
     </p>
 
     <a href="@Url.Action("BrokerListing", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary">View My Listings</a>
