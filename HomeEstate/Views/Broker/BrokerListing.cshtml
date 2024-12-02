@@ -2,6 +2,21 @@
     ViewData["Title"] = "Broker Listing";
 }
 
+<style>
+    .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%; 
+    }
+
+    .card-body {
+        flex-grow: 1; 
+    }
+
+    .card-footer {
+        flex-shrink: 0; 
+    }
+</style>
 
 <div class="text-center">
     <h1 class="display-4">Home Listing</h1>
@@ -10,11 +25,22 @@
             <p>dsadasd</p>
             @if (ViewBag.HomeList != null)
             {
-
                 foreach (var home in ViewBag.HomeList)
                 {
-                    <div class="col-md-4 mb-4">
-                        <div class="card shadow-sm">
+                    <div class="col-md-4 mb-4 d-flex">
+                        <div class="card shadow-sm w-100">
+                            <!-- Display Home Image -->
+                            @if (!string.IsNullOrEmpty(home.ImageUrl))
+                            {
+                                <img src="@home.ImageUrl" class="card-img-top" alt="Home Image" />
+                            }
+                            else
+                            {
+                                <div class="card-img-top text-center p-4">
+                                    <p class="text-muted">No image available</p>
+                                </div>
+                            }
+
                             <div class="card-body">
                                 <h5 class="card-title">Address: @home.addressNumber @home.addressName</h5>
                                 <p class="card-text">
@@ -26,34 +52,20 @@
                                     <strong>Asking Price:</strong> @home.askingPrice?.ToString("C")<br>
                                     <strong>Home ID:</strong> @home.homeId
                                 </p>
-                              
+                            </div>
+                            <div class="card-footer">
                                 <form asp-controller="Broker" asp-action="DeleteHome" method="post">
                                     <input type="hidden" name="id" value="@home.homeId" />
-                                    <button type="submit" class="btn btn-danger">Delete Home</button>
+                                    <button type="submit" class="btn btn-danger w-100">Delete Home</button>
                                 </form>
-
-                              
-                                
-                                <form action="@Url.Action("EditHomes", "Broker", new { id = home.homeId })" method="post">
+                                <form action="@Url.Action("EditHomes", "Broker", new { id = home.homeId })" method="post" class="mt-2">
                                     <input type="hidden" name="homeId" value="@home.homeId" />
-                                    <button type="submit" class="btn btn-secondary">Edit Home</button>
+                                    <button type="submit" class="btn btn-secondary w-100">Edit Home</button>
                                 </form>
-
-
-
                             </div>
-
-
-
                         </div>
-
-
-
                     </div>
-
-
                 }
-
             }
             else
             {
@@ -61,21 +73,6 @@
                     <p>No homes available</p>
                 </div>
             }
-
-
-
         </div>
-
-
-
-
-
     </div>
-
-
-
-
-
-
-
 </div>

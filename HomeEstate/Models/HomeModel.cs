@@ -18,5 +18,7 @@
         public string description { get; set; }
         public int askingPrice { get; set; }
         public string status { get; set; }
+        public string ImageUrl { get; set; }
+
     }
 }

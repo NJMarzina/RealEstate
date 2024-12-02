@@ -37,6 +37,8 @@ namespace WebApi.Controllers
 
             foreach (DataRow row in ds.Tables[0].Rows)
             {
+                int homeId = Convert.ToInt32(row["Home_ID"].ToString());
+                string topImage = GetTopImageByHomeId(homeId);
                 homes.Add(new HomeModel
                 {
                     homeId = Convert.ToInt32(row["Home_ID"].ToString()),
@@ -54,11 +56,32 @@ namespace WebApi.Controllers
                     Utilities = row["Utilities"].ToString(),
                     Description = row["Description"].ToString(),
                     AskingPrice = Convert.ToInt32(row["AskingPrice"]),
-                    Status = row["Status"].ToString()
+                    Status = row["Status"].ToString(),
+                    ImageUrl = topImage
                 });
             }
 
             return homes;
+        }
+
+        private string GetTopImageByHomeId(int homeId)
+        {
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
+            objCommand.CommandType = CommandType.StoredProcedure;
+            objCommand.CommandText = "GetTopImageByHomeId";
+            SqlParameter inputHomeId = new SqlParameter("@HomeId", homeId);
+            inputHomeId.Direction = ParameterDirection.Input;
+            objCommand.Parameters.Add(inputHomeId);
+
+            DataSet ds = objDB.GetDataSet(objCommand);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                return ds.Tables[0].Rows[0]["Imagie"].ToString();
+            }
+
+            return null; 
         }
         [HttpGet("GetOfferByBroker/{id}")]
         public List<GetHomeOfferModel> GetOfferByBroker(int id)
