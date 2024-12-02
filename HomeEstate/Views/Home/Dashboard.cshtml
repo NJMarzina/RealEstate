@@ -3,18 +3,26 @@
 }
 
 <style>
+    /* Ensure all cards are the same size */
     .card {
         display: flex;
         flex-direction: column;
-        height: 100%; 
+        height: 100%;
     }
 
     .card-body {
-        flex-grow: 1; 
+        flex-grow: 1; /* Allow the body to stretch */
     }
 
     .card-footer {
-        flex-shrink: 0; 
+        flex-shrink: 0; /* Footer remains fixed */
+    }
+
+    /* Style for images to ensure they fit properly */
+    .card-img-top {
+        width: 100%;
+        height: 200px; /* Adjust height to desired size */
+        object-fit: cover; /* Ensures image maintains aspect ratio */
     }
 </style>
 
@@ -22,62 +30,64 @@
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrfVvIlLb0jOKGcmfqMWVziY0PVoPAChCHyA&s"
          alt="Logo" class="logo">
 
-<div class="text-center">
-    <h1 class="display-4">Dashboard</h1>
+    <div class="text-center">
+        <h1 class="display-4">Dashboard</h1>
 
-    <div class="container">
-        <div class="row">
-            @if (ViewBag.HomeList != null)
-            {
-                foreach (var home in ViewBag.HomeList)
+        <div class="container">
+            <div class="row">
+                @if (ViewBag.HomeList != null)
                 {
-                    <div class="col-md-4 mb-4 d-flex">
-                        <div class="card shadow-sm w-100">
-                            @if (!string.IsNullOrEmpty(home.ImageUrl))
-                            {
-                                <img src="@home.ImageUrl" class="card-img-top" alt="Home Image" />
-                            }
-                            else
-                            {
-                                <div class="card-img-top text-center p-4">
-                                    <p class="text-muted">No image available</p>
-                                </div>
-                            }
+                    foreach (var home in ViewBag.HomeList)
+                    {
+                        <div class="col-md-4 mb-4 d-flex">
+                            <div class="card shadow-sm w-100">
+                                <!-- Display Home Image -->
+                                @if (!string.IsNullOrEmpty(home.ImageUrl))
+                                {
+                                    <img src="@home.ImageUrl" class="card-img-top" alt="Home Image" />
+                                }
+                                else
+                                {
+                                    <div class="card-img-top text-center p-4">
+                                        <p class="text-muted">No image available</p>
+                                    </div>
+                                }
 
-                            <div class="card-body">
-                                <h5 class="card-title">Address: @home.AddressNumber @home.AddressName</h5>
-                                <p class="card-text">
-                                    <strong>City:</strong> @home.AddressCity<br>
-                                    <strong>State:</strong> @home.AddressState<br>
-                                    <strong>Zip:</strong> @home.AddressZip<br>
-                                    <strong>Property Type:</strong> @home.PropertyType<br>
-                                    <strong>Year Built:</strong> @home.YearBuild<br>
-                                    <strong>Asking Price:</strong> @home.AskingPrice?.ToString("C")<br>
-                                </p>
-                            </div>
-                            <div class="card-footer">
-                                <div class="d-flex justify-content-between">
-                                    <a href="@Url.Action("HomeDetails", "Home", new { id = home.HomeID })" class="btn btn-primary flex-fill me-2">View Details</a>
-                                    <form id="requestsForm" asp-controller="Home" asp-action="Requests" method="get" class="m-0">
-                                        <input type="hidden" name="HomeId" value="@home.HomeID" />
-                                        <button type="submit" class="btn btn-secondary flex-fill me-2">Schedule Showing</button>
-                                    </form>
-                                    <form id="OfferForm" asp-controller="Home" asp-action="Offer" method="get" class="m-0">
-                                        <input type="hidden" name="HomeId" value="@home.HomeID" />
-                                        <button type="submit" class="btn btn-secondary flex-fill">Home Offer Form</button>
-                                    </form>
+                                <div class="card-body">
+                                    <h5 class="card-title">Address: @home.AddressNumber @home.AddressName</h5>
+                                    <p class="card-text">
+                                        <strong>City:</strong> @home.AddressCity<br>
+                                        <strong>State:</strong> @home.AddressState<br>
+                                        <strong>Zip:</strong> @home.AddressZip<br>
+                                        <strong>Property Type:</strong> @home.PropertyType<br>
+                                        <strong>Year Built:</strong> @home.YearBuild<br>
+                                        <strong>Asking Price:</strong> @home.AskingPrice?.ToString("C")<br>
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="@Url.Action("HomeDetails", "Home", new { id = home.HomeID })" class="btn btn-primary flex-fill me-2">View Details</a>
+                                        <form id="requestsForm" asp-controller="Home" asp-action="Requests" method="get" class="m-0">
+                                            <input type="hidden" name="HomeId" value="@home.HomeID" />
+                                            <button type="submit" class="btn btn-secondary flex-fill me-2">Schedule Showing</button>
+                                        </form>
+                                        <form id="OfferForm" asp-controller="Home" asp-action="Offer" method="get" class="m-0">
+                                            <input type="hidden" name="HomeId" value="@home.HomeID" />
+                                            <button type="submit" class="btn btn-secondary flex-fill">Home Offer Form</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12">
+                        <p>No homes available</p>
                     </div>
                 }
-            }
-            else
-            {
-                <div class="col-12">
-                    <p>No homes available</p>
-                </div>
-            }
+            </div>
         </div>
     </div>
 </div>
