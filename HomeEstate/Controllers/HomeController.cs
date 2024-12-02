@@ -200,8 +200,9 @@ namespace HomeEstate.Controllers
             var brokerID = Request.Cookies["BrokerID"];
             var profileID = Request.Cookies["ProfileID"];
 
-            /*
-            WebApi.Models.HomeModel newHome = new WebApi.Models.HomeModel();
+            /**/
+            
+            Home newHome = new Home();
             newHome.AddressNumber = home.AddressNumber;
             newHome.AddressName = home.AddressName;
             newHome.AddressCity = home.AddressCity;
@@ -221,7 +222,7 @@ namespace HomeEstate.Controllers
             string webApiUrl = "https://localhost:7285/api/Home/CreateNewHome/";
 
             JavaScriptSerializer js = new JavaScriptSerializer();
-            String jsonHome = js.Serialize(home);
+            String jsonHome = js.Serialize(home);   //send profile id aswell
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
             request.Method = "POST";
@@ -238,7 +239,8 @@ namespace HomeEstate.Controllers
             reader.Close();
             response.Close();
 
-            */
+            
+            /**/
             return View();
         }
 
