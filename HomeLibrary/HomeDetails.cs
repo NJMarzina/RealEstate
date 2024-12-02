@@ -16,7 +16,7 @@ namespace HomeLibrary
         public int YearBuild { get; set; }
         public string Garage { get; set; }
         public string Utilities { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public decimal AskingPrice { get; set; }
         public string Status { get; set; }
         public string WorkAddressName { get; set; }

@@ -76,6 +76,42 @@ namespace WebApi.Controllers
             return homes;
         }
 
+        [HttpGet("SearchHome")]
+
+        public List<HomeModel> SearchHome(string city)
+        {
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
+            objCommand.CommandType = CommandType.StoredProcedure;
+            objCommand.CommandText = "GetHomesByCity";
+            objCommand.Parameters.AddWithValue("@City", city);
+            DataSet ds = objDB.GetDataSet(objCommand);
+            List<HomeModel> homes = new List<HomeModel>();
+
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                homes.Add(new HomeModel
+                {
+                    homeId = Convert.ToInt32(row["Home_ID"].ToString()),
+                    AddressNumber = row["Address_Number"].ToString(),
+                    AddressName = row["Address_Name"].ToString(),
+                    AddressCity = row["AddressCity"].ToString(),
+                    AddressState = row["AddressState"].ToString(),
+                    AddressZip = row["AddressZip"].ToString(),
+                    PropertyType = row["Property_Type"].ToString(),
+                    YearBuild = Convert.ToInt32(row["Year_Build"]),
+                    AskingPrice = Convert.ToInt32(row["AskingPrice"]),
+                    ImageUrl = row["Imagie"] == DBNull.Value ? null : row["Imagie"].ToString()
+
+                });
+            }
+
+            return homes;
+
+        }
+
+
+
 
         [HttpGet("GetHomeDetails/{id}")]
         public HomeDetails GetHomeDetails(int id)
