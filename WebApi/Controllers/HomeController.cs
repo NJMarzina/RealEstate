@@ -545,9 +545,11 @@ namespace WebApi.Controllers
             sqlCommand.Parameters.AddWithValue("@AskingPrice", home.AskingPrice);
             sqlCommand.Parameters.AddWithValue("@Status", home.Status);
 
+            sqlCommand.Parameters.AddWithValue("@AmenitiesName", home.AmenitiesName);
+
             //Ammentities checkboxes and new ammentities table
 
-           
+
             int rev = dbConnection.DoUpdate(sqlCommand);
 
             if (rev > 0)

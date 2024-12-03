@@ -40,6 +40,6 @@ namespace HomeLibrary
 
         public string Status { get; set; }
 
-
+        public string AmenitiesName { get; set; }
     }
 }

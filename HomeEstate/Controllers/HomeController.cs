@@ -222,6 +222,8 @@ namespace HomeEstate.Controllers
             homeModel.Description = home.Description;
             homeModel.AskingPrice = home.AskingPrice;
             homeModel.Status = home.Status;
+
+            homeModel.AmenitiesName = home.AmenitiesName;
            
             string url = "https://localhost:7285/api/Home/CreateNewHome/";
 
@@ -241,6 +243,11 @@ namespace HomeEstate.Controllers
             String data = reader.ReadToEnd();
             reader.Close();
             response.Close();
+
+            //ammentities string
+            //send to api
+            //add to ammentities table
+
             return RedirectToAction("BrokerDashboard", "Broker");
         }
 
