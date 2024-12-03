@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\njmar\\Source\\Repos\\RealEstate\\HomeLibrary\\HomeLibrary.csproj": {}
+    "C:\\Users\\njmar\\source\\repos\\RealEstate\\HomeLibrary\\HomeLibrary.csproj": {}
   },
   "projects": {
-    "C:\\Users\\njmar\\Source\\Repos\\RealEstate\\HomeLibrary\\HomeLibrary.csproj": {
+    "C:\\Users\\njmar\\source\\repos\\RealEstate\\HomeLibrary\\HomeLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\njmar\\Source\\Repos\\RealEstate\\HomeLibrary\\HomeLibrary.csproj",
+        "projectUniqueName": "C:\\Users\\njmar\\source\\repos\\RealEstate\\HomeLibrary\\HomeLibrary.csproj",
         "projectName": "HomeLibrary",
-        "projectPath": "C:\\Users\\njmar\\Source\\Repos\\RealEstate\\HomeLibrary\\HomeLibrary.csproj",
+        "projectPath": "C:\\Users\\njmar\\source\\repos\\RealEstate\\HomeLibrary\\HomeLibrary.csproj",
         "packagesPath": "C:\\Users\\njmar\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\njmar\\Source\\Repos\\RealEstate\\HomeLibrary\\obj\\",
         "projectStyle": "PackageReference",

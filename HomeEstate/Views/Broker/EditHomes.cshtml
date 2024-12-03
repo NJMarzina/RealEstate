@@ -11,6 +11,7 @@
             <form asp-controller="Broker" asp-action="UpdateHome" method="post">
                 <!-- Hidden input for HomeId -->
                 <input type="hidden" asp-for="HomeId" />
+                <input type="hidden" name="_method" value="PUT" />
 
                 <div class="mb-3">
                     <label asp-for="AddressNumber" class="form-label">Street Number</label>

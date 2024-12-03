@@ -170,7 +170,7 @@ namespace WebApi.Controllers
             return true;
         }
 
-        [HttpPost("EditHome")]
+        [HttpPut("EditHome")]
         public bool EditHome([FromBody] EditHomeModel home)
         {
             SqlCommand sqlCommand = new SqlCommand();
