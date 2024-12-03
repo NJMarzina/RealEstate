@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Numerics;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Http;
 
 
 namespace HomeEstate.Controllers
@@ -230,12 +231,40 @@ namespace HomeEstate.Controllers
             return View(model);
         }
 
-
+        /*
         [HttpPost]
         public IActionResult ForgetPassword(ResetPasswordModel model)
         {
             if (ModelState.IsValid)
             {
+                //get id based on username
+
+                //GetBrokerIDByUsername
+
+                webApiUrl = "https://localhost:7285/api/Login/GetBrokerIDByUsername/";
+                //WebRequest request = WebRequest.Create(webApiUrl + "GetCustomerByName/" + txtName.Text);
+                HttpWebRequest requestBrokerID = (HttpWebRequest)WebRequest.Create(webApiUrl + model.UserName);
+                requestBrokerID.Method = "GET";
+                requestBrokerID.ContentType = "application/json";
+                HttpWebResponse responseBrokerID = (HttpWebResponse)requestBrokerID.GetResponse();
+
+                Stream theBrokerIDDataStream = responseBrokerID.GetResponseStream();
+                StreamReader readerBrokerID = new StreamReader(theBrokerIDDataStream);
+                string brokerIDData = readerBrokerID.ReadToEnd();
+                readerBrokerID.Close();
+                responseBrokerID.Close();
+                JavaScriptSerializer jsBrokerID = new JavaScriptSerializer();
+                int brokerID = jsBrokerID.Deserialize<int>(brokerIDData);
+
+
+
+                //check if username is in db
+                //if yes redirect to login
+                //if no loop back to same page
+                //if yes and here then grab a question and if they answer correctly allow them to enter a new password
+
+                //basically same logic we currently have but have to add an extra page.
+
                 // Placeholder logic for processing the username
                 // You would normally verify if the username exists in the database
                 bool userExists = model.UserName == "testuser"; // Example: replace with actual database check
@@ -253,6 +282,61 @@ namespace HomeEstate.Controllers
 
             return View(model);
         }
+        */
+
+        [HttpPost]
+        public IActionResult ForgetPassword(ResetPasswordModel model)
+        {
+            int test = 0;
+
+            //if (ModelState.IsValid)
+            //{
+                try
+                {
+                    // Get broker ID based on username
+                    string webApiUrl = "https://localhost:7285/api/Login/GetBrokerIDByUsername/";
+                    HttpWebRequest requestBrokerID = (HttpWebRequest)WebRequest.Create(webApiUrl + model.UserName);
+                    requestBrokerID.Method = "GET";
+                    requestBrokerID.ContentType = "application/json";
+
+                    using (HttpWebResponse responseBrokerID = (HttpWebResponse)requestBrokerID.GetResponse())
+                    using (Stream theBrokerIDDataStream = responseBrokerID.GetResponseStream())
+                    using (StreamReader readerBrokerID = new StreamReader(theBrokerIDDataStream))
+                    {
+                        string brokerIDData = readerBrokerID.ReadToEnd();
+                        JavaScriptSerializer jsBrokerID = new JavaScriptSerializer();
+                        int brokerID = jsBrokerID.Deserialize<int>(brokerIDData);
+
+                        // Check if broker ID is valid (not 0 or -1)
+                        if (brokerID > 0)
+                        {
+                            // Store broker ID in TempData for next step
+                            TempData["BrokerID"] = brokerID;
+                            TempData["UserName"] = model.UserName;
+
+                            // Redirect to SecurityQuestion action
+                            return RedirectToAction("SecurityQuestion", "Login");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Username not found.");
+                            return View(model);
+                        }
+                    }
+                }
+                catch (WebException ex)
+                {
+                    // Log the exception
+                    ModelState.AddModelError("", "Error occurred while processing your request.");
+                    return View(model);
+                }
+            //}
+
+            // If model state is not valid, return to the view
+            return View(model);
+        }
+
+
         [HttpPost]
         public IActionResult RestartPassword(string username)
         {
