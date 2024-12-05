@@ -198,7 +198,7 @@ namespace HomeEstate.Controllers
         [HttpPost]
         public IActionResult DeleteHome(int id)
         {
-            String webApiUrl = "https://localhost:7285/api/Broker/DeleteHome/"+id;
+            String webApiUrl = "https://localhost:7285/api/BrokerUser/DeleteHome/"+id;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
             request.Method = "DELETE";
@@ -231,8 +231,45 @@ namespace HomeEstate.Controllers
             Debug.WriteLine(HomeId);
             return View("~/Views/Broker/AddRoom.cshtml", room);
         }
+        [HttpGet]
+        public IActionResult RequestImageID(int HomeId)
+        {
+            AddImagiesModel Home = new AddImagiesModel
+            {
+                HomeId = HomeId,
+                ImiageUrl=string.Empty
 
+            };
+            ViewBag.HomeId2 = HomeId;
+            Debug.WriteLine(HomeId);
+            return View("~/Views/Broker/AddImage.cshtml", Home);
 
+        }
+        [HttpPost]
+        public IActionResult AddImage(AddImagiesModel home)
+        {
+            AddImagiesModel AddImmgie = new AddImagiesModel();
+            AddImmgie.HomeId = home.HomeId;
+            AddImmgie.ImiageUrl=home.ImiageUrl;
+            string url = "https://localhost:7285/api/BrokerUser/AddImage/";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            String jsonCustomer = js.Serialize(AddImmgie);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            StreamWriter writer = new StreamWriter(request.GetRequestStream());
+            writer.Write(jsonCustomer);
+            writer.Flush();
+            writer.Close();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream theDataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(theDataStream);
+            String data = reader.ReadToEnd();
+            reader.Close();
+            response.Close();
+
+            return RedirectToAction("BrokerDashboard", "Broker");
+        }
         [HttpPost]
         public IActionResult AddRoom(RoomModel Room) {
             RoomModel UpdateRoom = new RoomModel();

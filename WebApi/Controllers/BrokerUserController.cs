@@ -205,6 +205,22 @@ namespace WebApi.Controllers
             else return false;
            
         }
+        [HttpPost("AddImage")]
+        public bool AddImage([FromBody] AddImagiesModel home)
+        {
+
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
+
+            objCommand.CommandType = CommandType.StoredProcedure;
+            objCommand.CommandText = "AddHomeImage";
+
+            objCommand.Parameters.AddWithValue("@Home_Id", home.HomeId);
+            objCommand.Parameters.AddWithValue("@Image", home.ImiageUrl);
+            objDB.DoUpdate(objCommand);
+
+            return true;
+        }
 
 
         [HttpPost("AddRoom")]

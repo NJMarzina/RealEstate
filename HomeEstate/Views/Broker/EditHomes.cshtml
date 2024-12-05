@@ -188,15 +188,21 @@
                 <button type="submit" class="btn btn-primary">Save Changes</button>
             </form>
 
-            <h2 class="card-title text-center mb-4">Add Room</h2>
+            <h2 class="card-title text-center mb-4">Add Room/ Images</h2>
 
 
-            <form asp-controller="Broker" asp-action="RequestID" method="get">
-                <!-- Send HomeId as a hidden input -->
-                <input type="hidden" asp-for="HomeId" />
-                <button type="submit" class="btn btn-success">Add Room</button>
-            </form>
-         
+            <div class="d-flex justify-content-between mt-4">
+                <form asp-controller="Broker" asp-action="RequestID" method="get" class="w-50 me-2">
+                    <input type="hidden" asp-for="HomeId" />
+                    <button type="submit" class="btn btn-success w-100">Add Room</button>
+                </form>
+
+                <form asp-controller="Broker" asp-action="RequestImageID" method="get" class="w-50 ms-2">
+                    <input type="hidden" asp-for="HomeId" />
+                    <button type="submit" class="btn btn-success w-100">Add Image</button>
+                </form>
+            </div>
+
         
         </div>
     </div>
