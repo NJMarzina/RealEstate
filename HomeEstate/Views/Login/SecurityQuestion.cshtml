@@ -7,10 +7,15 @@
 <h2>Reset Password</h2>
 
 <form asp-controller="Login" asp-action="SecurityQuestion" method="post">
+    <input asp-for="UserName" type="hidden" />
+    <h3>Security Question</h3>
+    <p>@ViewData["Question"]</p>
+
     <div class="form-group">
-        <label asp-for="Answer" class="form-label">Answer</label>
+        <label asp-for="Answer">Your Answer</label>
         <input asp-for="Answer" class="form-control" />
         <span asp-validation-for="Answer" class="text-danger"></span>
     </div>
+
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

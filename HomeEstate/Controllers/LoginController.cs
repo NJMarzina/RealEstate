@@ -346,58 +346,75 @@ namespace HomeEstate.Controllers
         [HttpGet]
         public IActionResult SecurityQuestion()
         {
-            // Retrieve BrokerID from TempData
-            int brokerId = int.Parse(TempData["BrokerID"].ToString());
-            string userName = TempData["UserName"].ToString();
-
-            if (brokerId !> 0 || string.IsNullOrEmpty(userName))
+            // Validate TempData first
+            if (TempData["BrokerID"] == null || TempData["UserName"] == null)
             {
+                // If no broker ID or username, go back to forget password
                 return RedirectToAction("ForgetPassword");
             }
 
-            DBConnect objDB = new DBConnect();
-            SqlCommand objCommand = new SqlCommand();
-            objCommand.CommandType = CommandType.StoredProcedure;
-            objCommand.CommandText = "GetSecurityQuestion";
-            objCommand.Parameters.AddWithValue("@id", brokerId);
-
-            // Create output parameters for Question and Answer
-            SqlParameter questionParameter = new SqlParameter();
-            questionParameter.ParameterName = "@Question";
-            questionParameter.SqlDbType = SqlDbType.VarChar;
-            questionParameter.Size = 500;
-            questionParameter.Direction = ParameterDirection.Output;
-            objCommand.Parameters.Add(questionParameter);
-
-            SqlParameter answerParameter = new SqlParameter();
-            answerParameter.ParameterName = "@Answer";
-            answerParameter.SqlDbType = SqlDbType.VarChar;
-            answerParameter.Size = 500;
-            answerParameter.Direction = ParameterDirection.Output;
-            objCommand.Parameters.Add(answerParameter);
-
-            objDB.DoUpdateUsingCmdObj(objCommand);
-
-            // Retrieve the Question and Answer
-            string question = objCommand.Parameters["@Question"].ToString();
-            string answer = objCommand.Parameters["@Answer"].ToString();
-
-            if (!string.IsNullOrEmpty(question))
+            try
             {
-                var model = new ResetPasswordModel
+                int brokerId = Convert.ToInt32(TempData["BrokerID"]);
+                string userName = TempData["UserName"].ToString();
+
+                DBConnect objDB = new DBConnect();
+                SqlCommand objCommand = new SqlCommand();
+                objCommand.CommandType = CommandType.StoredProcedure;
+                objCommand.CommandText = "GetSecurityQuestion";
+
+                // Input parameter
+                objCommand.Parameters.AddWithValue("@id", brokerId);
+
+                // Output parameters for Question and Answer
+                SqlParameter questionParameter = new SqlParameter("@Question", SqlDbType.VarChar, 500);
+                questionParameter.Direction = ParameterDirection.Output;
+                objCommand.Parameters.Add(questionParameter);
+
+                SqlParameter answerParameter = new SqlParameter("@Answer", SqlDbType.VarChar, 500);
+                answerParameter.Direction = ParameterDirection.Output;
+                objCommand.Parameters.Add(answerParameter);
+
+                // Execute the stored procedure
+                objDB.DoUpdateUsingCmdObj(objCommand);
+
+                // Retrieve the Question and Answer
+                string question = objCommand.Parameters["@Question"].Value.ToString();
+                string answer = objCommand.Parameters["@Answer"].Value.ToString();
+
+                if (!string.IsNullOrEmpty(question))
                 {
-                    UserName = userName,
-                    Question = question
-                };
+                    // Create model with security question
+                    var model = new ResetPasswordModel
+                    {
+                        UserName = userName,
+                        Question = question
+                    };
 
-                // Store the correct answer in TempData
-                TempData["CorrectAnswer"] = answer;
+                    // Store answer in TempData for validation later
+                    TempData["Question"] = question;
+                    TempData["CorrectAnswer"] = answer;
+                    TempData["BrokerID"] = TempData["BrokerID"];
+                    TempData["UserName"] = TempData["UserName"];
 
-                return View(model);
+                    ViewData["Question"] = question;
+
+                    // Directly return the view with the model
+                    return View(model);
+                }
+                else
+                {
+                    // No security question found
+                    ModelState.AddModelError("", "No security question found.");
+                    return RedirectToAction("ForgetPassword");
+                }
             }
-
-            ModelState.AddModelError("", "No security question found.");
-            return RedirectToAction("ForgetPassword");
+            catch (Exception ex)
+            {
+                // Log the exception
+                ModelState.AddModelError("", "An error occurred while retrieving security question.");
+                return RedirectToAction("ForgetPassword");
+            }
         }
 
         [HttpPost]
@@ -407,12 +424,6 @@ namespace HomeEstate.Controllers
             int brokerId = int.Parse(TempData["BrokerID"].ToString());
             string correctAnswer = TempData["CorrectAnswer"].ToString();
             string userName = TempData["UserName"].ToString();
-
-            if (brokerId !> 0 || string.IsNullOrEmpty(correctAnswer) || string.IsNullOrEmpty(userName))
-            {
-                ModelState.AddModelError("", "Session expired. Please start over.");
-                return View(model);
-            }
 
             // Compare the submitted answer (case-insensitive)
             if (string.Equals(model.Answer, correctAnswer, StringComparison.OrdinalIgnoreCase))
@@ -438,7 +449,7 @@ namespace HomeEstate.Controllers
                 if (isValid)
                 {
                     // Proceed to reset password
-                    return RedirectToAction("ResetPassword", new { username = userName });
+                    return RedirectToAction("RestartPassword", new { username = userName });
                 }
             }
 
@@ -448,13 +459,75 @@ namespace HomeEstate.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult RestartPassword(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                ModelState.AddModelError("", "No username provided.");
+                return RedirectToAction("ForgetPassword");
+            }
+
+            ViewData["Username"] = username;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RestartPassword(ResetPasswordModel model)
+        {
+            // Check if the passwords match
+            if (model.NewPassword != model.ConfirmPassword)
+            {
+                ModelState.AddModelError("ConfirmPassword", "Password and confirmation password do not match.");
+                return View(model);
+            }
+
+            if (model.NewPassword.Length < 6)
+            {
+                ModelState.AddModelError("NewPassword", "Password must be at least 6 characters long.");
+                return View(model);
+            }
+
+            // Get the username from the model
+            string username = model.UserName;
+            string password = model.NewPassword;
+
+            //encrypt password before storing
+
+            try
+            {
+                DBConnect objDB = new DBConnect();
+                SqlCommand objCommand = new SqlCommand();
+                objCommand.CommandType = CommandType.StoredProcedure;
+                objCommand.CommandText = "UpdatePassword";
+
+                objCommand.Parameters.AddWithValue("@Username", username);
+                objCommand.Parameters.AddWithValue("@NewPassword", password);
+
+                objDB.DoUpdateUsingCmdObj(objCommand);
+
+                TempData["PasswordResetSuccess"] = "Your password has been successfully reset.";
+                return RedirectToAction("Login");
+            }
+            catch (Exception ex)
+            {
+                // Handle any database errors or exceptions
+                ModelState.AddModelError("", "An error occurred while resetting your password. Please try again later.");
+                return View(model);
+            }
+        }
+
+        /*
+
         [HttpPost]
         public IActionResult RestartPassword(string username)
         {
             // Pass the username to the RestartPassword view (if needed)
-            ViewBag.Username = username;
+            ViewData["Username"] = username;
             return View();
         }
+        */
 
     }
 }
