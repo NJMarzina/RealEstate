@@ -483,17 +483,33 @@ namespace HomeEstate.Controllers
                 return View(model);
             }
 
-            if (model.NewPassword.Length < 6)
-            {
-                ModelState.AddModelError("NewPassword", "Password must be at least 6 characters long.");
-                return View(model);
-            }
-
             // Get the username from the model
             string username = model.UserName;
             string password = model.NewPassword;
 
-            //encrypt password before storing
+
+            string encryptedPassword;
+
+            UTF8Encoding encoder = new UTF8Encoding();      // used to convert bytes to characters, and back
+            Byte[] textBytes;                               // stores the plain text data as bytes
+
+            textBytes = encoder.GetBytes(password);
+
+            RijndaelManaged rmEncryption = new RijndaelManaged();
+            MemoryStream myMemoryStream = new MemoryStream();
+            CryptoStream myEncryptionStream = new CryptoStream(myMemoryStream, rmEncryption.CreateEncryptor(key, vector), CryptoStreamMode.Write);
+
+            myEncryptionStream.Write(textBytes, 0, textBytes.Length);
+            myEncryptionStream.FlushFinalBlock();
+
+            myMemoryStream.Position = 0;
+            Byte[] encryptedBytes = new Byte[myMemoryStream.Length];
+            myMemoryStream.Read(encryptedBytes, 0, encryptedBytes.Length);
+
+            myEncryptionStream.Close();
+            myMemoryStream.Close();
+
+            encryptedPassword = Convert.ToBase64String(encryptedBytes);
 
             try
             {
@@ -503,7 +519,7 @@ namespace HomeEstate.Controllers
                 objCommand.CommandText = "UpdatePassword";
 
                 objCommand.Parameters.AddWithValue("@Username", username);
-                objCommand.Parameters.AddWithValue("@NewPassword", password);
+                objCommand.Parameters.AddWithValue("@NewPassword", encryptedPassword);
 
                 objDB.DoUpdateUsingCmdObj(objCommand);
 
