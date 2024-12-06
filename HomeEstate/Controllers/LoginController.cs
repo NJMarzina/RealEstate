@@ -80,31 +80,23 @@ namespace HomeEstate.Controllers
 
             JavaScriptSerializer js = new JavaScriptSerializer();
             var jsonUser = js.Serialize(user);
-            //try
-            //{
-                // Send the Customer object to the Web API that will be used to store a new customer record in the database.
-                // Setup an HTTP POST Web Request and get the HTTP Web Response from the server.
+              
                 WebRequest request = (HttpWebRequest)WebRequest.Create("https://localhost:7285/api/Login/CheckLogin");    //was webApiUrl + "/CheckLogin"
                 request.Method = "POST";
                 request.ContentLength = jsonUser.Length;
                 request.ContentType = "application/json";
-                // Write the JSON data to the Web Request
+
                 StreamWriter writer = new StreamWriter(request.GetRequestStream());
                 writer.Write(jsonUser);
                 writer.Flush();
                 writer.Close();
-                // Read the data from the Web Response, which requires working with streams.
+
                 WebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream theDataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(theDataStream);
                 string data = reader.ReadToEnd();
                 reader.Close();
                 response.Close();
-            //}
-            //catch (Exception ex)
-            //{ 
-            //    return View();
-            //}
             if (data=="true")
             {
                 var cookieOptions = new CookieOptions
@@ -234,66 +226,11 @@ namespace HomeEstate.Controllers
             return View(model);
         }
 
-        /*
-        [HttpPost]
-        public IActionResult ForgetPassword(ResetPasswordModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                //get id based on username
-
-                //GetBrokerIDByUsername
-
-                webApiUrl = "https://localhost:7285/api/Login/GetBrokerIDByUsername/";
-                //WebRequest request = WebRequest.Create(webApiUrl + "GetCustomerByName/" + txtName.Text);
-                HttpWebRequest requestBrokerID = (HttpWebRequest)WebRequest.Create(webApiUrl + model.UserName);
-                requestBrokerID.Method = "GET";
-                requestBrokerID.ContentType = "application/json";
-                HttpWebResponse responseBrokerID = (HttpWebResponse)requestBrokerID.GetResponse();
-
-                Stream theBrokerIDDataStream = responseBrokerID.GetResponseStream();
-                StreamReader readerBrokerID = new StreamReader(theBrokerIDDataStream);
-                string brokerIDData = readerBrokerID.ReadToEnd();
-                readerBrokerID.Close();
-                responseBrokerID.Close();
-                JavaScriptSerializer jsBrokerID = new JavaScriptSerializer();
-                int brokerID = jsBrokerID.Deserialize<int>(brokerIDData);
-
-
-
-                //check if username is in db
-                //if yes redirect to login
-                //if no loop back to same page
-                //if yes and here then grab a question and if they answer correctly allow them to enter a new password
-
-                //basically same logic we currently have but have to add an extra page.
-
-                // Placeholder logic for processing the username
-                // You would normally verify if the username exists in the database
-                bool userExists = model.UserName == "testuser"; // Example: replace with actual database check
-
-                if (userExists)
-                {
-                    // Logic to send a password reset link or instructions
-                    TempData["Message"] = "Password reset instructions sent to the email associated with this username.";
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Username not found.");
-                }
-            }
-
-            return View(model);
-        }
-        */
-
         [HttpPost]
         public IActionResult ForgetPassword(ResetPasswordModel model)
         {
             int test = 0;
 
-            //if (ModelState.IsValid)
-            //{
                 try
                 {
                     // Get broker ID based on username
@@ -310,17 +247,10 @@ namespace HomeEstate.Controllers
                         JavaScriptSerializer jsBrokerID = new JavaScriptSerializer();
                         int brokerID = jsBrokerID.Deserialize<int>(brokerIDData);
 
-                        // Check if broker ID is valid (not 0 or -1)
                         if (brokerID > 0)
                         {
-                            // Store broker ID in TempData for next step
                             TempData["BrokerID"] = brokerID;
                             TempData["UserName"] = model.UserName;
-
-                            // Redirect to SecurityQuestion action
-                            
-                            //redirect but get security question now for next page
-                            //store them as a cookie, delete upon completion
 
                             return RedirectToAction("SecurityQuestion", "Login");
                         }
@@ -333,23 +263,17 @@ namespace HomeEstate.Controllers
                 }
                 catch (WebException ex)
                 {
-                    // Log the exception
-                    ModelState.AddModelError("", "Error occurred while processing your request.");
                     return View(model);
                 }
-            //}
 
-            // If model state is not valid, return to the view
             return View(model);
         }
 
         [HttpGet]
         public IActionResult SecurityQuestion()
         {
-            // Validate TempData first
             if (TempData["BrokerID"] == null || TempData["UserName"] == null)
             {
-                // If no broker ID or username, go back to forget password
                 return RedirectToAction("ForgetPassword");
             }
 
@@ -363,10 +287,8 @@ namespace HomeEstate.Controllers
                 objCommand.CommandType = CommandType.StoredProcedure;
                 objCommand.CommandText = "GetSecurityQuestion";
 
-                // Input parameter
                 objCommand.Parameters.AddWithValue("@id", brokerId);
 
-                // Output parameters for Question and Answer
                 SqlParameter questionParameter = new SqlParameter("@Question", SqlDbType.VarChar, 500);
                 questionParameter.Direction = ParameterDirection.Output;
                 objCommand.Parameters.Add(questionParameter);
@@ -375,23 +297,19 @@ namespace HomeEstate.Controllers
                 answerParameter.Direction = ParameterDirection.Output;
                 objCommand.Parameters.Add(answerParameter);
 
-                // Execute the stored procedure
                 objDB.DoUpdateUsingCmdObj(objCommand);
 
-                // Retrieve the Question and Answer
                 string question = objCommand.Parameters["@Question"].Value.ToString();
                 string answer = objCommand.Parameters["@Answer"].Value.ToString();
 
                 if (!string.IsNullOrEmpty(question))
                 {
-                    // Create model with security question
                     var model = new ResetPasswordModel
                     {
                         UserName = userName,
                         Question = question
                     };
 
-                    // Store answer in TempData for validation later
                     TempData["Question"] = question;
                     TempData["CorrectAnswer"] = answer;
                     TempData["BrokerID"] = TempData["BrokerID"];
@@ -399,20 +317,15 @@ namespace HomeEstate.Controllers
 
                     ViewData["Question"] = question;
 
-                    // Directly return the view with the model
                     return View(model);
                 }
                 else
                 {
-                    // No security question found
-                    ModelState.AddModelError("", "No security question found.");
                     return RedirectToAction("ForgetPassword");
                 }
             }
             catch (Exception ex)
             {
-                // Log the exception
-                ModelState.AddModelError("", "An error occurred while retrieving security question.");
                 return RedirectToAction("ForgetPassword");
             }
         }
@@ -420,15 +333,12 @@ namespace HomeEstate.Controllers
         [HttpPost]
         public IActionResult SecurityQuestion(ResetPasswordModel model)
         {
-            // Retrieve stored values from TempData
             int brokerId = int.Parse(TempData["BrokerID"].ToString());
             string correctAnswer = TempData["CorrectAnswer"].ToString();
             string userName = TempData["UserName"].ToString();
 
-            // Compare the submitted answer (case-insensitive)
             if (string.Equals(model.Answer, correctAnswer, StringComparison.OrdinalIgnoreCase))
             {
-                // Create a parameter to validate the security answer
                 DBConnect objDB = new DBConnect();
                 SqlCommand objCommand = new SqlCommand();
                 objCommand.CommandType = CommandType.StoredProcedure;
@@ -448,12 +358,10 @@ namespace HomeEstate.Controllers
 
                 if (isValid)
                 {
-                    // Proceed to reset password
                     return RedirectToAction("RestartPassword", new { username = userName });
                 }
             }
 
-            // Incorrect answer
             ModelState.AddModelError("Answer", "Incorrect security answer.");
             model.Question = TempData["Question"].ToString();
             return View(model);
@@ -476,14 +384,12 @@ namespace HomeEstate.Controllers
         [HttpPost]
         public IActionResult RestartPassword(ResetPasswordModel model)
         {
-            // Check if the passwords match
             if (model.NewPassword != model.ConfirmPassword)
             {
                 ModelState.AddModelError("ConfirmPassword", "Password and confirmation password do not match.");
                 return View(model);
             }
 
-            // Get the username from the model
             string username = model.UserName;
             string password = model.NewPassword;
 
@@ -528,8 +434,6 @@ namespace HomeEstate.Controllers
             }
             catch (Exception ex)
             {
-                // Handle any database errors or exceptions
-                ModelState.AddModelError("", "An error occurred while resetting your password. Please try again later.");
                 return View(model);
             }
         }
@@ -547,86 +451,3 @@ namespace HomeEstate.Controllers
 
     }
 }
-
-/*
-using Microsoft.AspNetCore.Mvc;
-using HomeEstate.Models;
-using System.Net.Http;
-using System.Text.Json;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HomeEstate.Controllers
-{
-    public class LoginController : Controller
-    {
-        // API base URL
-        private readonly Uri webApiUrl = new Uri("http://localhost:7229/api");
-
-        [HttpPost]
-        public async Task<IActionResult> CheckLogin(LoginModel user)
-        {
-            // Ensure the model is valid
-            if (!ModelState.IsValid)
-            {
-                return View("Login"); // Return to login view if validation fails
-            }
-
-            var jsonLogin = JsonSerializer.Serialize(user);
-            var content = new StringContent(jsonLogin, Encoding.UTF8, "application/json");
-
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    // Post the login data to the API
-                    var response = await client.PostAsync(webApiUrl + "/Login/Login", content);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Parse the response
-                        var data = await response.Content.ReadAsStringAsync();
-                        var loginResponse = JsonSerializer.Deserialize<LoginResponse>(data);
-
-                        if (loginResponse?.Success == true)
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", loginResponse?.Message ?? "Invalid credentials.");
-                            return View("Login"); // Return to login view with error message
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Error occurred while checking credentials.");
-                        return View("Login");
-                    }
-                }
-                catch (HttpRequestException ex)
-                {
-                    // Log or handle the exception
-                    ModelState.AddModelError("", $"Request error: {ex.Message}");
-                    return View("Login");
-                }
-            }
-        }
-
-        // Login GET action
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        // Other actions (Register, ForgetPassword, RestartPassword, etc.) are omitted for brevity
-    }
-
-    // Define a class to deserialize the login response from the Web API
-    public class LoginResponse
-    {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-    }
-}
-*/

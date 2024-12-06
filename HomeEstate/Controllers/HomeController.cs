@@ -244,7 +244,6 @@ namespace HomeEstate.Controllers
             reader.Close();
             response.Close();
 
-            //ammentities string
             //send to api
             //add to ammentities table
 

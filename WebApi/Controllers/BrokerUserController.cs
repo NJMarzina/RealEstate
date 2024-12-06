@@ -48,7 +48,7 @@ namespace WebApi.Controllers
                     AddressState = row["AddressState"].ToString(),
                     AddressZip = row["AddressZip"].ToString(),
                     PropertyType = row["Property_Type"].ToString(),
-                    Size = row["Size"] != DBNull.Value ? Convert.ToSingle(row["Size"]) : 0.0f, // Changed to float (Single in C#)                        Heating = row["Heating"].ToString(),
+                    Size = row["Size"] != DBNull.Value ? Convert.ToSingle(row["Size"]) : 0.0f, 
                     Heating = row["Heating"].ToString(),
                     Cooling = row["Cooling"].ToString(),
                     YearBuild = Convert.ToInt32(row["Year_Build"]),

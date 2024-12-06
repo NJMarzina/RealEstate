@@ -3,7 +3,6 @@
 }
 
 <style>
-    /* Ensure all cards are the same size */
     .card {
         display: flex;
         flex-direction: column;
@@ -11,18 +10,17 @@
     }
 
     .card-body {
-        flex-grow: 1; /* Allow the body to stretch */
+        flex-grow: 1; 
     }
 
     .card-footer {
-        flex-shrink: 0; /* Footer remains fixed */
+        flex-shrink: 0; 
     }
 
-    /* Style for images to ensure they fit properly */
     .card-img-top {
         width: 100%;
-        height: 200px; /* Adjust height to desired size */
-        object-fit: cover; /* Ensures image maintains aspect ratio */
+        height: 200px; 
+        object-fit: cover; 
     }
 </style>
 
@@ -41,7 +39,6 @@
                     {
                         <div class="col-md-4 mb-4 d-flex">
                             <div class="card shadow-sm w-100">
-                                <!-- Display Home Image -->
                                 @if (!string.IsNullOrEmpty(home.ImageUrl))
                                 {
                                     <img src="@home.ImageUrl" class="card-img-top" alt="Home Image" />
