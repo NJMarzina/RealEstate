@@ -4,15 +4,20 @@ namespace HomeEstate.Models
 {
     public class ResetPasswordModel
     {
-        [Required]
-        public  String UserName { get; set; }
+        [Required(ErrorMessage = "Username is required")]
+        public string UserName { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "New password is required")]
         [DataType(DataType.Password)]
-        public required string NewPassword { get; set; }
+        public string NewPassword { get; set; } = string.Empty;
 
         [DataType(DataType.Password)]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-        public required string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Answer is required")]
+        public string Answer { get; set; } = string.Empty;
+
+        public string Question { get; set; } = string.Empty;
     }
 }
