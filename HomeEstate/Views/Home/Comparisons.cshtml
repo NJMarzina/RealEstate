@@ -1,0 +1,125 @@
+﻿@model HomeEstate.Models.HomeComparisonModel
+
+@{
+    ViewData["Title"] = "Comparisons";
+}
+
+<div class="comparison-container">
+    <div class="comparison-card">
+        <h1 class="page-title">Home Comparison</h1>
+        
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Address</span>
+                <span class="detail-value">@Model.myAddress</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">City</span>
+                <span class="detail-value">@Model.myCity</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">Listed Price</span>
+                <span class="detail-value">@Model.myPrice.ToString("C0")</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">Average City Price</span>
+                <span class="detail-value">@Model.avgPrice.ToString("C0")</span>
+            </div>
+            
+            <div class="detail-item">
+                <span class="detail-label">Estimated Monthly Mortgage Payment</span>
+                <span class="detail-value">@Model.expRent.ToString("C0")</span>
+            </div>
+        </div>
+        
+        <div class="price-comparison">
+            @{
+                double priceDifference = Model.myPrice - Model.avgPrice;
+                string comparisonText = priceDifference > 0 
+                    ? "above" 
+                    : priceDifference < 0 
+                    ? "below" 
+                    : "at";
+            }
+            <p class="comparison-insight">
+                This property is <strong>@comparisonText</strong> the average city price 
+                by <span class="@(priceDifference > 0 ? "text-red" : "text-green")">
+                    @Math.Abs(priceDifference).ToString("C0")
+                </span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .comparison-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .comparison-card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .page-title {
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 0.5rem;
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .detail-item {
+        background-color: #f4f4f4;
+        padding: 1rem;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .detail-label {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+    }
+
+    .detail-value {
+        color: #2c3e50;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .price-comparison {
+        background-color: #ecf0f1;
+        padding: 1rem;
+        border-radius: 5px;
+    }
+
+    .comparison-insight {
+        color: #34495e;
+    }
+
+    .text-red {
+        color: #e74c3c;
+    }
+
+    .text-green {
+        color: #2ecc71;
+    }
+</style>

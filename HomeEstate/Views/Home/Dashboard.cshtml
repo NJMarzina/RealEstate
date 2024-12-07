@@ -72,7 +72,12 @@
                                             <input type="hidden" name="HomeId" value="@home.HomeID" />
                                             <button type="submit" class="btn btn-secondary flex-fill">Home Offer Form</button>
                                         </form>
+                                        
                                     </div>
+                                    <form id="ComparisonForm" asp-controller="Home" asp-action="Comparisons" method="get" class="m-0">
+                                        <input type="hidden" name="HomeId" value="@home.HomeID" />
+                                        <button type="submit" class="btn btn-secondary flex-fill">City Comparisons</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

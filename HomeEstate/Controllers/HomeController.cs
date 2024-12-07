@@ -18,6 +18,7 @@ using HomeLibrary;
 using static System.Net.WebRequestMethods;
 using System.Reflection;
 using System;
+using System.Runtime.InteropServices;
 //using WebApi.Models;
 
 namespace HomeEstate.Controllers
@@ -135,6 +136,64 @@ namespace HomeEstate.Controllers
             reader.Close();
             response.Close();
             return RedirectToAction("Dashboard", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult Comparisons(int HomeId)
+        {
+            HomeComparisonModel details = new HomeComparisonModel
+            {
+                homeId = HomeId,
+                myBed = 0,
+                myBath = 0,
+                myPrice = 0,
+                avgBed = 0,
+                avgBath = 0,
+                avgPrice = 0.0,
+                expRent = 0,
+                myCity = string.Empty,
+                myAddress = string.Empty,
+            };
+
+            //* from Home where City = City
+
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
+            objCommand.CommandType = CommandType.StoredProcedure;
+            objCommand.CommandText = "GetHomeInfo";
+
+            objCommand.Parameters.AddWithValue("@Home_ID", HomeId);
+
+            DataSet homeDS = objDB.GetDataSet(objCommand);
+
+            details.myPrice = int.Parse(homeDS.Tables[0].Rows[0]["AskingPrice"].ToString());
+            details.myCity = homeDS.Tables[0].Rows[0]["AddressCity"].ToString();
+            details.myAddress = homeDS.Tables[0].Rows[0]["Address_Number"].ToString() + " " + homeDS.Tables[0].Rows[0]["Address_Name"].ToString();
+
+            DBConnect objDB2 = new DBConnect();
+            SqlCommand objCommand2 = new SqlCommand();
+            objCommand2.CommandType = CommandType.StoredProcedure;
+            objCommand2.CommandText = "GetHomesByCityUpdated";
+
+            objCommand2.Parameters.AddWithValue("@City", details.myCity);
+
+            DataSet homesInCityDS = objDB.GetDataSet(objCommand2);
+
+            double totalPrice = 0;
+            int homeCount = 0;
+
+            foreach (DataRow row in homesInCityDS.Tables[0].Rows)
+            {
+                double currentPrice = Convert.ToDouble(row["AskingPrice"]);
+                totalPrice += currentPrice;
+                homeCount++;
+            }
+
+            details.avgPrice = totalPrice / homeCount;
+
+            details.expRent = (details.myPrice / 360) * 1.04;
+
+            return View("~/Views/Home/Comparisons.cshtml", details);
         }
 
 
