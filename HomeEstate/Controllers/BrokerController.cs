@@ -3,16 +3,15 @@ using HomeLibrary;
 using Microsoft.AspNetCore.Mvc;
 using Nancy.Json;
 using System.Net;
-using static Azure.Core.HttpHeader;
-using HomeLibrary;
 using System;
 using System.Diagnostics;
-//using WebApi.Models;
 
 namespace HomeEstate.Controllers
 {
     public class BrokerController : Controller
     {
+        public static string Publishapi = "https://cis-iis2.temple.edu/Fall2024/cis3342_tun52511/WebAPI";
+
         public IActionResult BrokerDashboard()
         {
             var username = Request.Cookies["Username"];
@@ -39,8 +38,7 @@ namespace HomeEstate.Controllers
 
         public IActionResult BrokerListing(int id)
         {
-            String webApiUrl = "https://localhost:7285/api/BrokerUser/GetHomeByBroker/" + id;
-
+            String webApiUrl = Publishapi + "/api/BrokerUser/GetHomeByBroker/" + id;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
             request.Method = "GET";
@@ -64,10 +62,10 @@ namespace HomeEstate.Controllers
 
             return View("BrokerListing");
         }
-  
-    public IActionResult BrokerOffer(int id)
+
+        public IActionResult BrokerOffer(int id)
         {
-            String webApiUrl = "https://localhost:7285/api/BrokerUser/GetOfferByBroker/" + id;
+            String webApiUrl = Publishapi + "/api/BrokerUser/GetOfferByBroker/" + id;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
 
             request.Method = "GET";
@@ -83,17 +81,17 @@ namespace HomeEstate.Controllers
             JavaScriptSerializer js = new JavaScriptSerializer();
             List<GetHomeOfferModel> home = js.Deserialize<List<GetHomeOfferModel>>(data);
             ViewBag.HomeList = home;
+
             if (home == null)
             {
                 return NotFound("No Offer found.");
             }
             return View("BrokerOffer");
-
         }
+
         public IActionResult BrokerShowing(int id)
         {
-
-            String webApiUrl = "https://localhost:7285/api/BrokerUser/GetShowingByBroker/" + id;
+            String webApiUrl = Publishapi + "/api/BrokerUser/GetShowingByBroker/" + id;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
             request.Method = "GET";
@@ -109,6 +107,7 @@ namespace HomeEstate.Controllers
             JavaScriptSerializer js = new JavaScriptSerializer();
             List<GetHomeShowingModel> home = js.Deserialize<List<GetHomeShowingModel>>(data);
             ViewBag.HomeList = home;
+
             if (home == null)
             {
                 return NotFound("No Showing found.");
@@ -116,12 +115,9 @@ namespace HomeEstate.Controllers
             return View("BrokerShowing");
         }
 
-
-
         public IActionResult EditHomes(int id)
         {
-
-            String webApiUrl = "https://localhost:7285/api/Home/GetHomeDetails/" + id;
+            String webApiUrl = Publishapi + "/api/Home/GetHomeDetails/" + id;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
             request.Method = "GET";
             request.ContentType = "application/json";
@@ -144,37 +140,15 @@ namespace HomeEstate.Controllers
             return View("EditHomes", home);
         }
 
-
-
-
         [HttpPost]
         public IActionResult UpdateHome(EditHomeModel home)
         {
-
             if (Request.Form["_method"] == "PUT")
             {
-                EditHomeModel updatedHome = new EditHomeModel();
+                string url = Publishapi + "/api/BrokerUser/EditHome/";
 
-                updatedHome.HomeId = home.HomeId;
-                updatedHome.AddressNumber = home.AddressNumber;
-                updatedHome.AddressName = home.AddressName;
-                updatedHome.AddressCity = home.AddressCity;
-                updatedHome.AddressState = home.AddressState;
-                updatedHome.AddressZip = home.AddressZip;
-                updatedHome.PropertyType = home.PropertyType;
-                updatedHome.Heating = home.Heating;
-                updatedHome.Cooling = home.Cooling;
-                updatedHome.YearBuild = home.YearBuild;
-                updatedHome.Garage = home.Garage;
-                updatedHome.Utilities = home.Utilities;
-                updatedHome.Description = home.Description;
-                updatedHome.AskingPrice = home.AskingPrice;
-                updatedHome.Status = home.Status;
-
-
-                string url = "https://localhost:7285/api/BrokerUser/EditHome/";
                 JavaScriptSerializer js = new JavaScriptSerializer();
-                String jsonCustomer = js.Serialize(updatedHome);
+                String jsonCustomer = js.Serialize(home);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "PUT";
                 request.ContentType = "application/json";
@@ -182,36 +156,27 @@ namespace HomeEstate.Controllers
                 writer.Write(jsonCustomer);
                 writer.Flush();
                 writer.Close();
+
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream theDataStream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(theDataStream);
-                String data = reader.ReadToEnd();
-                reader.Close();
                 response.Close();
+
                 return RedirectToAction("BrokerDashboard", "Broker");
             }
             return View();
         }
 
-
-
         [HttpPost]
         public IActionResult DeleteHome(int id)
         {
-            String webApiUrl = "https://localhost:7285/api/BrokerUser/DeleteHome/"+id;
+            String webApiUrl = Publishapi + "/api/BrokerUser/DeleteHome/" + id;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webApiUrl);
             request.Method = "DELETE";
             request.ContentType = "application/json";
 
-            
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-             
-                response.Close();
-            
-            
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            response.Close();
 
-            // Redirect back to the Broker Listing view
             var brokerId = Request.Cookies["BrokerID"];
             return RedirectToAction("BrokerListing", new { id = brokerId });
         }
@@ -222,38 +187,33 @@ namespace HomeEstate.Controllers
             RoomModel room = new RoomModel
             {
                 RoomId = HomeId,
-                Width=null,
-                Length=null,
-                RoomType=string.Empty
-
-            };          
+                Width = null,
+                Length = null,
+                RoomType = string.Empty
+            };
             ViewBag.HomeId2 = HomeId;
-            Debug.WriteLine(HomeId);
             return View("~/Views/Broker/AddRoom.cshtml", room);
         }
+
         [HttpGet]
         public IActionResult RequestImageID(int HomeId)
         {
             AddImagiesModel Home = new AddImagiesModel
             {
                 HomeId = HomeId,
-                ImiageUrl=string.Empty
-
+                ImiageUrl = string.Empty
             };
             ViewBag.HomeId2 = HomeId;
-            Debug.WriteLine(HomeId);
             return View("~/Views/Broker/AddImage.cshtml", Home);
-
         }
+
         [HttpPost]
         public IActionResult AddImage(AddImagiesModel home)
         {
-            AddImagiesModel AddImmgie = new AddImagiesModel();
-            AddImmgie.HomeId = home.HomeId;
-            AddImmgie.ImiageUrl=home.ImiageUrl;
-            string url = "https://localhost:7285/api/BrokerUser/AddImage/";
+            string url = Publishapi + "/api/BrokerUser/AddImage/";
+
             JavaScriptSerializer js = new JavaScriptSerializer();
-            String jsonCustomer = js.Serialize(AddImmgie);
+            String jsonCustomer = js.Serialize(home);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             request.ContentType = "application/json";
@@ -261,25 +221,20 @@ namespace HomeEstate.Controllers
             writer.Write(jsonCustomer);
             writer.Flush();
             writer.Close();
+
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream theDataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(theDataStream);
-            String data = reader.ReadToEnd();
-            reader.Close();
             response.Close();
 
             return RedirectToAction("BrokerDashboard", "Broker");
         }
+
         [HttpPost]
-        public IActionResult AddRoom(RoomModel Room) {
-            RoomModel UpdateRoom = new RoomModel();
-            UpdateRoom.RoomId = Room.RoomId;
-            UpdateRoom.RoomType=Room.RoomType;
-            UpdateRoom.Width = Room.Width;
-            UpdateRoom.Length = Room.Length;
-            string url = "https://localhost:7285/api/BrokerUser/AddRoom/";
+        public IActionResult AddRoom(RoomModel Room)
+        {
+            string url = Publishapi + "/api/BrokerUser/AddRoom/";
+
             JavaScriptSerializer js = new JavaScriptSerializer();
-            String jsonCustomer = js.Serialize(UpdateRoom);
+            String jsonCustomer = js.Serialize(Room);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             request.ContentType = "application/json";
@@ -287,19 +242,11 @@ namespace HomeEstate.Controllers
             writer.Write(jsonCustomer);
             writer.Flush();
             writer.Close();
+
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream theDataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(theDataStream);
-            String data = reader.ReadToEnd();
-            reader.Close();
             response.Close();
+
             return RedirectToAction("BrokerDashboard", "Broker");
         }
-
-
-
-
     }
-
 }
-

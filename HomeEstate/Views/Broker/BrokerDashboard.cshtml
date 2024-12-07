@@ -7,30 +7,16 @@
     <p>Welcome @ViewData["Username"]</p>
     <p>Your BrokerID is @ViewData["BrokerID"]</p>
     <p>Your ProfileID is @ViewData["ProfileID"]</p>
-    
-    <!--
-    <form id="createHomeForm" action="/Home/CreateNewHome" method="post">
-        <button type="submit" class="btn btn-secondary">Create New Listing</button>
-    </form>
-    -->
 
-    <p>
-        <a href="@Url.Action("CreateNewHome", "Home")" class="btn btn-secondary">Create Home</a>
-    </p>
+    <!-- Flexbox for consistent button sizing -->
+    <div class="d-flex flex-column align-items-center gap-2" style="max-width: 300px; margin: 0 auto;">
+        <a href="@Url.Action("CreateNewHome", "Home")" class="btn btn-secondary w-100">Create Home</a>
+        <a href="@Url.Action("BrokerListing", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary w-100">View My Listings</a>
+        <a href="@Url.Action("BrokerShowing", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary w-100">View My Showing</a>
+        <a href="@Url.Action("BrokerOffer", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary w-100">View My Offer</a>
 
-    <a href="@Url.Action("BrokerListing", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary">View My Listings</a>
-
-    <a href="@Url.Action("BrokerShowing", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary">View my Showing</a>
-    <a href="@Url.Action("BrokerOffer", "Broker", new { id = ViewData["BrokerID"] })" class="btn btn-secondary">View my Offer</a>
-
-
-
-
-
-
-    <form id="brokerLogout" action="/broker/Logout" method="post">
-        <button type="submit" class="btn btn-secondary">Logout</button>
-    </form>
-
-
+        <form id="brokerLogout" action="/broker/Logout" method="post" class="w-100">
+            <button type="submit" class="btn btn-secondary w-100">Logout</button>
+        </form>
+    </div>
 </div>
